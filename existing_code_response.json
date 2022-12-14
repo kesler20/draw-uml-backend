@@ -1,0 +1,154 @@
+[
+  {
+    "class name": "ExcelDatabase",
+    "description": [],
+    "methods": [
+      {
+        "signature": "filename",
+        "params": [["self"]],
+        "decorator": "property",
+        "return type": "str"
+      },
+      {
+        "signature": "database",
+        "params": [["self"]],
+        "decorator": "property",
+        "return type": "DataFrame"
+      },
+      {
+        "signature": "database_info",
+        "params": [["self"]],
+        "decorator": "property",
+        "return type": "None"
+      },
+      {
+        "signature": "_pp",
+        "params": [
+          ["self"],
+          ["table", "DataFrame"],
+          ["table_name", "str"],
+          ["message", "str"]
+        ],
+        "return type": "None"
+      },
+      {
+        "signature": "create_table",
+        "params": [
+          ["self"],
+          ["table_name", "str"],
+          ["columns", "List[str]"],
+          ["rows", "List[List[Any]]"]
+        ],
+        "return type": "None"
+      },
+      {
+        "signature": "get_table",
+        "params": [["self"], ["table_name", "str"]],
+        "return type": "DataFrame"
+      },
+      {
+        "signature": "query_table",
+        "params": [["self"]],
+        "return type": "DataFrame"
+      },
+      {
+        "signature": "get_table_slice",
+        "params": [
+          ["self"],
+          ["columns", "Union[str,List[str]]"],
+          ["table_name", "str"],
+          ["index", "Optional[Tuple[int,int]]=None"]
+        ],
+        "return type": "Any"
+      },
+      {
+        "signature": "get_n_rows_from_tables_above",
+        "params": [["self"], ["n", "int"], ["table_name", "str"]],
+        "return type": "Any"
+      },
+      {
+        "signature": "get_n_rows_from_tables_below",
+        "params": [["self"], ["n", "int"], ["table_name", "str"]],
+        "return type": "Any"
+      },
+      {
+        "signature": "table_info",
+        "params": [["self"], ["table_name", "str"]],
+        "return type": "Any"
+      },
+      {
+        "signature": "get_table_names",
+        "params": [["self"]],
+        "return type": "List[str]"
+      },
+      {
+        "signature": "get_value_by_column_name",
+        "params": [
+          ["self"],
+          ["row_index", "int"],
+          ["column_name", "str"],
+          ["table_name", "str"]
+        ],
+        "return type": "Any"
+      },
+      {
+        "signature": "get_value_by_column_index",
+        "params": [
+          ["self"],
+          ["row_index", "int"],
+          ["column_index", "int"],
+          ["table_name", "str"]
+        ],
+        "return type": "Any"
+      },
+      {
+        "signature": "delete_table",
+        "params": [["self"], ["table_name", "str"]],
+        "return type": "Any"
+      },
+      {
+        "signature": "append_row",
+        "params": [["self"], ["row", "List[List[Any]]"], ["table_name", "str"]],
+        "return type": "None"
+      },
+      {
+        "signature": "update_rows",
+        "params": [["self"]],
+        "return type": "None"
+      },
+      {
+        "signature": "delete_rows",
+        "params": [["self"], ["rows", "List[int]"], ["table_name", "str"]],
+        "return type": "None"
+      },
+      {
+        "signature": "put_column",
+        "params": [
+          ["self"],
+          ["column_name", "str"],
+          ["column_values", "List[Any]"],
+          ["table_name", "str"]
+        ],
+        "return type": "None"
+      },
+      {
+        "signature": "insert_column",
+        "params": [
+          ["self"],
+          ["column_index", "int"],
+          ["column_name", "str"],
+          ["column_values", "List[Any]"],
+          ["table_name", "str"]
+        ],
+        "return type": "None"
+      },
+      {
+        "signature": "delete_columns",
+        "params": [["self"], ["columns", "List[str]"], ["table_name", "str"]],
+        "return type": "Any"
+      }
+    ],
+    "fields": [["filename", " str = \"protocol_database.xlsx\""]],
+    "properties": []
+  }
+]
