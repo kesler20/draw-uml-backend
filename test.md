@@ -2,7 +2,6 @@
 
 ```mermaid
 classDiagram
-   ExcelDatabase : -filename  str = "protocol_database.xlsx"
    ExcelDatabase : +filename() str
    ExcelDatabase : +database() DataFrame
    ExcelDatabase : +database_info() None
