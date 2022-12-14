@@ -104,6 +104,15 @@ class {}:
         """This method generates this part of the code
         ```python
         __filename: str = "protocol_database.xlsx"
+
+        @property
+        def filename(self):
+            '''filename property getter'''
+            return self.__filename
+
+        def set_filename(self,filename :  str):
+            '''filename property setter'''
+            self.__filename = filename
         """
 
         # assuming that fields come in the following format
@@ -114,6 +123,23 @@ class {}:
             initial_field += """
     __{}:{}
 """.format(field, field_type)
+
+        # create getters
+        for field, field_type in self.fields:
+            initial_field += '''
+    @property
+    def {}(self):
+        """{} property getter"""
+        return self.__{}
+            '''.format(field, field, field)
+
+        # create setters
+        for field, field_type in self.fields:
+            initial_field += '''
+    def set_{}(self,{} : {}):
+        """{} property setter"""
+        self.__{} = {}
+            '''.format(field, field, field_type.split("=")[0].replace(" ", ""), field, field, field)
 
         print(initial_field)
         # write to the output file

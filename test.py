@@ -10,6 +10,15 @@ class ExcelDatabase:
 
     __filename: str = "protocol_database.xlsx"
 
+    @property
+    def filename(self):
+        """filename property getter"""
+        return self.__filename
+            
+    def set_filename(self,filename : str):
+        """filename property setter"""
+        self.__filename = filename
+            
     def filename(self) -> str:
         """filename has the following params"""
         ...
@@ -29,7 +38,7 @@ class ExcelDatabase:
         ---
                 
         message str
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -44,7 +53,7 @@ class ExcelDatabase:
         ---
                 
         rows List[List[Any]]
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -59,7 +68,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 1
+            to be passed as parameter 2
                     
         Returns
         ---
@@ -78,7 +87,7 @@ class ExcelDatabase:
         ---
                 
         index Optional[Tuple[int,int]]=None
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -93,7 +102,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 2
+            to be passed as parameter 3
                     
         Returns
         ---
@@ -108,7 +117,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 2
+            to be passed as parameter 3
                     
         Returns
         ---
@@ -123,7 +132,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 1
+            to be passed as parameter 2
                     
         Returns
         ---
@@ -142,7 +151,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -157,7 +166,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -172,7 +181,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 1
+            to be passed as parameter 2
                     
         Returns
         ---
@@ -187,7 +196,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 2
+            to be passed as parameter 3
                     
         Returns
         ---
@@ -206,7 +215,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 2
+            to be passed as parameter 3
                     
         Returns
         ---
@@ -221,7 +230,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 3
+            to be passed as parameter 4
                     
         Returns
         ---
@@ -236,7 +245,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 4
+            to be passed as parameter 5
                     
         Returns
         ---
@@ -251,7 +260,7 @@ class ExcelDatabase:
         ---
                 
         table_name str
-            to be passed as parameter 2
+            to be passed as parameter 3
                     
         Returns
         ---
