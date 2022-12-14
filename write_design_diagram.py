@@ -36,8 +36,7 @@ classDiagram'''
 
     def generate_connections(self):
         connections = '''
-   Person <|-- Student
-'''
+   {} <|-- object'''.format(self.class_name)
         with open(self.output_file, "a") as out:
             out.write(connections)
 
@@ -46,23 +45,23 @@ classDiagram'''
         name = self.class_name
         methods = [(method['signature'], method['return type'])
                    for method in self.methods]
-        properties = [(props, props_type)
+        properties = [(props, props_type.split("=")[0].replace(" ",""))
                       for props, props_type in self.properties]
-        fields = [(field, field_type)
+        fields = [(field, field_type.split("=")[0].replace(" ",""))
                   for field, field_type in self.fields]
 
         final_class = ""
         for prop, prop_type in properties:
             final_class += """
-   {} : +{} {}""".format(name, prop, prop_type)
+   {} : + {} {}""".format(name, prop, prop_type)
 
         for field, field_type in fields:
             final_class += """
-   {} : -{} {}""".format(name, field, field_type)
+   {} : - {} {}""".format(name, field, field_type)
 
         for method, return_type in methods:
             final_class += """
-   {} : +{}() {}""".format(name, method, return_type)
+   {} : + {}() {}""".format(name, method, return_type)
 
         final_class += """
 ```
@@ -73,4 +72,5 @@ classDiagram'''
 
 cls = DiagramBuilder(metadata, FILENAME)
 cls.init()
+cls.generate_connections()
 cls.generate_classes()
