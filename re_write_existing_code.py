@@ -165,7 +165,7 @@ class {}:
                     comment += """
         {} {}
             to be passed as parameter {}
-                    """.format(param[0], None if len(param) == 1 else param[1], index)
+                    """.format(param[0], None if len(param) == 1 else param[1], index + 1)
                     comment += '''
         Returns
         ---
@@ -179,6 +179,7 @@ class {}:
     def {}(self{}) -> {}:
         """{} has the following params{}  '''.format(method['signature'], params_to_pass, method['return type'], method['signature'], comment)
 
+        print(initial_method)
         # write to the output file
         with open(self.output_file, "a") as out:
             out.write(initial_method)
