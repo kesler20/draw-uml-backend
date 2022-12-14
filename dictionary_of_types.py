@@ -1,5 +1,8 @@
-# from typing import List, Dict
 
-# built_in = [list, dict]
-
-# dictionary_of_types = {list: List, dict: Dict}
+def convert_builtin_to_typing(type):
+  ...
+def convert_typing_to_builtin(type):
+  ...
+  
+built_in_types = ["str", "None", "float","dict","set"
+                  "int", "complex", "list", "tuple", "bool"]
