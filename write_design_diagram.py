@@ -54,15 +54,15 @@ classDiagram'''
         final_class = ""
         for prop, prop_type in properties:
             final_class += """
-   {} : + {} {}""".format(name, prop, prop_type)
+   {} : +{} {}""".format(name, prop, prop_type)
 
         for field, field_type in fields:
             final_class += """
-   {} : - {} {}""".format(name, field, field_type)
+   {} : -{} {}""".format(name, field, field_type)
 
         for method, return_type in methods:
             final_class += """
-   {} : + {}() {}""".format(name, method, return_type)
+   {} : +{}() {}""".format(name, method, return_type)
 
         final_class += """
 ```
