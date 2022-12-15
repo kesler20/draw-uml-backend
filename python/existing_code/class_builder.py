@@ -1,45 +1,29 @@
+from read_only.source_code import SourceCode
 import json
 from typing import Dict, List
-import os
-import time
-from python.dictionary_of_types import convert_builtin_to_typing
-
-with open("existing_code_response.json", "r") as file:
-    data = json.loads(file.read())
-
-metadata: Dict = data[0]
-os.remove("test.py")
-
-# pre-processing step for the data and the function types to turn them into typing types
-metadata['properties'] = [[name[0], convert_builtin_to_typing(
-    name[1])] for name in metadata['properties']]
-metadata['fields'] = [[name[0], convert_builtin_to_typing(
-    name[1])] for name in metadata['fields']]
-clean_callable_functions = []
-for callable in metadata['methods']:
-    try:
-        callable['params'] = [[param[0], convert_builtin_to_typing(
-            param[1])] for param in callable['params']]
-        callable['return type'] = convert_builtin_to_typing(
-            callable['return type'])
-        clean_callable_functions.append(callable)
-    except IndexError:
-        print(callable)
-
-metadata['methods'] = clean_callable_functions
+from interfaces.os_interface import File
 
 
 class ClassBuilder(object):
 
-    def __init__(self, metadata, output_filename) -> None:
-        self.class_name = metadata['class name']
-        self.description = metadata['description']
-        self.methods = metadata['methods']
-        self.fields = metadata['fields']
-        self.properties = metadata['properties']
+    def __init__(self, output_filename) -> None:
+        self.source = SourceCode()
         self.output_file = output_filename
+        self.__final_class_representation = ""
 
-    def generate_class(self):
+    @property
+    def final_class_representation(self):
+        return self.__final_class_representation
+
+    def set_final_class_representation(self, final_class: str):
+        self.__final_class_representation = final_class
+
+    def build_final_class(self):
+        print(self.__final_class_representation)
+        File(self.output_file).write(self.__final_class_representation)
+        return self.__final_class_representation
+
+    def add_class_definition(self):
         """This method generates the following part of the code
 
         ```python
@@ -54,52 +38,45 @@ class ClassBuilder(object):
         """
 
         # start from relevant imports
-        imports = '''
+        self.__final_class_representation += '''
 from typing import List, Any, Union, Dict, Optional, Tuple
 from _types import *
 from dataclasses import dataclass
 
 '''
         # use dataclasses by default
-        dataclass_name = '''
+        self.__final_class_representation += '''
 @dataclass
 class {}:
     """{} is a class"""
-'''.format(self.class_name, self.class_name)
+'''.format(self.source.class_name, self.source.class_name)
+        return self
 
-        print(imports + dataclass_name)
-        # write to the output file
-        with open(self.output_file, "a") as out:
-            out.write(imports + dataclass_name)
-
-    def generate_properties(self):
+    def add_properties(self):
         """This method generates the following part of the code"""
 
         # add the properties as params __init__(self,prop1,prop2...)
         property_as_param = ""
-        for property, property_types in self.properties:
-            property_as_param += f"{property}:{property_types}" if property == self.properties[
+        for property, property_types in self.source.properties:
+            property_as_param += f"{property}:{property_types}" if property == self.source.properties[
                 -1] else f"{property}:{property_types},"
 
         # pass that to the starting property
-        starting_property = '''''' if len(self.properties) == 0 else '''
+        starting_property = '''''' if len(self.source.properties) == 0 else '''
     def __init__(self,{}) -> None:
 '''.format(property_as_param)
 
         property_to_add = ""
-        for property in self.properties:
+        for property in self.source.properties:
             property_to_add += '''
     self.{} = {}
 '''.format(property, property)
         starting_property += property_to_add
 
-        print(starting_property)
+        self.__final_class_representation += starting_property
+        return self
 
-        # write to the output file
-        with open(self.output_file, "a") as out:
-            out.write(starting_property)
-
-    def generate_public_fields(self):
+    def add_public_fields(self):
         """This method generates this part of the code
         ```python
         filename: str = "protocol_database.xlsx"
@@ -109,17 +86,15 @@ class {}:
         # [["filename", " str = \"protocol_database.xlsx\""]]
 
         initial_field = """"""
-        for field, field_type in self.properties:
+        for field, field_type in self.source.properties:
             initial_field += """
     {}:{}
 """.format(field, field_type)
 
-        print(initial_field)
-        # write to the output file
-        with open(self.output_file, "a") as out:
-            out.write(initial_field)
+        self.__final_class_representation += initial_field
+        return self
 
-    def generate_fields(self):
+    def add_private_fields(self):
         """This method generates this part of the code
         ```python
         __filename: str = "protocol_database.xlsx"
@@ -138,13 +113,13 @@ class {}:
         # [["filename", " str = \"protocol_database.xlsx\""]]
 
         initial_field = """"""
-        for field, field_type in self.fields:
+        for field, field_type in self.source.fields:
             initial_field += """
     __{}:{}
 """.format(field, field_type)
 
         # create getters
-        for field, field_type in self.fields:
+        for field, field_type in self.source.fields:
             initial_field += '''
     @property
     def {}(self):
@@ -153,22 +128,20 @@ class {}:
             '''.format(field, field, field)
 
         # create setters
-        for field, field_type in self.fields:
+        for field, field_type in self.source.fields:
             initial_field += '''
     def set_{}(self,{} : {}):
         """{} property setter"""
         self.__{} = {}
             '''.format(field, field, field_type.split("=")[0].replace(" ", ""), field, field, field)
 
-        print(initial_field)
-        # write to the output file
-        with open(self.output_file, "a") as out:
-            out.write(initial_field)
+        self.__final_class_representation += initial_field
+        return self
 
-    def generate_methods(self):
+    def add_methods(self):
         """This method generates the larger part of the code
         """
-        # assuming that self.methods is a collection of the following data structure
+        # assuming that self.source.methods is a collection of the following data structure
         # {
         #   "signature": "filename",
         #   "params": [["self"]],
@@ -178,9 +151,10 @@ class {}:
 
         # build the method using the params
         initial_method = ""
-        for method in self.methods:
+        for method in self.source.methods:
             # build initial params
             params = method['params']
+            decorators = method['decorator']
 
             # for each param construct the comment and the params_to_pass (self,param_1:str,...)
             # then add to initial_method
@@ -221,17 +195,9 @@ class {}:
 
             # build initial method
             initial_method += '''
+    @{}
     def {}(self{}) -> {}:
-        """{} has the following params{}  '''.format(method['signature'], params_to_pass, method['return type'], method['signature'], comment)
+        """{} has the following params{}  '''.format(decorators,method['signature'], params_to_pass, method['return type'], method['signature'], comment)
 
-        print(initial_method)
-        # write to the output file
-        with open(self.output_file, "a") as out:
-            out.write(initial_method)
-
-
-cls = ClassBuilder(metadata, "test.py")
-cls.generate_class()
-cls.generate_properties()
-cls.generate_fields()
-cls.generate_methods()
+        self.__final_class_representation += initial_method
+        return self

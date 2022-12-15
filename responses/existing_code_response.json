@@ -1,25 +1,25 @@
 [
   {
-    "class name": "ExcelDatabase",
-    "description": [],
+    "class_name": "ExcelDatabase",
+    "description": "",
     "methods": [
       {
         "signature": "filename",
         "params": [["self"]],
         "decorator": "property",
-        "return type": "str"
+        "return_type": "str"
       },
       {
         "signature": "database",
         "params": [["self"]],
         "decorator": "property",
-        "return type": "DataFrame"
+        "return_type": "DataFrame"
       },
       {
         "signature": "database_info",
         "params": [["self"]],
         "decorator": "property",
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "_pp",
@@ -29,7 +29,7 @@
           ["table_name", "str"],
           ["message", "str"]
         ],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "create_table",
@@ -39,17 +39,17 @@
           ["columns", "List[str]"],
           ["rows", "List[List[Any]]"]
         ],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "get_table",
         "params": [["self"], ["table_name", "str"]],
-        "return type": "DataFrame"
+        "return_type": "DataFrame"
       },
       {
         "signature": "query_table",
         "params": [["self"]],
-        "return type": "DataFrame"
+        "return_type": "DataFrame"
       },
       {
         "signature": "get_table_slice",
@@ -59,27 +59,27 @@
           ["table_name", "str"],
           ["index", "Optional[Tuple[int,int]]=None"]
         ],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "get_n_rows_from_tables_above",
         "params": [["self"], ["n", "int"], ["table_name", "str"]],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "get_n_rows_from_tables_below",
         "params": [["self"], ["n", "int"], ["table_name", "str"]],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "table_info",
         "params": [["self"], ["table_name", "str"]],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "get_table_names",
         "params": [["self"]],
-        "return type": "List[str]"
+        "return_type": "List[str]"
       },
       {
         "signature": "get_value_by_column_name",
@@ -89,7 +89,7 @@
           ["column_name", "str"],
           ["table_name", "str"]
         ],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "get_value_by_column_index",
@@ -99,27 +99,27 @@
           ["column_index", "int"],
           ["table_name", "str"]
         ],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "delete_table",
         "params": [["self"], ["table_name", "str"]],
-        "return type": "Any"
+        "return_type": "Any"
       },
       {
         "signature": "append_row",
         "params": [["self"], ["row", "List[List[Any]]"], ["table_name", "str"]],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "update_rows",
         "params": [["self"]],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "delete_rows",
         "params": [["self"], ["rows", "List[int]"], ["table_name", "str"]],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "put_column",
@@ -129,7 +129,7 @@
           ["column_values", "List[Any]"],
           ["table_name", "str"]
         ],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "insert_column",
@@ -140,12 +140,12 @@
           ["column_values", "List[Any]"],
           ["table_name", "str"]
         ],
-        "return type": "None"
+        "return_type": "None"
       },
       {
         "signature": "delete_columns",
         "params": [["self"], ["columns", "List[str]"], ["table_name", "str"]],
-        "return type": "Any"
+        "return_type": "Any"
       }
     ],
     "fields": [["filename", " str = \"protocol_database.xlsx\""]],

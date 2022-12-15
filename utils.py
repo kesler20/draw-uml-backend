@@ -1,4 +1,4 @@
-
+                        
 def convert_chars_to_string(chars: 'list[str]'):
     '''
     Take a list of characters and converts appends them to an empty string
