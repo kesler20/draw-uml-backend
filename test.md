@@ -26,4 +26,4 @@ classDiagram
    ExcelDatabase : + insert_column() None
    ExcelDatabase : + delete_columns() Any
 ```
-        
+            
