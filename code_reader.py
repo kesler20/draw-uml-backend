@@ -4,9 +4,8 @@ import os
 from _types import ClassRepresentation
 from typing import List
 import json
+from abc import ABC, abstractmethod
 
-from abc import ABC
-from pathlib import Path
 
 class CodeReader(ABC):
     """The CodeReader reads code from the ``read_only`` folder and generates the response 
@@ -22,35 +21,41 @@ class CodeReader(ABC):
     __response_code_path: Path
 
     @property
+    @abstractmethod
     def source_code_path(self) -> Path:
         ...
 
     @property
+    @abstractmethod
     def response_code_path(self) -> Path:
         ...
 
+    @abstractmethod
     def set_response_code_path(self, path: str):
         ...
 
+    @abstractmethod
     def set_source_code_path(self, path: str):
         ...
 
+    @abstractmethod
     def __clean_up(self) -> None:
         ...
 
+    @abstractmethod
     def __get_source_code(self) -> List[str]:
         ...
 
+    @abstractmethod
     def read(self) -> None:
         ...
-
 
 
 class PythonCodeReader(CodeReader):
     """The CodeReader Implementation for reading python code
     """
-    __source_code_path: Path
-    __response_code_path: Path
+    __source_code_path: Path = ""
+    __response_code_path: Path = ""
 
     @property
     def source_code_path(self) -> Path:

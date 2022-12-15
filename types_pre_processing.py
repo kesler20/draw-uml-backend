@@ -1,14 +1,16 @@
 from read_only.source_code import SourceCode
 from dataclasses import dataclass
 from typing import List
+from interfaces.os_interface import File
+
 
 @dataclass
 class TypeChecker:
-    built_in_types: List[str] = ["str", "None", "float", "dict", "set"
-                                 "int", "complex", "list", "tuple", "bool"]
-    typing_types: List[str] = ["Dict", "List", "Tuple"]
+    __built_in_types: List[str] = ["str", "None", "float", "dict", "set"
+                                   "int", "complex", "list", "tuple", "bool"]
+    __typing_types: List[str] = ["Dict", "List", "Tuple"]
 
-    def convert_builtin_to_typing(self, type):
+    def convert_builtin_to_typing(self, type) -> str:
         if type == 'list':
             return 'List'
         elif type == 'tuple':
@@ -18,7 +20,14 @@ class TypeChecker:
         else:
             return type
 
-    def convert_typing_to_builtin(self, type):
+    def generate_types(self, types: List[str], types_file: str) -> None:
+        novel_types = [
+            _type if _type in self.__built_in_types else None for _type in types]
+        for novel_type in novel_types:
+            if novel_type is not None:
+                File(types_file).append(novel_type)
+
+    def convert_typing_to_builtin(self, type) -> str:
         if type == 'List':
             return 'list'
         elif type == 'Tuple':

@@ -6,8 +6,8 @@ from interfaces.os_interface import File
 
 class ClassBuilder(object):
 
-    def __init__(self, output_filename) -> None:
-        self.source = SourceCode()
+    def __init__(self, output_filename: str, response_code_path: str) -> None:
+        self.source = SourceCode(response_code_path)
         self.output_file = output_filename
         self.__final_class_representation = ""
 
@@ -197,7 +197,7 @@ class {}:
             initial_method += '''
     @{}
     def {}(self{}) -> {}:
-        """{} has the following params{}  '''.format(decorators,method['signature'], params_to_pass, method['return type'], method['signature'], comment)
+        """{} has the following params{}  '''.format(decorators, method['signature'], params_to_pass, method['return type'], method['signature'], comment)
 
         self.__final_class_representation += initial_method
         return self

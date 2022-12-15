@@ -1,27 +1,22 @@
 import json
 from typing import Dict, List
 import os
-import time
-
-FILENAME = "test.md"
-
-with open("existing_code_response.json", "r") as file:
-    data = json.loads(file.read())
-
-metadata: Dict = data[0]
-
-os.remove(FILENAME)
+from read_only.source_code import SourceCode
 
 
 class DiagramBuilder(object):
 
-    def __init__(self, metadata, output_filename) -> None:
-        self.class_name = metadata['class name']
-        self.description = metadata['description']
-        self.methods = metadata['methods']
-        self.fields = metadata['fields']
-        self.properties = metadata['properties']
-        self.output_file = output_filename
+    def __init__(self, response_code_path: str, output_file) -> None:
+        """To use the diagram generator do the following
+        ```python        
+        cls = DiagramBuilder(metadata, FILENAME)
+        cls.init()
+        cls.generate_connections()
+        cls.generate_classes()
+        ```
+        """
+        self.source = SourceCode(response_code_path)
+        self.output_file = output_file
 
     def init(self):
         """This method should be called first"""
@@ -35,20 +30,27 @@ classDiagram'''
             out.write(initial_layout)
 
     def generate_connections(self):
+        # the default dependant class is object
+        dependent_class = "object"
+        # check if the name has a class Name(DependantClass)
+        if self.source.class_name.find("(") != -1:
+            dependent_class = self.source.class_name.split("(")[1].split(")")[
+                0]
+        
         connections = '''
-   {} <|-- object'''.format(self.class_name)
+   {} <|-- {}'''.format(self.source.class_name, dependent_class)
         with open(self.output_file, "a") as out:
             out.write(connections)
 
     def generate_classes(self):
         """this method should be called last"""
-        name = self.class_name
+        name = self.source.class_name
         methods = [(method['signature'], method['return type'])
-                   for method in self.methods]
-        properties = [(props, props_type.split("=")[0].replace(" ",""))
-                      for props, props_type in self.properties]
-        fields = [(field, field_type.split("=")[0].replace(" ",""))
-                  for field, field_type in self.fields]
+                   for method in self.source.methods]
+        properties = [(props, props_type.split("=")[0].replace(" ", ""))
+                      for props, props_type in self.source.properties]
+        fields = [(field, field_type.split("=")[0].replace(" ", ""))
+                  for field, field_type in self.source.fields]
 
         final_class = ""
         for prop, prop_type in properties:
@@ -68,9 +70,3 @@ classDiagram'''
         """
         with open(self.output_file, "a") as out:
             out.write(final_class)
-
-
-cls = DiagramBuilder(metadata, FILENAME)
-cls.init()
-cls.generate_connections()
-cls.generate_classes()

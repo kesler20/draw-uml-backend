@@ -15,6 +15,11 @@ class File(object):
             content = file.read()
         return content
 
+    def append(self, content: str) -> None:
+        """Append to a file"""
+        with open(self.filename, "a") as file:
+            file.write(content)
+
     def write(self, content: str) -> None:
         '''signature description'''
         with open(self.filename, "w") as file:
@@ -122,6 +127,3 @@ class OperatingSystemInterface(object):
                         result.append(file)
 
         return result
-
-
-
