@@ -14,7 +14,7 @@ class JsClassBuilder(object):
         self.methods = methods
         self.properties = properties
 
-    def build_class_name(self,first_class_in_programme: bool) -> str:
+    def build_class_name(self, first_class_in_programme: bool) -> str:
         # the class name is a tuple with a name of the class
         # and its class description
         if first_class_in_programme:
@@ -30,7 +30,6 @@ export default class {} {}'''.format(self.class_name[1], self.class_name[0], "{"
 */
 export class {} {}'''.format(self.class_name[1], self.class_name[0], "{")
 
-
     def build_constructor_head(self) -> str:
         # constructor is a collection of tuples with the name of the method and each type
         constructor_parameters = ""
@@ -40,7 +39,7 @@ export class {} {}'''.format(self.class_name[1], self.class_name[0], "{")
             else:
                 constructor_parameters += f" {property},"
         return '''
-    constructor({}) {}'''.format(constructor_parameters,"{")
+    constructor({}) {}'''.format(constructor_parameters, "{")
 
     def build_constructor_body(self) -> str:
         constructor_parameters = ""
@@ -48,7 +47,7 @@ export class {} {}'''.format(self.class_name[1], self.class_name[0], "{")
             if self.properties[-1][0] == property:
                 constructor_parameters += '''
         this.{} = {};
-    {}'''.format(property,property,"}")
+    {}'''.format(property, property, "}")
             else:
                 constructor_parameters += f'''
         this.{property} = {property};'''
@@ -66,10 +65,11 @@ export class {} {}'''.format(self.class_name[1], self.class_name[0], "{")
     */
     {}() {}
         return;
-    {}'''.format(description, signature[:signature.find('()')], "{","}")
+    {}'''.format(description, signature[:signature.find('()')], "{", "}")
         return class_body + '''
 }
 '''
+
 
 if __name__ == "__main__":
     # generate the user input

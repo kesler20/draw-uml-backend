@@ -2,7 +2,7 @@ import json
 from typing import Dict, List
 import os
 import time
-from dictionary_of_types import convert_builtin_to_typing
+from python.dictionary_of_types import convert_builtin_to_typing
 
 with open("existing_code_response.json", "r") as file:
     data = json.loads(file.read())
@@ -11,12 +11,22 @@ metadata: Dict = data[0]
 os.remove("test.py")
 
 # pre-processing step for the data and the function types to turn them into typing types
-names = [[name[0], convert_builtin_to_typing(name[1])] for name in names]
+metadata['properties'] = [[name[0], convert_builtin_to_typing(
+    name[1])] for name in metadata['properties']]
+metadata['fields'] = [[name[0], convert_builtin_to_typing(
+    name[1])] for name in metadata['fields']]
 clean_callable_functions = []
-for callable in callable_functions:
-    callable['params'] = [[param[0], convert_builtin_to_typing(param[1])] for param in callable['params']]
-    callable['return type'] = convert_builtin_to_typing(callable['return type'])
-    clean_callable_functions.append(callable)
+for callable in metadata['methods']:
+    try:
+        callable['params'] = [[param[0], convert_builtin_to_typing(
+            param[1])] for param in callable['params']]
+        callable['return type'] = convert_builtin_to_typing(
+            callable['return type'])
+        clean_callable_functions.append(callable)
+    except IndexError:
+        print(callable)
+
+metadata['methods'] = clean_callable_functions
 
 
 class ClassBuilder(object):

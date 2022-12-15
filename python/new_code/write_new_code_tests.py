@@ -37,10 +37,10 @@ with open(r"test_classes\test_class.py", "r") as f:
                 function_name_and_body[1].split(")")[0])
             function_body = function_body.replace("self, ", "")
             function_result_type = convert_chars_to_string(line.split(
-                "->")[1]).replace("-> ", "").replace(":", "").replace("\n", "")
-            function_names.append(construct_function_side_effects(
+                "->")[1]).replace("-> ", "").replace(":", "").replace("\n","")
+            function_names.append(construct_function_io(
                 function_name, function_body, function_result_type))
-
+    
     import_class_line = f'''
 from test_class import {class_name}
     '''

@@ -1,4 +1,4 @@
-from dictionary_of_types import convert_builtin_to_typing
+from python.dictionary_of_types import convert_builtin_to_typing
 
 class_name = "TestFoo"
 names = [["cool", "str"], ["prop_call", "bool"], ["another_property", "int"]]
