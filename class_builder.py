@@ -21,11 +21,14 @@ class ClassBuilder(BaseReader):
         self.__final_class_representation = final_class
 
     def build_final_class(self):
+        """Print the final class representation
+        and save it on the output file
+        """
         print(self.__final_class_representation)
         File(Path(self.output_file)).write(self.__final_class_representation)
         return self.__final_class_representation
 
-    def add_class_definition(self):
+    def add_class_definition(self, dataclass: bool):
         """This method generates the following part of the code
 
         ```python
@@ -46,12 +49,18 @@ from _types import *
 from dataclasses import dataclass
 
 '''
-        # use dataclasses by default
-        self.__final_class_representation += '''
+        if dataclass:
+            self.__final_class_representation += '''
 @dataclass
 class {}:
     """{} is a class"""
-'''.format(self.source.class_name, self.source.class_name)
+    '''.format(self.source.class_name, self.source.class_name)
+        else:
+            self.__final_class_representation += '''
+class {}(object):
+    """{} is a class"""
+    '''.format(self.source.class_name, self.source.class_name)
+
         return self
 
     def add_properties(self):
@@ -60,19 +69,17 @@ class {}:
         # add the properties as params __init__(self,prop1,prop2...)
         property_as_param = ""
         for property, property_types in self.source.properties:
-            property_as_param += f"{property}:{property_types}" if property == self.source.properties[
-                -1] else f"{property}:{property_types},"
+            property_as_param += f"{property} : {property_types}" if property == self.source.properties[
+                -1][0] else f"{property} : {property_types}, "
 
         # pass that to the starting property
         starting_property = '''''' if len(self.source.properties) == 0 else '''
-    def __init__(self,{}) -> None:
-'''.format(property_as_param)
+    def __init__(self{}) -> None:'''.format(property_as_param)
 
         property_to_add = ""
         for property in self.source.properties:
             property_to_add += '''
-    self.{} = {}
-'''.format(property, property)
+        self.{} = {}'''.format(property[0], property[0])
         starting_property += property_to_add
 
         self.__final_class_representation += starting_property
@@ -90,13 +97,12 @@ class {}:
         initial_field = """"""
         for field, field_type in self.source.properties:
             initial_field += """
-    {}:{}
-""".format(field, field_type)
+    {} : {}""".format(field, field_type)
 
         self.__final_class_representation += initial_field
         return self
 
-    def add_private_fields(self):
+    def add_private_fields(self, dataclass):
         """This method generates this part of the code
         ```python
         __filename: str = "protocol_database.xlsx"
@@ -111,19 +117,24 @@ class {}:
             self.__filename = filename
         ```
         """
-        
+
         # assuming that fields come in the following format
         # [["filename", " str = \"protocol_database.xlsx\""]]
 
         initial_field = """"""
-        for field, field_type in self.source.fields:
-            initial_field += """
-    __{}:{}
-""".format(field, field_type)
+        if dataclass:
+            for field, field_type in self.source.fields:
+                initial_field += """
+    __{} : {}""".format(field, field_type)
+        else:
+            for field, field_type in self.source.fields:
+                initial_field += """
+        self.__{} : {}""".format(field, field_type)
 
         # create getters
         for field, field_type in self.source.fields:
             initial_field += '''
+    
     @property
     def {}(self):
         """{} property getter"""
@@ -132,7 +143,7 @@ class {}:
 
         # create setters
         for field, field_type in self.source.fields:
-            initial_field += '''
+            initial_field += '''    
     def set_{}(self,{} : {}):
         """{} property setter"""
         self.__{} = {}
@@ -194,13 +205,16 @@ class {}:
         result: {}
         """
         ...
-                    '''.format(method['return type'])
+                    '''.format(method['return_type'])
 
             # build initial method
             initial_method += '''
-    @{}
+    {}
     def {}(self{}) -> {}:
-        """{} has the following params{}  '''.format(decorators, method['signature'], params_to_pass, method['return type'], method['signature'], comment)
+        """{} {}{}  '''.format(f"@{decorators}" if decorators != "" else "", method['signature'].replace("()", ""),
+                               params_to_pass, method['return_type'], method['signature'].replace(
+                                   "()", ""),
+                               "has the following params" if method["description"] == "" else method['description'], comment)
 
         self.__final_class_representation += initial_method
         return self

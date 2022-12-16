@@ -253,4 +253,4 @@ class PythonCodeReader(CodeReader):
                             except IndexError:
                                 print(new_clean_param_names_and_types)
 
-        File(self.response_code_path).write(json.dumps(classes_name_space))
+        File(self.response_code_path).write_json(classes_name_space)

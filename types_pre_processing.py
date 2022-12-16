@@ -78,7 +78,7 @@ class TypeChecker(BaseReader):
             # if the class does not have methods,
             # make a typed dict
             init_type = '''
-from typing import TypedDict
+from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional
 
 class {}(TypedDict):'''.format(self.source.class_name)
 
@@ -88,7 +88,7 @@ class {}(TypedDict):'''.format(self.source.class_name)
         else:
             # if the class has methods, make a protocol
             init_type = '''
-from typing import Protocol
+from typing import Protocol, List, Any, Union, Dict, Tuple, Optional
 
 class {}(Protocol):   
         '''.format(self.source.class_name)
@@ -100,8 +100,8 @@ class {}(Protocol):
                         params_to_pass += f", {param[0]} : {param[1]}" if param == method['params'][-1] else f", {param[0]} : {param[1]},"
 
                 init_type += '''
-def {}(self{}) -> {}:
-  ...
-          '''.format(method['signature'], params_to_pass, method['return type'])
+    def {}(self{}) -> {}:
+        ...
+          '''.format(method['signature'], params_to_pass, method['return_type'])
 
         File(Path(self.types_file)).append(init_type)

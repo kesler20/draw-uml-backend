@@ -14,3 +14,4 @@ and a response folder where the response to the existing code is written too
 - add the test generation script
 - adapt the new code implementations to the new requirements
 - improve the design doc generation by adding inheritance
+- add the lambda field default_factory on fields where the types are not builtins

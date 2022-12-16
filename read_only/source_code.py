@@ -3,21 +3,20 @@ from typing import List
 from interfaces.os_interface import File
 from _types import ClassRepresentation
 
-default_class = [
-    {
-        "class_name": "",
-        "description": "",
-        "methods": [
-            {
-                "signature": "",
-                "params": [[""]],
-                "decorator": "",
-                "return_type": "str"
-            }],
-        "fields": [["", ""]],
-        "properties": []
-    }
-]
+
+default_class = {
+    "class_name": "",
+    "description": "",
+    "methods": [
+        {
+            "signature": "",
+            "params": [[""]],
+            "decorator": "",
+            "return_type": "str"
+        }],
+    "fields": [["", ""]],
+    "properties": []
+}
 
 
 class SourceCode:
@@ -30,8 +29,60 @@ class SourceCode:
         self.fields = self.source['fields']
         self.properties = self.source['properties']
 
-    def format_new_code_response(self):
-        ...
+    def format_new_code_response(self, new_code_response: str, new_code_converted: str):
+        global default_class
+        
+        content = File(Path(new_code_response)).get_json()
+        default_classes = []
+
+        for class_object_with_metadata in content[0]:
+            class_object = class_object_with_metadata['data']
+            default_class['class_name'] = class_object['objectName']
+            default_class['description'] = class_object['comment']
+            default_class['methods'] = list(filter(
+                lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
+            default_class['properties'] = list(filter(
+                lambda item: item['visibility'].find("+") != -1, class_object['gridTable']))
+            default_class['fields'] = list(
+                filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
+            default_classes.append(default_class)
+
+        clean_classes = []
+        for default_class in default_classes:
+            signature = []
+            properties = []
+            fields = []
+            for method in default_class['methods']:
+                signature_object = {}
+                signature_object['signature'] = method["signature"]
+                signature_object['description'] = method['comment']
+                signature_object['params'] = [[params['name'], params['type']]
+                                       for params in method['params']]
+                signature_object['decorator'] = ""
+                signature_object['return_type'] = method['returnType']
+                signature.append(signature_object)
+
+            for property in default_class['properties']:
+                properties_object = [] 
+                properties_object = [[params['name'], params['type']]
+                              for params in property['params']]
+                # properties_object[0].append(property['comment'])
+                properties.append(properties_object[0])
+
+            for field in default_class['fields']:
+                fields_object = []
+                fields_object = [[params['name'], params['type']]
+                          for params in field['params']]
+                # fields_object[0].append(field['comment'])
+                fields.append(fields_object[0])
+
+            default_class['methods'] = signature
+            default_class['properties'] = properties
+            default_class['fields'] = fields
+        clean_classes.append(default_class)
+
+        File(Path(new_code_converted)).write_json(clean_classes)
+        print(clean_classes)
 
     def read_and_clean_source(self) -> ClassRepresentation:
         """read one class at a time, then pop from the array
@@ -39,12 +90,11 @@ class SourceCode:
 
         # remove the end of line delimiter from every line of the response_code file (json file)
         try:
-            source: ClassRepresentation = File(self.response_code_path).get_json()[-1]
+            source: ClassRepresentation = File(
+                self.response_code_path).get_json()[-1]
             return source
         except IndexError:
-            File(self.response_code_path).write_json(default_class[0])
-            default_source: ClassRepresentation = File(self.response_code_path).get_json()[-1]
+            File(self.response_code_path).write_json(default_class)
+            default_source: ClassRepresentation = File(
+                self.response_code_path).get_json()[-1]
             return default_source
-
-
-

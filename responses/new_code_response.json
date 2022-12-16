@@ -11,7 +11,7 @@
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "gefqwregqw",
+            "signature": "gefqwregqw()",
             "returnType": "efgrqqe",
             "comment": "signature descriptionqeffqefeqfqefeqqefeq",
             "params": [{ "name": "namefeqqef", "type": "efqfeqtype" }]
@@ -24,7 +24,7 @@
             "params": [{ "name": "namefqfeqe", "type": "tyefqfeqefqfeqpe" }]
           },
           {
-            "visibility": "+",
+            "visibility": "-",
             "signature": "eqrwqrweggqrw",
             "returnType": "efqqef",
             "comment": "signatefqeqfefqeqfefqure description",

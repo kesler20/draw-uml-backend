@@ -45,7 +45,8 @@ classDiagram'''
     def generate_classes(self):
         """this method should be called last"""
         name = self.source.class_name
-        methods = [(method['signature'], method['return type'])
+        print(self.source.methods)
+        methods = [(method['signature'], method['return_type'])
                    for method in self.source.methods]
         properties = [(props, props_type.split("=")[0].replace(" ", ""))
                       for props, props_type in self.source.properties]

@@ -5,150 +5,361 @@
     "methods": [
       {
         "signature": "filename",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
         "decorator": "property",
         "return_type": "str"
       },
       {
         "signature": "database",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
         "decorator": "property",
         "return_type": "DataFrame"
       },
       {
         "signature": "database_info",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
         "decorator": "property",
         "return_type": "None"
       },
       {
         "signature": "_pp",
         "params": [
-          ["self"],
-          ["table", "DataFrame"],
-          ["table_name", "str"],
-          ["message", "str"]
+          [
+            "self"
+          ],
+          [
+            "table",
+            "DataFrame"
+          ],
+          [
+            "table_name",
+            "str"
+          ],
+          [
+            "message",
+            "str"
+          ]
         ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "create_table",
         "params": [
-          ["self"],
-          ["table_name", "str"],
-          ["columns", "List[str]"],
-          ["rows", "List[List[Any]]"]
+          [
+            "self"
+          ],
+          [
+            "table_name",
+            "str"
+          ],
+          [
+            "columns",
+            "List[str]"
+          ],
+          [
+            "rows",
+            "List[List[Any]]"
+          ]
         ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "get_table",
-        "params": [["self"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "DataFrame"
       },
       {
         "signature": "query_table",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
+        "decorator": "",
         "return_type": "DataFrame"
       },
       {
         "signature": "get_table_slice",
         "params": [
-          ["self"],
-          ["columns", "Union[str,List[str]]"],
-          ["table_name", "str"],
-          ["index", "Optional[Tuple[int,int]]=None"]
+          [
+            "self"
+          ],
+          [
+            "columns",
+            "Union[str,List[str]]"
+          ],
+          [
+            "table_name",
+            "str"
+          ],
+          [
+            "index",
+            "Optional[Tuple[int,int]]=None"
+          ]
         ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "get_n_rows_from_tables_above",
-        "params": [["self"], ["n", "int"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "n",
+            "int"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "get_n_rows_from_tables_below",
-        "params": [["self"], ["n", "int"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "n",
+            "int"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "table_info",
-        "params": [["self"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "get_table_names",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
+        "decorator": "",
         "return_type": "List[str]"
       },
       {
         "signature": "get_value_by_column_name",
         "params": [
-          ["self"],
-          ["row_index", "int"],
-          ["column_name", "str"],
-          ["table_name", "str"]
+          [
+            "self"
+          ],
+          [
+            "row_index",
+            "int"
+          ],
+          [
+            "column_name",
+            "str"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
         ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "get_value_by_column_index",
         "params": [
-          ["self"],
-          ["row_index", "int"],
-          ["column_index", "int"],
-          ["table_name", "str"]
+          [
+            "self"
+          ],
+          [
+            "row_index",
+            "int"
+          ],
+          [
+            "column_index",
+            "int"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
         ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "delete_table",
-        "params": [["self"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "Any"
       },
       {
         "signature": "append_row",
-        "params": [["self"], ["row", "List[List[Any]]"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "row",
+            "List[List[Any]]"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "update_rows",
-        "params": [["self"]],
+        "params": [
+          [
+            "self"
+          ]
+        ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "delete_rows",
-        "params": [["self"], ["rows", "List[int]"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "rows",
+            "List[int]"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "put_column",
         "params": [
-          ["self"],
-          ["column_name", "str"],
-          ["column_values", "List[Any]"],
-          ["table_name", "str"]
+          [
+            "self"
+          ],
+          [
+            "column_name",
+            "str"
+          ],
+          [
+            "column_values",
+            "List[Any]"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
         ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "insert_column",
         "params": [
-          ["self"],
-          ["column_index", "int"],
-          ["column_name", "str"],
-          ["column_values", "List[Any]"],
-          ["table_name", "str"]
+          [
+            "self"
+          ],
+          [
+            "column_index",
+            "int"
+          ],
+          [
+            "column_name",
+            "str"
+          ],
+          [
+            "column_values",
+            "List[Any]"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
         ],
+        "decorator": "",
         "return_type": "None"
       },
       {
         "signature": "delete_columns",
-        "params": [["self"], ["columns", "List[str]"], ["table_name", "str"]],
+        "params": [
+          [
+            "self"
+          ],
+          [
+            "columns",
+            "List[str]"
+          ],
+          [
+            "table_name",
+            "str"
+          ]
+        ],
+        "decorator": "",
         "return_type": "Any"
       }
     ],
-    "fields": [["filename", " str = \"protocol_database.xlsx\""]],
+    "fields": [
+      [
+        "filename",
+        " str = \"protocol_database.xlsx\""
+      ]
+    ],
     "properties": []
   }
 ]
