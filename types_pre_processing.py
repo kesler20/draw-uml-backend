@@ -1,16 +1,21 @@
+from pathlib import Path
 from read_only.source_code import SourceCode
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
 from interfaces.os_interface import File
+from _base import BaseReader
 
 
 @dataclass
-class TypeChecker:
-    __built_in_types: List[str] = ["str", "None", "float", "dict", "set"
-                                   "int", "complex", "list", "tuple", "bool"]
-    __typing_types: List[str] = ["Dict", "List", "Tuple"]
+class TypeChecker(BaseReader):
 
-    def convert_builtin_to_typing(self, type) -> str:
+    types_file: str
+    __built_in_types: List[str] = field(default_factory=lambda: ["str", "None", "float", "dict", "set"
+                                                                 "int", "complex", "list", "tuple", "bool"])
+    __typing_types: List[str] = field(
+        default_factory=lambda: ["Dict", "List", "Tuple"])
+
+    def convert_builtin_to_typing(self, type: str) -> str:
         if type == 'list':
             return 'List'
         elif type == 'tuple':
@@ -20,14 +25,45 @@ class TypeChecker:
         else:
             return type
 
-    def generate_types(self, types: List[str], types_file: str) -> None:
+    def change_source_to_typing(self):
+        source = self.source.read_and_clean_source()
+        # pre-processing step for the data and the function types to turn them into typing types
+        source['properties'] = [[name[0], self.convert_builtin_to_typing(
+            name[1])] for name in source['properties']]
+        source['fields'] = [[name[0], self.convert_builtin_to_typing(
+            name[1])] for name in source['fields']]
+        clean_callable_functions = []
+
+        for callable in source['methods']:
+            try:
+                callable['params'] = [[param[0], self.convert_builtin_to_typing(
+                    param[1])] for param in callable['params']]
+                callable['return_type'] = self.convert_builtin_to_typing(
+                    callable['return_type'])
+                clean_callable_functions.append(callable)
+            except IndexError:
+                print(callable)
+        source['methods'] = clean_callable_functions
+        return source
+
+    def append_novel_types_to_types_path(self) -> None:
+        # get all the types from the source code
+        types = []
+        for callable in self.source.methods:
+            try:
+                types.append(callable['params'][1])
+                types.append(callable['return_type'])
+            except IndexError:
+                print(callable)
+
+        # get only the types which are not in built_ins
         novel_types = [
             _type if _type in self.__built_in_types else None for _type in types]
         for novel_type in novel_types:
             if novel_type is not None:
-                File(types_file).append(novel_type)
+                File(Path(self.types_file)).append(novel_type)
 
-    def convert_typing_to_builtin(self, type) -> str:
+    def convert_typing_to_builtin(self, type: str) -> str:
         if type == 'List':
             return 'list'
         elif type == 'Tuple':
@@ -36,10 +72,6 @@ class TypeChecker:
             return 'dict'
         else:
             return type
-
-
-class TypesGenerator(object):
-    source = SourceCode()
 
     def generate_types(self):
         if len(self.source.methods) == 0:
@@ -72,4 +104,4 @@ def {}(self{}) -> {}:
   ...
           '''.format(method['signature'], params_to_pass, method['return type'])
 
-        print(init_type)
+        File(Path(self.types_file)).append(init_type)

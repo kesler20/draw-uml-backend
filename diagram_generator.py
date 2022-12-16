@@ -2,21 +2,21 @@ import json
 from typing import Dict, List
 import os
 from read_only.source_code import SourceCode
+from _base import BaseReader
+from dataclasses import dataclass
 
 
-class DiagramBuilder(object):
-
-    def __init__(self, response_code_path: str, output_file) -> None:
-        """To use the diagram generator do the following
-        ```python        
-        cls = DiagramBuilder(metadata, FILENAME)
-        cls.init()
-        cls.generate_connections()
-        cls.generate_classes()
-        ```
-        """
-        self.source = SourceCode(response_code_path)
-        self.output_file = output_file
+@dataclass
+class DiagramGenerator(BaseReader):
+    """To use the diagram generator do the following
+    ```python        
+    cls = DiagramBuilder(metadata, FILENAME)
+    cls.init()
+    cls.generate_connections()
+    cls.generate_classes()
+    ```
+    """
+    output_file: str
 
     def init(self):
         """This method should be called first"""
@@ -36,7 +36,7 @@ classDiagram'''
         if self.source.class_name.find("(") != -1:
             dependent_class = self.source.class_name.split("(")[1].split(")")[
                 0]
-        
+
         connections = '''
    {} <|-- {}'''.format(self.source.class_name, dependent_class)
         with open(self.output_file, "a") as out:

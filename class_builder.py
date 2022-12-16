@@ -1,15 +1,17 @@
+from pathlib import Path
 from read_only.source_code import SourceCode
 import json
 from typing import Dict, List
 from interfaces.os_interface import File
+from _base import BaseReader
+from dataclasses import dataclass
 
 
-class ClassBuilder(object):
+@dataclass
+class ClassBuilder(BaseReader):
 
-    def __init__(self, output_filename: str, response_code_path: str) -> None:
-        self.source = SourceCode(response_code_path)
-        self.output_file = output_filename
-        self.__final_class_representation = ""
+    output_file: str
+    __final_class_representation: str = ""
 
     @property
     def final_class_representation(self):
@@ -20,7 +22,7 @@ class ClassBuilder(object):
 
     def build_final_class(self):
         print(self.__final_class_representation)
-        File(self.output_file).write(self.__final_class_representation)
+        File(Path(self.output_file)).write(self.__final_class_representation)
         return self.__final_class_representation
 
     def add_class_definition(self):
@@ -107,8 +109,9 @@ class {}:
         def set_filename(self,filename :  str):
             '''filename property setter'''
             self.__filename = filename
+        ```
         """
-
+        
         # assuming that fields come in the following format
         # [["filename", " str = \"protocol_database.xlsx\""]]
 

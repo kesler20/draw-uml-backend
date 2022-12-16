@@ -39,23 +39,23 @@ class CodeReader(ABC):
         ...
 
     @abstractmethod
-    def __clean_up(self) -> None:
-        ...
-
-    @abstractmethod
-    def __get_source_code(self) -> List[str]:
-        ...
-
-    @abstractmethod
     def read(self) -> None:
         ...
 
 
 class PythonCodeReader(CodeReader):
-    """The CodeReader Implementation for reading python code
-    """
-    __source_code_path: Path = ""
-    __response_code_path: Path = ""
+    """The CodeReader Implementation for reading python code"""
+
+    def __init__(self, source_code_path: str, response_code_path: str) -> None:
+        self.__source_code_path: Path = Path("")
+        self.__response_code_path: Path = Path("")
+        self.set_source_code_path(source_code_path)
+        self.set_response_code_path(response_code_path)
+
+    def __repr__(self) -> str:
+        representation = {k.replace("_PythonCodeReader__", ""): self.__dict__[
+            k] for k in self.__dict__.keys()}
+        return f'''PythonCodeReader({representation})'''
 
     @property
     def source_code_path(self) -> Path:
@@ -73,17 +73,10 @@ class PythonCodeReader(CodeReader):
         self.__source_code_path = Path(path)
         return self
 
-    def __clean_up(self) -> None:
-        """Remove output path if exists"""
-        if self.__response_code_path.exists():
-            os.remove(self.__response_code_path)
-
     def __get_source_code(self) -> List[str]:
-        return File(self.source_code_path).readlines()
+        return [line.replace("\n","") for line in File(self.source_code_path).readlines()]
 
     def read(self) -> None:
-        # remove output path if exists
-        self.__clean_up()
         source_code = self.__get_source_code()
 
         # this is a list of lists containing all the information of each class in a programme
@@ -107,8 +100,8 @@ class PythonCodeReader(CodeReader):
                 # assuming that we want to keep the inheritance
                 if line.find(":") != -1:
                     class_name = line.split("class ")[1].split(":")[0]
-                classes_name_space.append({"class_name": class_name, "description": [
-                ], "methods": [], "fields": [], "properties": []})
+                classes_name_space.append({"class_name": class_name, "description": "", "methods": [
+                ], "fields": [], "properties": []})
 
             # Find the properties
             if line.find("def __init__") != -1:
@@ -119,9 +112,9 @@ class PythonCodeReader(CodeReader):
                 # remove self
                 params = params.replace("self,", "")
 
-                param_names_and_types = params.split(":")
-                param_names_and_types = [i.split(",")
-                                         for i in param_names_and_types]
+                dirty_param_names_and_types: List[str] = params.split(":")
+                param_names_and_types: List[List[str]] = [i.split(",")
+                                                          for i in dirty_param_names_and_types]
 
                 # remove nested lists
                 param_names_and_types_list: List[str] = []
@@ -183,7 +176,7 @@ class PythonCodeReader(CodeReader):
                     # def foo(param1: str, param2: int, optional_param: Optional[int] = None) -> None:
                     signature = line.split("def ")[1].split("(")[0]
                     classes_name_space[class_flag]["methods"].append(
-                        {"signature": signature, "params": []})
+                        {"signature": signature, "params": [], "decorator": "", "return_type" : ""})
                     function_flag += 1
 
                     try:
@@ -210,28 +203,28 @@ class PythonCodeReader(CodeReader):
                     # find params names and types
                     # params are usually delineated by brackets
                     params = line.split("(")[1].split(")")[0]
-                    param_names_and_types = params.split(":")
+                    dirty_param_names_and_types = params.split(":")
                     param_names_and_types = [i.split(",")
-                                             for i in param_names_and_types]
+                                             for i in dirty_param_names_and_types]
 
                     # remove nested lists
-                    param_names_and_types_list: List[str] = []
+                    new_param_names_and_types_list: List[str] = []
                     for param_type in param_names_and_types:
                         for val in param_type:
-                            param_names_and_types_list.append(val)
+                            new_param_names_and_types_list.append(val)
 
                     # the param list should be of the form [param1, type, param2, type, ...]
                     # if the number of params names and types is uneven then there are some types missing
-                    if len(param_names_and_types_list) % 2 != 0 and param_names_and_types_list[0] != "self":
+                    if len(new_param_names_and_types_list) % 2 != 0 and new_param_names_and_types_list[0] != "self":
                         print("\nthe following line might miss some types\n", line)
                         print("")
                     else:
                         # avoid methods which only have self
-                        if param_names_and_types_list != ["self"]:
+                        if new_param_names_and_types_list != ["self"]:
 
                             # merge the collection types which may have been separated when
-                            clean_param_names_and_types: List[str] = []
-                            for index, param_types in enumerate(param_names_and_types_list):
+                            new_clean_param_names_and_types: List[str] = []
+                            for index, param_types in enumerate(new_param_names_and_types_list):
                                 count = 0
                                 for char in list(param_types):
                                     if char == "[":
@@ -241,23 +234,23 @@ class PythonCodeReader(CodeReader):
                                     else:
                                         pass
                                 if count > 0:
-                                    clean_param_names_and_types.append(
-                                        param_types + "," + param_names_and_types_list[index + 1])
+                                    new_clean_param_names_and_types.append(
+                                        param_types + "," + new_param_names_and_types_list[index + 1])
                                 elif count < 0:
                                     pass
                                 else:
-                                    clean_param_names_and_types.append(
+                                    new_clean_param_names_and_types.append(
                                         param_types)
 
                             try:
                                 grouped_names_types = [
-                                    [clean_param_names_and_types[i].replace(" ", ""),
-                                     clean_param_names_and_types[i+1].replace(" ", "")]
-                                    for i in range(0, len(clean_param_names_and_types), 2)]
+                                    [new_clean_param_names_and_types[i].replace(" ", ""),
+                                     new_clean_param_names_and_types[i+1].replace(" ", "")]
+                                    for i in range(0, len(new_clean_param_names_and_types), 2)]
                                 for grouped_params in grouped_names_types:
                                     classes_name_space[class_flag]["methods"][function_flag]["params"].append(
                                         grouped_params)
                             except IndexError:
-                                print(clean_param_names_and_types)
-                    
+                                print(new_clean_param_names_and_types)
+
         File(self.response_code_path).write(json.dumps(classes_name_space))

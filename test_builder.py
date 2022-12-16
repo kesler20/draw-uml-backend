@@ -1,9 +1,8 @@
+from _base import BaseReader
+from dataclasses import dataclass
 
-class TestBuilder(object):
-    def __init__(self, class_name, methods, properties) -> None:
-        self.class_name: tuple(str, str) = class_name
-        self.methods = methods
-        self.properties = properties
+@dataclass
+class TestBuilder(BaseReader):
 
     def build_initial_import(self):
         return '''
@@ -11,35 +10,20 @@ import unittest
 import {}
 
 print("Testing:" + {}.__doc__)
-        '''.format(self.class_name[0], self.class_name[0])
+        '''.format(self.source.class_name, self.source.class_name)
 
     def build_class_name(self) -> str:
-        # the class name is a tuple with a name of the class
-        # and its class description
-        comment = f"'''{self.class_name[1]}'''"
+        comment = f"'''{self.source.description}'''"
         return '''
 
 class Test_{}(unittest.TestCase):        
     {}
-        '''.format(self.class_name[0], comment)
+        '''.format(self.source.class_name, comment)
 
-    def construct_set_up(self, class_name: str, props: 'list[str]'):
-        '''
-        takes the name of the class and its properties and builds a setUp method
-        for its test class
+    def construct_set_up(self):
+        class_name = self.source.class_name
+        props = [*self.source.properties, *self.source.fields]
 
-        Params:
-        ---   
-        class_name str
-        the name of the class being tested
-
-        props list[str] 
-        a list of properties of the class being tested
-
-        Returns:
-        ---
-        setUp: the setUp method as a doc string
-        '''
         if len(props) == 0:
             setUp = f'''
     def setUp(self):
