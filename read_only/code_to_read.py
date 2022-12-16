@@ -8,7 +8,7 @@ import zipfile
 
 
 @dataclass
-class ExcelDatabase:
+class ExcelDatabase(DataFrame):
     """Excel database which is index by columns, and sheet_names
     the columns are the different columns of the table, whilst the sheet_names refer to the
     different tables in the database.
