@@ -13,7 +13,8 @@ new_response_code_path = r"responses\new_code_response.json"
 new_source_code_path = r"responses\new_code_converted.json"
 # for both new code and existing code
 types_file = r"responses\_types.py"
-
+# diagrams directory
+documentation_path = "diagrams.md"
 # format the new_code coming from the API
 src = SourceCode(response_code_path)
 src.format_new_code_response(new_response_code_path, new_source_code_path)
@@ -29,7 +30,7 @@ type_checker.append_novel_types_to_types_path()
 type_checker.generate_types()
 
 # generate diagram
-diagram_generator = DiagramGenerator(new_source_code_path, "diagrams.md")
+diagram_generator = DiagramGenerator(new_source_code_path, documentation_path)
 diagram_generator.init()
 diagram_generator.generate_connections()
 diagram_generator.generate_classes()

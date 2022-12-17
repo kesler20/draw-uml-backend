@@ -1,7 +1,7 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
 from dataclasses import dataclass
-from responses._types import efgrqqe, efqfeqtype
+from responses._types import tyefqfeqefqfeqpe, tefqfeqefqype, efqfeqtype, efgrqqe, type
         
 @dataclass
 class eqfeqf:

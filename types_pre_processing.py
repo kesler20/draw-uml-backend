@@ -27,6 +27,7 @@ class TypeChecker(BaseReader):
     def novel_types(self) -> set[str]:
         # get all the types from the source code
         types: List[str] = []
+        # append all the fields
         for callable in self.source.methods:
             types.append(callable['return_type'])
             for param in callable['params']:
@@ -34,6 +35,20 @@ class TypeChecker(BaseReader):
                     types.append(param[1])
                 except IndexError:
                     print("this param has no type", param)
+        # append all the properties
+        for property in self.source.properties:
+            try:
+                types.append(property[1])
+            except IndexError:
+                print("this property has no type", property)
+        
+        # append all the fields
+        for field in self.source.fields:
+            try:
+                types.append(field[1])
+            except IndexError:
+                print("this field has no type", field)
+
         clean_types = [type.split("[")[0] for type in types]
         novel_types = list(filter(lambda item: item not in [
             *self.built_in_types, *self.typing_types], clean_types))
