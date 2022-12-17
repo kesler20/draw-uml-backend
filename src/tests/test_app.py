@@ -18,7 +18,7 @@ documentation_path = r"responses\diagrams_output.md"
 # code output file
 code_output_file = r"responses\code_output.py"
 # path to the test file
-test_file_path = r"responses\test_output.py"
+test_file_path = r"responses\_test_output.py"
 
 if __name__ == "__main__":
     # format the new_code coming from the API

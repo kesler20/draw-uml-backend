@@ -1,19 +1,19 @@
 
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
         
-class type(Protocol):
-    ...
-            
 class efgrqqe(Protocol):
     ...
             
-class efqfeqtype(Protocol):
+class type(Protocol):
+    ...
+            
+class tyefqfeqefqfeqpe(Protocol):
     ...
             
 class tefqfeqefqype(Protocol):
     ...
             
-class tyefqfeqefqfeqpe(Protocol):
+class efqfeqtype(Protocol):
     ...
             
 class eqfeqf(Protocol):   
