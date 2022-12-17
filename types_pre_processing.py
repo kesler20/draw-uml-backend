@@ -62,7 +62,7 @@ class TypeChecker(BaseReader):
         for novel_type in novel_types:
             if novel_type is not None:
                 File(Path(self.types_file)).append(novel_type)
-
+      
     def convert_typing_to_builtin(self, type: str) -> str:
         if type == 'List':
             return 'list'

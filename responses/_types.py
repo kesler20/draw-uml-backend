@@ -1,4 +1,3 @@
-
 from typing import Protocol, List, Any, Union, Dict, Tuple, Optional
 
 class ExcelDatabase(Protocol):   
