@@ -1,7 +1,7 @@
 from pathlib import Path
-from typing import List
+from typing import List, Callable, Collection, Any, Dict
 from interfaces.os_interface import File
-from _types import ClassRepresentation
+from _types import ClassRepresentation, CreateClassResponse, MethodRepresentation
 
 
 default_class = {
@@ -29,22 +29,25 @@ class SourceCode:
         self.fields = self.source['fields']
         self.properties = self.source['properties']
 
+    def my_filter(self, cb: Callable[[Any], Any], arr: Collection[Any]) -> Any:
+        return filter(cb, arr)
+
     def format_new_code_response(self, new_code_response: str, new_code_converted: str):
         global default_class
-        
-        content = File(Path(new_code_response)).get_json()
-        default_classes = []
+        content: List[List[CreateClassResponse]] = File(
+            Path(new_code_response)).get_json()
+        default_classes : List[ClassRepresentation] = []
 
         for class_object_with_metadata in content[0]:
             class_object = class_object_with_metadata['data']
             default_class['class_name'] = class_object['objectName']
             default_class['description'] = class_object['comment']
-            default_class['methods'] = list(filter(
+            default_class['methods'] = list(self.my_filter(
                 lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
-            default_class['properties'] = list(filter(
+            default_class['properties'] = list(self.my_filter(
                 lambda item: item['visibility'].find("+") != -1, class_object['gridTable']))
             default_class['fields'] = list(
-                filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
+                self.my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
             default_classes.append(default_class)
 
         clean_classes = []
@@ -53,26 +56,28 @@ class SourceCode:
             properties = []
             fields = []
             for method in default_class['methods']:
-                signature_object = {}
-                signature_object['signature'] = method["signature"].replace("()","")
+                signature_object: MethodRepresentation = {
+                    'signature': "", 'params': [], "decorator": "", "return_type": ""}
+                signature_object['signature'] = method["signature"].replace(
+                    "()", "")
                 signature_object['description'] = method['comment']
                 signature_object['params'] = [[params['name'], params['type']]
-                                       for params in method['params']]
+                                              for params in method['params']]
                 signature_object['decorator'] = ""
                 signature_object['return_type'] = method['returnType']
                 signature.append(signature_object)
 
             for property in default_class['properties']:
-                properties_object = [] 
+                properties_object = []
                 properties_object = [[params['name'], params['type']]
-                              for params in property['params']]
+                                     for params in property['params']]
                 # properties_object[0].append(property['comment'])
                 properties.append(properties_object[0])
 
             for field in default_class['fields']:
                 fields_object = []
                 fields_object = [[params['name'], params['type']]
-                          for params in field['params']]
+                                 for params in field['params']]
                 # fields_object[0].append(field['comment'])
                 fields.append(fields_object[0])
 

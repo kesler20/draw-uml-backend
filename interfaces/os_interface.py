@@ -1,9 +1,10 @@
+from _types import ClassRepresentation
 import platform
 import json
-from typing import Any, Dict
+from typing import Any, Dict, List, Union
 import os
 from pathlib import Path
-
+import shutil
 
 class File(object):
     '''Object Description'''
@@ -39,7 +40,7 @@ class File(object):
             content = json.loads(json_file.read())
         return content
     
-    def write_json(self, content: Dict[str, Any]) -> None:
+    def write_json(self, content: Union[Dict[str, Any],List[ClassRepresentation]]) -> None:
         """get a json file as a dictionary
         
         Param
@@ -86,12 +87,12 @@ class OperatingSystemInterface(object):
     def __init__(self, directory=os.getcwd()) -> None:
         self.directory: str = directory
 
-    def __enter__(self) -> os:
+    def __enter__(self) -> Any:
         '''signature description'''
         os.chdir(self.directory)
         return os
 
-    def __exit__(self, *args) -> os:
+    def __exit__(self, *args) -> Any:
         '''signature description'''
         os.chdir(os.getcwd())
 
@@ -108,7 +109,7 @@ class OperatingSystemInterface(object):
         print(root_path)
         return root_path
 
-    def copy_file_from_folder(self, file, source_folder="jaguar"):
+    def copy_file_from_folder(self, file, source_folder="jaguar") -> None:
         '''
         The folder that you are currently working on will be used as destination file
         The source folder will be searched in the protocol folder and is jaguar by default
@@ -134,11 +135,11 @@ class OperatingSystemInterface(object):
             source_dir = os.path.join(self.directory, resource)
             os.rename(source_dir, destination_dir)
 
-    def read_word_in_directory(self, word: str) -> 'list[str]':
+    def read_word_in_directory(self, word: str) -> List[str]:
         '''signature description'''
         result = []
-        for root, directories, file in os.walk(self.directory):
-            for file in file:
+        for root, directories, files in os.walk(self.directory):
+            for file in files:
                 print(file)
                 with open(file) as f:
                     content = f.read()

@@ -5,7 +5,6 @@
     "methods": [
       {
         "signature": "gefqwregqw",
-        "description": "signature descriptionqeffqefeqfqefeqqefeq",
         "params": [
           [
             "namefeqqef",
@@ -13,7 +12,8 @@
           ]
         ],
         "decorator": "",
-        "return_type": "efgrqqe"
+        "return_type": "efgrqqe",
+        "description": "signature descriptionqeffqefeqfqefeqqefeq"
       }
     ],
     "fields": [

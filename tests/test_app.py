@@ -12,33 +12,39 @@ source_code_path = r"read_only\code_to_read.py"
 new_response_code_path = r"responses\new_code_response.json"
 new_source_code_path = r"responses\new_code_converted.json"
 # for both new code and existing code
-types_file = r"responses\_types.py"
+types_file = r"responses\__types.py"
 # diagrams directory
-documentation_path = "diagrams.md"
+documentation_path = r"responses\diagrams.md"
+# code output file
+code_output_file = r"responses\test.py"
 
 if __name__ == "__main__":
-  # format the new_code coming from the API
-  src = SourceCode(response_code_path)
-  src.format_new_code_response(new_response_code_path, new_source_code_path)
+    # format the new_code coming from the API
+    src = SourceCode(response_code_path)
+    src.format_new_code_response(new_response_code_path, new_source_code_path)
 
-  # read code from the existing code path
-  code_reader = PythonCodeReader(response_code_path, source_code_path)
-  code_reader.read()
+    # read code from the existing code path
+    code_reader = PythonCodeReader(response_code_path, source_code_path)
+    code_reader.read()
 
-  # generate types
-  type_checker = TypeChecker(new_source_code_path, types_file)
-  type_checker.init_types_file()
-  type_checker.append_novel_types_to_types_path()
-  type_checker.generate_types()
+    # generate types
+    type_checker = TypeChecker(new_source_code_path, types_file)
+    type_checker.init_types_file()
+    type_checker.append_novel_types_to_types_path()
+    type_checker.generate_types()
 
-  # generate diagram
-  diagram_generator = DiagramGenerator(new_source_code_path, documentation_path)
-  diagram_generator.init()
-  diagram_generator.generate_connections()
-  diagram_generator.generate_classes()
+    # generate diagram
+    diagram_generator = DiagramGenerator(
+        new_source_code_path, documentation_path)
+    diagram_generator.init()
+    diagram_generator.generate_connections()
+    diagram_generator.generate_classes()
 
-  # generate code from the new code path
-  dataclass = True
-  class_builder = ClassBuilder(new_source_code_path, "test.py", dataclass)
-  class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
-  ).add_properties().add_private_fields().add_methods().build_final_class()
+    # generate code from the new code path
+    dataclass = True
+    class_builder = ClassBuilder(
+        new_source_code_path, code_output_file, dataclass)
+    class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
+    ).add_properties().add_private_fields().add_methods().build_final_class()
+
+
