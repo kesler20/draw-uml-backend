@@ -1,9 +1,9 @@
 from pathlib import Path
-from read_only.source_code import SourceCode
+from src.draw_uml_backend.source_code import SourceCode
 from dataclasses import dataclass, field
 from typing import List
 from interfaces.os_interface import File
-from _base import BaseReader
+from src.draw_uml_backend._base import BaseReader
 
 
 @dataclass

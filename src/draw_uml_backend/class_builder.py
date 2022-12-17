@@ -1,11 +1,10 @@
 from pathlib import Path
-from read_only.source_code import SourceCode
+from src.draw_uml_backend.source_code import SourceCode
 import json
 from typing import Dict, List
 from interfaces.os_interface import File
-from _base import BaseReader
+from src.draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
-
 
 @dataclass
 class ClassBuilder(BaseReader):

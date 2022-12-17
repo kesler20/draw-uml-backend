@@ -1,4 +1,4 @@
-from _base import BaseReader
+from src.draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
 
 @dataclass

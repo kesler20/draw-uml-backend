@@ -1,6 +1,6 @@
 import os
 from dataclasses import dataclass
-from read_only.source_code import SourceCode
+from src.draw_uml_backend.source_code import SourceCode
 from pathlib import Path
 
 

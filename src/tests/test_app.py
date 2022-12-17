@@ -1,9 +1,9 @@
-from class_builder import ClassBuilder
-from code_reader import PythonCodeReader
-from diagram_generator import DiagramGenerator
-from test_builder import TestBuilder
-from read_only.source_code import SourceCode
-from types_pre_processing import TypeChecker
+from src.draw_uml_backend.class_builder import ClassBuilder
+from src.draw_uml_backend.code_reader import PythonCodeReader
+from src.draw_uml_backend.diagram_generator import DiagramGenerator
+from src.draw_uml_backend.test_builder import TestBuilder
+from src.draw_uml_backend.source_code import SourceCode
+from src.draw_uml_backend.types_pre_processing import TypeChecker
 
 # for existing code
 response_code_path = r"responses\existing_code_response.json"
@@ -46,5 +46,4 @@ if __name__ == "__main__":
         new_source_code_path, code_output_file, dataclass)
     class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
     ).add_properties().add_private_fields().add_methods().build_final_class()
-
 

@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Callable, Collection, Any, Dict
 from interfaces.os_interface import File
-from _types import ClassRepresentation, CreateClassResponse, MethodRepresentation
+from src.draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
 
 
 default_class = {

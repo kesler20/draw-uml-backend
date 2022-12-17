@@ -1,4 +1,4 @@
-from _types import ClassRepresentation
+from src.draw_uml_backend._types import ClassRepresentation
 import platform
 import json
 from typing import Any, Dict, List, Union

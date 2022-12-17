@@ -1,0 +1,15 @@
+/venv/
+/app/
+/aws/
+/csv/
+/journal-env/
+__pycache__
+fastapi.pem
+putty.ppk
+backend.zip
+tempfiles
+.vscode
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
