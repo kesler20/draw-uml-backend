@@ -1,28 +1,33 @@
-from src.draw_uml_backend._base import BaseReader
+from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
+
 
 @dataclass
 class TestBuilder(BaseReader):
+    test_file: str
+    content: str = ""
 
-    def build_initial_import(self):
-        return '''
+    def add_initial_import(self):
+        self.content += '''
 import unittest
 import {}
 
 print("Testing:" + {}.__doc__)
         '''.format(self.source.class_name, self.source.class_name)
+        return self
 
-    def build_class_name(self) -> str:
+    def add_class_name(self):
         comment = f"'''{self.source.description}'''"
-        return '''
+        self.content += '''
 
 class Test_{}(unittest.TestCase):        
     {}
         '''.format(self.source.class_name, comment)
+        return self
 
     def construct_set_up(self):
         class_name = self.source.class_name
-        props = [*self.source.properties, *self.source.fields]
+        props = [field[0] for field in self.source.fields] + [prop[0] for prop in self.source.properties]
 
         if len(props) == 0:
             setUp = f'''
@@ -34,21 +39,21 @@ class Test_{}(unittest.TestCase):
             setUp = f'''
     def setUp(self):
         self.test_client = {class_name}(
-            {props[0]},'''
+            {props[0]}'''
 
-        if len(props) > 1:
+        if len(props) >= 1:
             for property in props[1:]:
                 property_line = f'''
-            {property},'''
-
+            ,{property}'''
                 setUp += property_line
-                if props.index(property) == len(props) - 1:
-                    setUp += '''
-        )'''
 
-        return setUp
+            setUp += '''
+        )
+        '''
+        self.content += setUp
+        return self
 
-    def construct_function_io(self, function_name: str, function_arguments: str, function_result_type: str) -> str:
+    def construct_function_io(self, function_name: str, function_arguments: str, function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -76,7 +81,7 @@ class Test_{}(unittest.TestCase):
             asserting_result_type_line = f'''
         # assert that the type returned by the method is correct
         self.assertEqual(type(test_result),type({function_result_type}))'''
-        return f'''
+        self.content += f'''
     def test_io_{function_name}(self):
         """
         test the {function_name} method which accepts the following arguments:
@@ -127,7 +132,9 @@ class Test_{}(unittest.TestCase):
         {asserting_result_type_line}
     '''
 
-    def construct_function_side_effects(self, function_name: str, function_arguments: str, function_result_type: str) -> str:
+        return self
+
+    def construct_function_side_effects(self, function_name: str, function_arguments: str, function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -142,7 +149,7 @@ class Test_{}(unittest.TestCase):
         Returns:
         - function_test : a doc string which can be used to test the function passed
         '''
-        return f'''
+        self.content += f'''
     def test_side_effects_{function_name}(self):
         """
         test the {function_name} method which accepts the following arguments:
@@ -167,9 +174,10 @@ class Test_{}(unittest.TestCase):
         test_result = self.test_client.{function_name}()
         self.assertEqual(test_result,side_effect_output[0])
     '''
+        return self
 
     def construct_js_test_function(self):
-        return r'''
+        self.content += r'''
     // testing with correct input
     test('method_description, testing with correct input', () => {
         // array of arguments which are expected by the method being tested
@@ -215,15 +223,25 @@ class Test_{}(unittest.TestCase):
         expect(typeof method_signature(...invalid_values_input)).toBe(method_result_type)
     });
     '''
+        return self
 
-    def build_tearDown(self):
-        return '''
+    def add_tearDown(self):
+        self.content += '''
     def tearDown(self):
         pass
         '''
+        return self
 
-    def build_main_function_call(self):
-        return '''
+    def add_main_function_call(self):
+        self.content += '''
 if __name__ == "__main__":
     unittest.main()
         '''
+        return self
+    
+    def build_test_class(self):
+        self.write(self.test_file, self.content)
+        return self
+
+
+

@@ -1,9 +1,5 @@
-import json
-from typing import Dict, List
-import os
-from src.draw_uml_backend.source_code import SourceCode
-from src.draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
+from draw_uml_backend._base import BaseReader
 
 
 @dataclass

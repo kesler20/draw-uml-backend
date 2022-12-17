@@ -1,10 +1,6 @@
-from pathlib import Path
-from src.draw_uml_backend.source_code import SourceCode
+from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass, field
 from typing import List
-from interfaces.os_interface import File
-from src.draw_uml_backend._base import BaseReader
-
 
 @dataclass
 class TypeChecker(BaseReader):
@@ -91,7 +87,7 @@ class TypeChecker(BaseReader):
         imports = '''
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
         '''
-        File(Path(self.types_file)).write(imports)
+        self.write(self.types_file,imports)
 
     def append_novel_types_to_types_path(self) -> None:
         classes_to_append_to_types_file = ""
@@ -100,7 +96,7 @@ from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
 class {}(Protocol):
     ...
             '''.format(type.replace("()",""))
-        File(Path(self.types_file)).append(classes_to_append_to_types_file)
+        self.append(self.types_file,classes_to_append_to_types_file)
 
     def convert_typing_to_builtin(self, type: str) -> str:
         if type == 'List':
@@ -138,4 +134,4 @@ class {}(Protocol):
     def {}(self{}) -> {}:
         ...
           '''.format(method['signature'], params_to_pass, method['return_type'])
-        File(Path(self.types_file)).append(init_type)
+        self.append(self.types_file,init_type)

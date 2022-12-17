@@ -1,9 +1,7 @@
-from interfaces.os_interface import File
+from draw_uml_backend.file import File
 from pathlib import Path
-import os
-from src.draw_uml_backend._types import ClassRepresentation
+from draw_uml_backend._types import ClassRepresentation
 from typing import List
-import json
 from abc import ABC, abstractmethod
 
 

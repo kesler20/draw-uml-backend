@@ -1,9 +1,9 @@
 from pathlib import Path
-from src.draw_uml_backend.source_code import SourceCode
+from draw_uml_backend.source_code import SourceCode
 import json
 from typing import Dict, List
-from interfaces.os_interface import File
-from src.draw_uml_backend._base import BaseReader
+from draw_uml_backend.file import File
+from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
 
 @dataclass
@@ -25,7 +25,7 @@ class ClassBuilder(BaseReader):
         and save it on the output file
         """
         print(self.__final_class_representation)
-        File(Path(self.output_file)).write(self.__final_class_representation)
+        self.write(self.output_file, self.final_class_representation)
         return self.__final_class_representation
 
     def add_imports(self, types_path: str, types: set[str]):
