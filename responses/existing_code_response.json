@@ -1,6 +1,6 @@
 [
   {
-    "class_name": "ExcelDatabase(DataFrame)",
+    "class_name": "ExcelDatabase",
     "description": "",
     "methods": [
       {

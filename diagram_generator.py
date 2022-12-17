@@ -19,6 +19,7 @@ class DiagramGenerator(BaseReader):
     output_file: str
 
     def init(self):
+        self.clean_up(self.output_file)
         """This method should be called first"""
         initial_layout = '''
 

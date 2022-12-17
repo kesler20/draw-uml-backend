@@ -23,7 +23,7 @@ code_reader.read()
 # generate types
 type_checker = TypeChecker(response_code_path, r"responses\_types.py")
 type_checker.generate_types()
-type_checker.append_novel_types_to_types_path()
+# type_checker.append_novel_types_to_types_path()
 
 # generate diagram
 diagram_generator = DiagramGenerator(response_code_path, "diagrams.md")

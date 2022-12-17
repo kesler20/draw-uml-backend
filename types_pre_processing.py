@@ -103,5 +103,5 @@ class {}(Protocol):
     def {}(self{}) -> {}:
         ...
           '''.format(method['signature'], params_to_pass, method['return_type'])
-
+        self.clean_up(self.types_file)
         File(Path(self.types_file)).append(init_type)
