@@ -10,10 +10,35 @@ from _base import BaseReader
 class TypeChecker(BaseReader):
 
     types_file: str
-    __built_in_types: List[str] = field(default_factory=lambda: ["str", "None", "float", "dict", "set"
+    __built_in_types: List[str] = field(default_factory=lambda: ["str", "None", "float", "dict", "set",
                                                                  "int", "complex", "list", "tuple", "bool"])
     __typing_types: List[str] = field(
-        default_factory=lambda: ["Dict", "List", "Tuple"])
+        default_factory=lambda: ["Dict", "List", "Tuple", "Optional", "Any", "Union"])
+
+    @property
+    def built_in_types(self) -> List[str]:
+        return self.__built_in_types
+
+    @property
+    def typing_types(self) -> List[str]:
+        return self.__typing_types
+    
+    @property
+    def novel_types(self) -> set[str]:
+        # get all the types from the source code
+        types: List[str] = []
+        for callable in self.source.methods:
+            types.append(callable['return_type'])
+            for param in callable['params']:
+                try:
+                    types.append(param[1])
+                except IndexError:
+                    print("this param has no type", param)
+        clean_types = [type.split("[")[0] for type in types]
+        novel_types = list(filter(lambda item: item not in [
+            *self.built_in_types, *self.typing_types], clean_types))
+        print("these are the novel types", set(novel_types))
+        return set(novel_types)
 
     def convert_builtin_to_typing(self, type: str) -> str:
         if type == 'list':
@@ -45,24 +70,23 @@ class TypeChecker(BaseReader):
                 print(callable)
         source['methods'] = clean_callable_functions
         return source
+    
+    def init_types_file(self):
+        self.clean_up(self.types_file)
+        imports = '''
+from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
+        '''
+        File(Path(self.types_file)).write(imports)
 
     def append_novel_types_to_types_path(self) -> None:
-        # get all the types from the source code
-        types = []
-        for callable in self.source.methods:
-            try:
-                types.append(callable['params'][1])
-                types.append(callable['return_type'])
-            except IndexError:
-                print(callable)
+        classes_to_append_to_types_file = ""
+        for type in self.novel_types:
+            classes_to_append_to_types_file += '''
+class {}(Protocol):
+    ...
+            '''.format(type.replace("()",""))
+        File(Path(self.types_file)).append(classes_to_append_to_types_file)
 
-        # get only the types which are not in built_ins
-        novel_types = [
-            _type if _type in self.__built_in_types else None for _type in types]
-        for novel_type in novel_types:
-            if novel_type is not None:
-                File(Path(self.types_file)).append(novel_type)
-      
     def convert_typing_to_builtin(self, type: str) -> str:
         if type == 'List':
             return 'list'
@@ -78,8 +102,6 @@ class TypeChecker(BaseReader):
             # if the class does not have methods,
             # make a typed dict
             init_type = '''
-from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional
-
 class {}(TypedDict):'''.format(self.source.class_name)
 
             for name, name_type in self.source.properties:
@@ -88,8 +110,6 @@ class {}(TypedDict):'''.format(self.source.class_name)
         else:
             # if the class has methods, make a protocol
             init_type = '''
-from typing import Protocol, List, Any, Union, Dict, Tuple, Optional
-
 class {}(Protocol):   
         '''.format(self.source.class_name)
 
@@ -103,5 +123,4 @@ class {}(Protocol):
     def {}(self{}) -> {}:
         ...
           '''.format(method['signature'], params_to_pass, method['return_type'])
-        self.clean_up(self.types_file)
         File(Path(self.types_file)).append(init_type)

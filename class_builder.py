@@ -11,6 +11,7 @@ from dataclasses import dataclass
 class ClassBuilder(BaseReader):
 
     output_file: str
+    dataclasses: bool
     __final_class_representation: str = ""
 
     @property
@@ -28,7 +29,27 @@ class ClassBuilder(BaseReader):
         File(Path(self.output_file)).write(self.__final_class_representation)
         return self.__final_class_representation
 
-    def add_class_definition(self, dataclass: bool):
+    def add_imports(self, types_path: str, types: set[str]):
+        types = list(types)
+        imports = '''
+from typing import List, Any, Union, Dict, Optional, Tuple'''
+        if self.dataclasses:
+            imports += '''
+from dataclasses import dataclass'''
+        types_import = ""
+        for type in types:
+            if type == types[-1]:
+                types_import += f"{type}"
+            else:
+                types_import += f"{type}, "
+
+        imports += '''
+from {} import {}
+        '''.format(types_path, types_import)
+        self.__final_class_representation += imports
+        return self
+
+    def add_class_definition(self):
         """This method generates the following part of the code
 
         ```python
@@ -42,14 +63,7 @@ class ClassBuilder(BaseReader):
         ```
         """
 
-        # start from relevant imports
-        self.__final_class_representation += '''
-from typing import List, Any, Union, Dict, Optional, Tuple
-from _types import *
-from dataclasses import dataclass
-
-'''
-        if dataclass:
+        if self.dataclasses:
             self.__final_class_representation += '''
 @dataclass
 class {}:
@@ -65,6 +79,9 @@ class {}(object):
 
     def add_properties(self):
         """This method generates the following part of the code"""
+        if self.dataclasses:
+            self.__add_public_fields()
+            return self
 
         # add the properties as params __init__(self,prop1,prop2...)
         property_as_param = ""
@@ -85,7 +102,7 @@ class {}(object):
         self.__final_class_representation += starting_property
         return self
 
-    def add_public_fields(self):
+    def __add_public_fields(self):
         """This method generates this part of the code
         ```python
         filename: str = "protocol_database.xlsx"
@@ -102,7 +119,7 @@ class {}(object):
         self.__final_class_representation += initial_field
         return self
 
-    def add_private_fields(self, dataclass):
+    def add_private_fields(self):
         """This method generates this part of the code
         ```python
         __filename: str = "protocol_database.xlsx"
@@ -122,7 +139,7 @@ class {}(object):
         # [["filename", " str = \"protocol_database.xlsx\""]]
 
         initial_field = """"""
-        if dataclass:
+        if self.dataclasses:
             for field, field_type in self.source.fields:
                 initial_field += """
     __{} : {}""".format(field, field_type)

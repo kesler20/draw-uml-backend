@@ -1,9 +1,8 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
-from _types import *
 from dataclasses import dataclass
-
-
+from responses._types import efgrqqe, efqfeqtype
+        
 @dataclass
 class eqfeqf:
     """eqfeqf is a class"""

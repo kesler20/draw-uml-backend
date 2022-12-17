@@ -54,7 +54,7 @@ class SourceCode:
             fields = []
             for method in default_class['methods']:
                 signature_object = {}
-                signature_object['signature'] = method["signature"]
+                signature_object['signature'] = method["signature"].replace("()","")
                 signature_object['description'] = method['comment']
                 signature_object['params'] = [[params['name'], params['type']]
                                        for params in method['params']]
