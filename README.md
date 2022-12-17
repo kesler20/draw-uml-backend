@@ -14,3 +14,5 @@ the only test is the integration test ``test_app.py``
 - add the lambda field default_factory on fields where the types are not builtins
 - should the tests include an absolute path, or a path generated using the os module
 - remove the clean up method from the BaseClass
+- increase the scalability of the app by allow it to analys multiple classes
+- add an endpoint for dataclas and not dataclass
