@@ -19,6 +19,7 @@ class MethodRepresentation(TypedDict):
     params: List[List[str]]
     decorator: str
     return_type: str
+    description: str
 
 
 class ClassRepresentation(TypedDict):

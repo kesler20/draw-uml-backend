@@ -19,6 +19,10 @@ for instance:
 ``get/existing/python/code``
 ``create/new/python/type``
 
+in the source code the response_code_path refers to the json generated from the existing source code
+new_response code path is the json generated from the UI and this should be converted into the
+response_code_path into the common format  
+
 ## Tests
 the only test is the integration test `test_app.py`
 

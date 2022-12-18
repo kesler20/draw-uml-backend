@@ -174,7 +174,7 @@ class PythonCodeReader(CodeReader):
                     # def foo(param1: str, param2: int, optional_param: Optional[int] = None) -> None:
                     signature = line.split("def ")[1].split("(")[0]
                     classes_name_space[class_flag]["methods"].append(
-                        {"signature": signature, "params": [], "decorator": "", "return_type" : ""})
+                        {"signature": signature, "params": [], "decorator": "", "return_type" : "", "description" : ""})
                     function_flag += 1
 
                     try:
