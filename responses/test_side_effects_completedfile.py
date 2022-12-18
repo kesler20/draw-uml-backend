@@ -1,15 +1,15 @@
 
 import unittest
-import Complete
+from completedfile import CompletedFile
 
-print("Testing:" + Complete.__doc__)
+print("Testing:" + CompletedFile.__doc__)
         
 
-class Test_Complete(unittest.TestCase):        
+class Test_CompletedFile(unittest.TestCase):        
     '''Object Description'''
         
     def setUp(self):
-        self.test_client = Complete(
+        self.test_client = CompletedFile(
             name
         )
         

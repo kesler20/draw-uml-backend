@@ -1,3 +1,4 @@
+import os
 from dataclasses import dataclass
 try:
     from draw_uml_backend._base import BaseReader
@@ -7,16 +8,23 @@ except ModuleNotFoundError:
 
 @dataclass
 class TestBuilder(BaseReader):
-    test_file: str
+    type_of_test: str
     content: str = ""
+
+    @property
+    def test_file(self):
+        if self.type_of_test == "io":
+            return os.path.join("responses","test_io_" + self.source.class_name.lower() + ".py")
+        else:
+            return os.path.join("responses","test_side_effects_" + self.source.class_name.lower() + ".py")
 
     def add_initial_import(self):
         self.content += '''
 import unittest
-import {}
+from {} import {}
 
 print("Testing:" + {}.__doc__)
-        '''.format(self.source.class_name, self.source.class_name)
+        '''.format(self.source.class_name.lower(), self.source.class_name, self.source.class_name)
         return self
 
     def add_class_name(self):
@@ -56,7 +64,7 @@ class Test_{}(unittest.TestCase):
         self.content += setUp
         return self
 
-    def construct_function_io(self, function_name: str, function_arguments: str, function_result_type: str):
+    def __construct_function_io(self, function_name: str, function_arguments: str, function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -137,7 +145,7 @@ class Test_{}(unittest.TestCase):
 
         return self
 
-    def construct_function_side_effects(self, function_name: str, function_arguments: str, function_result_type: str):
+    def __construct_function_side_effects(self, function_name: str, function_arguments: str, function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -177,6 +185,33 @@ class Test_{}(unittest.TestCase):
         test_result = self.test_client.{function_name}()
         self.assertEqual(test_result,side_effect_output[0])
     '''
+        return self
+
+    def add_functions(self):
+        if self.type_of_test == "io":
+            for method in self.source.methods:
+                params = ""
+                try:
+                    for param in method['params']:
+                        if param == method['params'][-1]:
+                            params += f"{param[0]} : {param[1]}"
+                        else:
+                            params += f"{param[0]} : {param[1]}, "
+                except IndexError:
+                    pass
+                self.__construct_function_io(method['signature'], params, method['return_type'])
+        else:
+            for method in self.source.methods:
+                params = ""
+                try:
+                    for param in method['params']:
+                        if param == method['params'][-1]:
+                            params += f"{param[0]} : {param[1]}"
+                        else:
+                            params += f"{param[0]} : {param[1]}, "
+                except IndexError:
+                    pass
+                self.__construct_function_side_effects(method['signature'], params, method['return_type'])
         return self
 
     def construct_js_test_function(self):

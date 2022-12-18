@@ -33,7 +33,6 @@ async def read_root():
     response = RedirectResponse(url='/docs')
     return response
 
-
 # ----------------------------------- #
 #                                     #
 #         APPLICATIONS ENDPOINTS      #

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import os
 from typing import Set
 try:
     from draw_uml_backend._base import BaseReader
@@ -9,9 +10,12 @@ except ModuleNotFoundError:
 @dataclass
 class ClassBuilder(BaseReader):
 
-    output_file: str
     dataclasses: bool
     __final_class_representation: str = ""
+    
+    @property
+    def output_file(self):
+        return os.path.join("responses",self.source.class_name.lower() + ".py")
 
     @property
     def final_class_representation(self):

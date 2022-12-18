@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from responses._types import type
         
 @dataclass
-class Complete:
-    """Complete is a class"""
+class CompletedFile:
+    """CompletedFile is a class"""
     
     name : type
