@@ -22,15 +22,30 @@ default_class = {
 class SourceCode:
     def __init__(self, response_code_path: str) -> None:
         self.response_code_path = Path(response_code_path)
-        self.source: ClassRepresentation = self.read_and_clean_source()
+        self.source: ClassRepresentation = self.__read_and_clean_source()
         self.class_name = self.source['class_name']
         self.description = self.source['description']
         self.methods = self.source['methods']
         self.fields = self.source['fields']
         self.properties = self.source['properties']
 
-    def my_filter(self, cb: Callable[[Any], Any], arr: Collection[Any]) -> Any:
+    def __my_filter(self, cb: Callable[[Any], Any], arr: Collection[Any]) -> Any:
         return filter(cb, arr)
+    
+    def __read_and_clean_source(self) -> ClassRepresentation:
+        """read one class at a time, then pop from the array
+        do the required cleanups and preprocessing of the class"""
+
+        # remove the end of line delimiter from every line of the response_code file (json file)
+        try:
+            source: ClassRepresentation = File(
+                self.response_code_path).get_json()[-1]
+            return source
+        except IndexError:
+            File(self.response_code_path).write_json(default_class)
+            default_source: ClassRepresentation = File(
+                self.response_code_path).get_json()[-1]
+            return default_source
 
     def format_new_code_response(self, new_code_response: str, new_code_converted: str):
         global default_class
@@ -42,12 +57,12 @@ class SourceCode:
             class_object = class_object_with_metadata['data']
             default_class['class_name'] = class_object['objectName']
             default_class['description'] = class_object['comment']
-            default_class['methods'] = list(self.my_filter(
+            default_class['methods'] = list(self.__my_filter(
                 lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
-            default_class['properties'] = list(self.my_filter(
+            default_class['properties'] = list(self.__my_filter(
                 lambda item: item['visibility'].find("+") != -1, class_object['gridTable']))
             default_class['fields'] = list(
-                self.my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
+                self.__my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
             default_classes.append(default_class)
 
         clean_classes = []
@@ -88,18 +103,3 @@ class SourceCode:
 
         File(Path(new_code_converted)).write_json(clean_classes)
         print(clean_classes)
-
-    def read_and_clean_source(self) -> ClassRepresentation:
-        """read one class at a time, then pop from the array
-        do the required cleanups and preprocessing of the class"""
-
-        # remove the end of line delimiter from every line of the response_code file (json file)
-        try:
-            source: ClassRepresentation = File(
-                self.response_code_path).get_json()[-1]
-            return source
-        except IndexError:
-            File(self.response_code_path).write_json(default_class)
-            default_source: ClassRepresentation = File(
-                self.response_code_path).get_json()[-1]
-            return default_source

@@ -62,7 +62,7 @@ class TypeChecker(BaseReader):
             return type
 
     def change_source_to_typing(self):
-        source = self.source.read_and_clean_source()
+        source = self.source.source
         # pre-processing step for the data and the function types to turn them into typing types
         source['properties'] = [[name[0], self.convert_builtin_to_typing(
             name[1])] for name in source['properties']]

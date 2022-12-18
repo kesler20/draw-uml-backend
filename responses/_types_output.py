@@ -1,7 +1,7 @@
 
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
         
-class efgrqqe(Protocol):
+class tefqfeqefqype(Protocol):
     ...
             
 class type(Protocol):
@@ -10,7 +10,7 @@ class type(Protocol):
 class tyefqfeqefqfeqpe(Protocol):
     ...
             
-class tefqfeqefqype(Protocol):
+class efgrqqe(Protocol):
     ...
             
 class efqfeqtype(Protocol):

@@ -18,7 +18,8 @@ documentation_path = r"responses\diagrams_output.md"
 # code output file
 code_output_file = r"responses\code_output.py"
 # path to the test file
-test_file_path = r"responses\_test_output.py"
+test_file_path_io = r"responses\_test_io.py"
+test_file_path_side_effects = r"responses\_test_side_effects.py"
 
 if __name__ == "__main__":
     # format the new_code coming from the API
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
     ).add_properties().add_private_fields().add_methods().build_final_class()
 
-    cls = TestBuilder(new_source_code_path, test_file_path).add_initial_import().add_class_name().construct_set_up()
+    cls = TestBuilder(new_source_code_path, test_file_path_side_effects).add_initial_import().add_class_name().construct_set_up()
     for method in src.methods:
         params = ""
         try:
@@ -60,6 +61,20 @@ if __name__ == "__main__":
                     params += f"{param[0]} : {param[1]}, "
         except IndexError:
             pass
-        # cls.construct_function_io(method['signature'], params, method['return_type'])
         cls.construct_function_side_effects(method['signature'], params, method['return_type'])
     cls.add_tearDown().add_main_function_call().build_test_class()
+
+    cls = TestBuilder(new_source_code_path, test_file_path_io).add_initial_import().add_class_name().construct_set_up()
+    for method in src.methods:
+        params = ""
+        try:
+            for param in method['params']:
+                if param == method['params'][-1]:
+                    params += f"{param[0]} : {param[1]}"
+                else:
+                    params += f"{param[0]} : {param[1]}, "
+        except IndexError:
+            pass
+        cls.construct_function_io(method['signature'], params, method['return_type'])
+    cls.add_tearDown().add_main_function_call().build_test_class()
+    

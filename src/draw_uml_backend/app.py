@@ -83,11 +83,73 @@ async def handle_get_javascript_file():
     print("get types file called")
     return FileResponse("file.js", media_type="text/x-python", filename=types_file)
 
-@app.post('/create/dataclass')
+@app.post('/create/new/dataclass')
 async def handle_diagram_data(diagram=Body(...)):
 
     # write the diagram to the new code response  code path
     File(new_response_code_path).write(diagram)
+
+    # format the new_code coming from the API
+    src = SourceCode(response_code_path)
+    src.format_new_code_response(new_response_code_path, new_source_code_path)
+
+    # generate types
+    type_checker = TypeChecker(new_source_code_path, types_file)
+    type_checker.init_types_file()
+    type_checker.append_novel_types_to_types_path()
+    type_checker.generate_types()
+
+    # generate diagram
+    diagram_generator = DiagramGenerator(
+        new_source_code_path, documentation_path)
+    diagram_generator.init()
+    diagram_generator.generate_connections()
+    diagram_generator.generate_classes()
+
+    # generate code from the new code path
+    dataclass = True
+    class_builder = ClassBuilder(
+        new_source_code_path, code_output_file, dataclass)
+    class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
+    ).add_properties().add_private_fields().add_methods().build_final_class()
+
+    # generate side effects tests for the code made
+    cls = TestBuilder(new_source_code_path, test_file_path_side_effects).add_initial_import().add_class_name().construct_set_up()
+    for method in src.methods:
+        params = ""
+        try:
+            for param in method['params']:
+                if param == method['params'][-1]:
+                    params += f"{param[0]} : {param[1]}"
+                else:
+                    params += f"{param[0]} : {param[1]}, "
+        except IndexError:
+            pass
+        cls.construct_function_side_effects(method['signature'], params, method['return_type'])
+    cls.add_tearDown().add_main_function_call().build_test_class()
+
+    # generate io tests for the code made
+    cls = TestBuilder(new_source_code_path, test_file_path_io).add_initial_import().add_class_name().construct_set_up()
+    for method in src.methods:
+        params = ""
+        try:
+            for param in method['params']:
+                if param == method['params'][-1]:
+                    params += f"{param[0]} : {param[1]}"
+                else:
+                    params += f"{param[0]} : {param[1]}, "
+        except IndexError:
+            pass
+        cls.construct_function_io(method['signature'], params, method['return_type'])
+    cls.add_tearDown().add_main_function_call().build_test_class()
+
+    return {"response": "okay"}
+
+@app.post('/create/existing/dataclass')
+async def handle_diagram_data(diagram=Body(...)):
+
+    # write the diagram to the new code response  code path
+    File(response_code_path).write(diagram)
 
     # format the new_code coming from the API
     src = SourceCode(response_code_path)
@@ -117,7 +179,7 @@ async def handle_diagram_data(diagram=Body(...)):
     class_builder.add_imports("responses._types", type_checker.novel_types).add_class_definition(
     ).add_properties().add_private_fields().add_methods().build_final_class()
 
-    cls = TestBuilder(new_source_code_path, test_file_path_io).add_initial_import().add_class_name().construct_set_up()
+    cls = TestBuilder(new_source_code_path, test_file_path_side_effects).add_initial_import().add_class_name().construct_set_up()
     for method in src.methods:
         params = ""
         try:
@@ -131,7 +193,7 @@ async def handle_diagram_data(diagram=Body(...)):
         cls.construct_function_side_effects(method['signature'], params, method['return_type'])
     cls.add_tearDown().add_main_function_call().build_test_class()
 
-    cls = TestBuilder(new_source_code_path, test_file_path_side_effects).add_initial_import().add_class_name().construct_set_up()
+    cls = TestBuilder(new_source_code_path, test_file_path_io).add_initial_import().add_class_name().construct_set_up()
     for method in src.methods:
         params = ""
         try:
@@ -144,5 +206,5 @@ async def handle_diagram_data(diagram=Body(...)):
             pass
         cls.construct_function_io(method['signature'], params, method['return_type'])
     cls.add_tearDown().add_main_function_call().build_test_class()
-    
+
     return {"response": "okay"}
