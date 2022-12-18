@@ -51,23 +51,22 @@ class SourceCode:
                 self.response_code_path).get_json()[-1]
             return default_source
 
-    def format_new_code_response(self, new_code_response: str, new_code_converted: str):
+    def format_new_code_response(self, new_code_response: str, new_code_converted: str, n):
         global default_class
         content: List[List[CreateClassResponse]] = File(
             Path(new_code_response)).get_json()
         default_classes: List[ClassRepresentation] = []
 
-        for class_object_with_metadata in content[0]:
-            class_object = class_object_with_metadata['data']
-            default_class['class_name'] = class_object['objectName']
-            default_class['description'] = class_object['comment']
-            default_class['methods'] = list(self.__my_filter(
-                lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
-            default_class['properties'] = list(self.__my_filter(
-                lambda item: item['visibility'].find("+") != -1, class_object['gridTable']))
-            default_class['fields'] = list(
-                self.__my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
-            default_classes.append(default_class)
+        class_object = content[0][n]['data']
+        default_class['class_name'] = class_object['objectName']
+        default_class['description'] = class_object['comment']
+        default_class['methods'] = list(self.__my_filter(
+            lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
+        default_class['properties'] = list(self.__my_filter(
+            lambda item: item['visibility'].find("+") != -1 and item['signature'].find("()") == -1, class_object['gridTable']))
+        default_class['fields'] = list(
+            self.__my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
+        default_classes.append(default_class)
 
         clean_classes = []
         for default_class in default_classes:
@@ -87,18 +86,10 @@ class SourceCode:
                 signature.append(signature_object)
 
             for property in default_class['properties']:
-                properties_object = []
-                properties_object = [[params['name'], params['type']]
-                                     for params in property['params']]
-                # properties_object[0].append(property['comment'])
-                properties.append(properties_object[0])
+                properties.append([property['signature'], property['returnType']])
 
             for field in default_class['fields']:
-                fields_object = []
-                fields_object = [[params['name'], params['type']]
-                                 for params in field['params']]
-                # fields_object[0].append(field['comment'])
-                fields.append(fields_object[0])
+                fields.append([field['signature'], field['returnType']])
 
             default_class['methods'] = signature
             default_class['properties'] = properties

@@ -25,8 +25,6 @@ class DiagramGenerator(BaseReader):
 ```mermaid
 classDiagram'''
         with open(self.output_file, "a") as out:
-            out.seek(1)
-            out.write("# Design Overview")
             out.write(initial_layout)
 
     def generate_connections(self):

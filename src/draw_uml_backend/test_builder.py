@@ -1,9 +1,9 @@
 import os
 from dataclasses import dataclass
 try:
-    from draw_uml_backend._base import BaseReader
+    from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
-    from src.draw_uml_backend._base import BaseReader
+    from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 
 @dataclass
@@ -14,9 +14,9 @@ class TestBuilder(BaseReader):
     @property
     def test_file(self):
         if self.type_of_test == "io":
-            return os.path.join("responses","test_io_" + self.source.class_name.lower() + ".py")
+            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_io_" + self.source.class_name.lower() + ".py")
         else:
-            return os.path.join("responses","test_side_effects_" + self.source.class_name.lower() + ".py")
+            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_side_effects_" + self.source.class_name.lower() + ".py")
 
     def add_initial_import(self):
         self.content += '''

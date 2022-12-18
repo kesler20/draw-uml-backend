@@ -38,3 +38,4 @@ the only test is the integration test `test_app.py`
       then there is a read_only folder where the files are read from
       and a response folder where the response to the existing code is written too
 - [ ] make tests for the output and the tests file generated
+- [ ] make the system type safe and make the tests

@@ -2,10 +2,9 @@ from dataclasses import dataclass
 import os
 from typing import Set
 try:
-    from draw_uml_backend._base import BaseReader
+    from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
-    from src.draw_uml_backend._base import BaseReader
-
+    from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 @dataclass
 class ClassBuilder(BaseReader):
@@ -15,7 +14,7 @@ class ClassBuilder(BaseReader):
     
     @property
     def output_file(self):
-        return os.path.join("responses",self.source.class_name.lower() + ".py")
+        return os.path.join(BASE_OUTPUT_RESPONSE_PATH,self.source.class_name.lower() + ".py")
 
     @property
     def final_class_representation(self):
@@ -48,7 +47,7 @@ from dataclasses import dataclass'''
 
         imports += '''
 from {} import {}
-        '''.format(types_path, types_import)
+        '''.format(types_path, types_import if types_import != "" else "*")
         self.__final_class_representation += imports
         return self
 

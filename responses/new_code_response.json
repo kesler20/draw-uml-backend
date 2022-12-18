@@ -1,1 +1,138 @@
-[[{"id": "node-1", "type": "umlDiagram", "position": {"x": 324, "y": 173}, "data": {"objectName": "CompletedFile", "color": "rgb(53, 174, 0)", "comment": "Object Description", "gridTable": [{"visibility": "+", "signature": "coon", "returnType": "str", "comment": "signature description", "params": [{"name": "name", "type": "type"}]}], "connection": false}, "width": 500, "height": 119, "selected": true, "positionAbsolute": {"x": 324, "y": 173}, "dragging": false}], []]
+[
+  [
+    {
+      "id": "node-1",
+      "type": "umlDiagram",
+      "position": {
+        "x": 953.2231102367366,
+        "y": 371.18018973878657
+      },
+      "data": {
+        "objectName": "CompletedFile",
+        "color": "rgb(53, 174, 0)",
+        "comment": "Object Description",
+        "gridTable": [
+          {
+            "visibility": "+",
+            "signature": "coon",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          }
+        ],
+        "connection": false
+      },
+      "width": 500,
+      "height": 119,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 953.2231102367366,
+        "y": 371.18018973878657
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-2",
+      "type": "umlDiagram",
+      "position": {
+        "x": 715.4162413893537,
+        "y": 60.14516259101407
+      },
+      "data": {
+        "objectName": "Compelted",
+        "comment": "Object Description",
+        "color": "rgb(163, 165, 103)",
+        "gridTable": [
+          {
+            "visibility": "+",
+            "signature": "this",
+            "returnType": "int",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          }
+        ]
+      },
+      "width": 500,
+      "height": 119,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 715.4162413893537,
+        "y": 60.14516259101407
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-3",
+      "type": "umlDiagram",
+      "position": {
+        "x": 106.85977176491195,
+        "y": 269.3104615276219
+      },
+      "data": {
+        "objectName": "ManagerCoordinator",
+        "comment": "The manager coordinator manages all the object within the programme",
+        "color": "rgb(96, 183, 108)",
+        "gridTable": [
+          {
+            "visibility": "+",
+            "signature": "run()",
+            "returnType": "str",
+            "comment": "the run function isused to execute the coordinator commands and distribute the messages effectively",
+            "params": [
+              {
+                "name": "message",
+                "type": "str"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "emit",
+            "returnType": "Val",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          }
+        ]
+      },
+      "width": 500,
+      "height": 170,
+      "selected": true,
+      "positionAbsolute": {
+        "x": 106.85977176491195,
+        "y": 269.3104615276219
+      },
+      "dragging": false
+    }
+  ],
+  [
+    {
+      "source": "node-2",
+      "sourceHandle": "100aCompeltedthis",
+      "target": "node-3",
+      "targetHandle": "100bManagerCoordinatorrun()",
+      "id": "reactflow__edge-node-2100aCompeltedthis-node-3100bManagerCoordinatorrun()"
+    },
+    {
+      "source": "node-1",
+      "sourceHandle": "100aCompletedFilecoon",
+      "target": "node-2",
+      "targetHandle": "100bCompeltedthis",
+      "id": "reactflow__edge-node-1100aCompletedFilecoon-node-2100bCompeltedthis"
+    }
+  ]
+]

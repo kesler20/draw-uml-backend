@@ -10,7 +10,7 @@ class Test_CompletedFile(unittest.TestCase):
         
     def setUp(self):
         self.test_client = CompletedFile(
-            name
+            coon
         )
         
     def tearDown(self):

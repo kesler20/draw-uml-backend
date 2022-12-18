@@ -1,5 +1,6 @@
+from pathlib import Path
 from dataclasses import dataclass, field
-from typing import List, Set 
+from typing import List, Set
 try:
     from draw_uml_backend._base import BaseReader
 except ModuleNotFoundError:
@@ -88,15 +89,17 @@ class TypeChecker(BaseReader):
 
     def init_types_file(self):
         self.clean_up(self.types_file)
-        imports = '''
+        if not Path(self.types_file).exists():
+            imports = '''
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
-        '''
-        self.write(self.types_file, imports)
+            '''
+            self.write(self.types_file, imports)
 
     def append_novel_types_to_types_path(self) -> None:
         classes_to_append_to_types_file = ""
         for type in self.novel_types:
             classes_to_append_to_types_file += '''
+
 class {}(Protocol):
     ...
             '''.format(type.replace("()", ""))
@@ -117,6 +120,7 @@ class {}(Protocol):
             # if the class does not have methods,
             # make a typed dict
             init_type = '''
+
 class {}(TypedDict):'''.format(self.source.class_name)
 
             for name, name_type in self.source.properties:
@@ -125,6 +129,7 @@ class {}(TypedDict):'''.format(self.source.class_name)
         else:
             # if the class has methods, make a protocol
             init_type = '''
+            
 class {}(Protocol):   
         '''.format(self.source.class_name)
 

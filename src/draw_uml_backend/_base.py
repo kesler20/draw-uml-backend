@@ -1,4 +1,4 @@
-import os
+import os 
 from dataclasses import dataclass
 from pathlib import Path
 try:
@@ -8,6 +8,7 @@ except ModuleNotFoundError:
     from src.draw_uml_backend.file import File
     from src.draw_uml_backend.source_code import SourceCode
 
+BASE_OUTPUT_RESPONSE_PATH = "output"
 
 @dataclass
 class BaseReader:
@@ -18,8 +19,10 @@ class BaseReader:
         return SourceCode(self.response_code_path)
 
     def clean_up(sef, file_to_remove: str):
-        if Path(file_to_remove).exists():
-            os.remove(file_to_remove)
+        # if Path(file_to_remove).exists():
+        #     os.remove(file_to_remove)
+        print("================== next =")
+        print(file_to_remove)
 
     def append(self, filename: str, content: str):
         File(Path(filename)).append(content)
