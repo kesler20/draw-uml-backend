@@ -1,36 +1,10 @@
 [
   {
-    "class_name": "eqfeqf",
-    "description": "Objectfeqeqffeqefqeqfefqqef Description",
-    "methods": [
-      {
-        "signature": "gefqwregqw",
-        "params": [
-          [
-            "namefeqqef",
-            "efqfeqtype"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "efgrqqe",
-        "description": "signature descriptionqeffqefeqfqefeqqefeq"
-      }
-    ],
-    "fields": [
-      [
-        "nameefqefqefq",
-        "tefqfeqefqype"
-      ]
-    ],
+    "class_name": "Complete",
+    "description": "Object Description",
+    "methods": [],
+    "fields": [],
     "properties": [
-      [
-        "namefeqqef",
-        "efqfeqtype"
-      ],
-      [
-        "namefqfeqe",
-        "tyefqfeqefqfeqpe"
-      ],
       [
         "name",
         "type"

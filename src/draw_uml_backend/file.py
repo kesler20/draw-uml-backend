@@ -1,8 +1,12 @@
-from draw_uml_backend._types import ClassRepresentation
 import json
 from typing import Any, Dict, List, Union
 import os
 from pathlib import Path
+try:
+    from draw_uml_backend._types import ClassRepresentation
+except ModuleNotFoundError:
+    from src.draw_uml_backend._types import ClassRepresentation
+
 
 class File(object):
     '''Object Description'''
@@ -37,17 +41,17 @@ class File(object):
         with open(self.filename, "r") as json_file:
             content = json.loads(json_file.read())
         return content
-    
-    def write_json(self, content: Union[Dict[str, Any],List[ClassRepresentation]]) -> None:
+
+    def write_json(self, content: Union[Dict[str, Any], List[ClassRepresentation]]) -> None:
         """get a json file as a dictionary
-        
+
         Param
         ---
         content dict
           dictionary which is dumped to the given json file"""
-        
+
         with open(self.filename, "w") as json_file:
-            json_file.write(json.dumps(content,indent=2))
+            json_file.write(json.dumps(content, indent=2))
 
     def writeline(self, content: str) -> None:
         '''signature description'''

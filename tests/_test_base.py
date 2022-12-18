@@ -1,11 +1,20 @@
 
-from draw_uml_backend.class_builder import ClassBuilder
-from draw_uml_backend.code_reader import PythonCodeReader
-from draw_uml_backend.diagram_generator import DiagramGenerator
-from draw_uml_backend.test_builder import TestBuilder
-from draw_uml_backend.source_code import SourceCode
-from draw_uml_backend.types_pre_processing import TypeChecker
-from draw_uml_backend.routines import routine
+try:
+  from draw_uml_backend.class_builder import ClassBuilder
+  from draw_uml_backend.code_reader import PythonCodeReader
+  from draw_uml_backend.diagram_generator import DiagramGenerator
+  from draw_uml_backend.test_builder import TestBuilder
+  from draw_uml_backend.source_code import SourceCode
+  from draw_uml_backend.types_pre_processing import TypeChecker
+  from draw_uml_backend.routines import routine
+except ModuleNotFoundError:
+  from src.draw_uml_backend.class_builder import ClassBuilder
+  from src.draw_uml_backend.code_reader import PythonCodeReader
+  from src.draw_uml_backend.diagram_generator import DiagramGenerator
+  from src.draw_uml_backend.test_builder import TestBuilder
+  from src.draw_uml_backend.source_code import SourceCode
+  from src.draw_uml_backend.types_pre_processing import TypeChecker
+  from src.draw_uml_backend.routines import routine
 
 # initialise context variables
 # for existing code

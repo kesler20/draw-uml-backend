@@ -1,10 +1,10 @@
-from pathlib import Path
-from draw_uml_backend.source_code import SourceCode
-import json
-from typing import Dict, List
-from draw_uml_backend.file import File
-from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
+from typing import Set
+try:
+    from draw_uml_backend._base import BaseReader
+except ModuleNotFoundError:
+    from src.draw_uml_backend._base import BaseReader
+
 
 @dataclass
 class ClassBuilder(BaseReader):
@@ -28,7 +28,7 @@ class ClassBuilder(BaseReader):
         self.write(self.output_file, self.final_class_representation)
         return self.__final_class_representation
 
-    def add_imports(self, types_path: str, types: set[str]):
+    def add_imports(self, types_path: str, types: Set[str]):
         types = list(types)
         imports = '''
 from typing import List, Any, Union, Dict, Optional, Tuple'''

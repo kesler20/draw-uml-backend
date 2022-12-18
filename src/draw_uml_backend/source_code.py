@@ -1,7 +1,11 @@
 from pathlib import Path
 from typing import List, Callable, Collection, Any, Dict
-from draw_uml_backend.file import File
-from draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
+try:
+    from draw_uml_backend.file import File
+    from draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
+except ModuleNotFoundError:
+    from src.draw_uml_backend.file import File
+    from src.draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
 
 
 default_class = {
@@ -31,7 +35,7 @@ class SourceCode:
 
     def __my_filter(self, cb: Callable[[Any], Any], arr: Collection[Any]) -> Any:
         return filter(cb, arr)
-    
+
     def __read_and_clean_source(self) -> ClassRepresentation:
         """read one class at a time, then pop from the array
         do the required cleanups and preprocessing of the class"""
@@ -51,7 +55,7 @@ class SourceCode:
         global default_class
         content: List[List[CreateClassResponse]] = File(
             Path(new_code_response)).get_json()
-        default_classes : List[ClassRepresentation] = []
+        default_classes: List[ClassRepresentation] = []
 
         for class_object_with_metadata in content[0]:
             class_object = class_object_with_metadata['data']

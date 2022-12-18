@@ -1,5 +1,8 @@
-from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass
+try:
+    from draw_uml_backend._base import BaseReader
+except ModuleNotFoundError:
+    from src.draw_uml_backend._base import BaseReader
 
 
 @dataclass
@@ -238,10 +241,7 @@ if __name__ == "__main__":
     unittest.main()
         '''
         return self
-    
+
     def build_test_class(self):
         self.write(self.test_file, self.content)
         return self
-
-
-

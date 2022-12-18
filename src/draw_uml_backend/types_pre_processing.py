@@ -1,6 +1,10 @@
-from draw_uml_backend._base import BaseReader
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Set 
+try:
+    from draw_uml_backend._base import BaseReader
+except ModuleNotFoundError:
+    from src.draw_uml_backend._base import BaseReader
+
 
 @dataclass
 class TypeChecker(BaseReader):
@@ -9,7 +13,7 @@ class TypeChecker(BaseReader):
     __built_in_types: List[str] = field(default_factory=lambda: ["str", "None", "float", "dict", "set",
                                                                  "int", "complex", "list", "tuple", "bool"])
     __typing_types: List[str] = field(
-        default_factory=lambda: ["Dict", "List", "Tuple", "Optional", "Any", "Union"])
+        default_factory=lambda: ["Dict", "List", "Tuple", "Optional", "Any", "Union", "Set"])
 
     @property
     def built_in_types(self) -> List[str]:
@@ -18,9 +22,9 @@ class TypeChecker(BaseReader):
     @property
     def typing_types(self) -> List[str]:
         return self.__typing_types
-    
+
     @property
-    def novel_types(self) -> set[str]:
+    def novel_types(self) -> Set[str]:
         # get all the types from the source code
         types: List[str] = []
         # append all the fields
@@ -37,7 +41,7 @@ class TypeChecker(BaseReader):
                 types.append(property[1])
             except IndexError:
                 print("this property has no type", property)
-        
+
         # append all the fields
         for field in self.source.fields:
             try:
@@ -81,13 +85,13 @@ class TypeChecker(BaseReader):
                 print(callable)
         source['methods'] = clean_callable_functions
         return source
-    
+
     def init_types_file(self):
         self.clean_up(self.types_file)
         imports = '''
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
         '''
-        self.write(self.types_file,imports)
+        self.write(self.types_file, imports)
 
     def append_novel_types_to_types_path(self) -> None:
         classes_to_append_to_types_file = ""
@@ -95,8 +99,8 @@ from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             classes_to_append_to_types_file += '''
 class {}(Protocol):
     ...
-            '''.format(type.replace("()",""))
-        self.append(self.types_file,classes_to_append_to_types_file)
+            '''.format(type.replace("()", ""))
+        self.append(self.types_file, classes_to_append_to_types_file)
 
     def convert_typing_to_builtin(self, type: str) -> str:
         if type == 'List':
@@ -117,7 +121,7 @@ class {}(TypedDict):'''.format(self.source.class_name)
 
             for name, name_type in self.source.properties:
                 init_type += '''
-{}: {}'''.format(name, name_type)
+    {}: {}'''.format(name, name_type)
         else:
             # if the class has methods, make a protocol
             init_type = '''
@@ -134,4 +138,4 @@ class {}(Protocol):
     def {}(self{}) -> {}:
         ...
           '''.format(method['signature'], params_to_pass, method['return_type'])
-        self.append(self.types_file,init_type)
+        self.append(self.types_file, init_type)

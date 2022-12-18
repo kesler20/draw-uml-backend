@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from draw_uml_backend._base import BaseReader
+try:
+    from draw_uml_backend._base import BaseReader
+except ModuleNotFoundError:
+    from src.draw_uml_backend._base import BaseReader
 
 
 @dataclass

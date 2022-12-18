@@ -1,8 +1,12 @@
-from draw_uml_backend.file import File
 from pathlib import Path
-from draw_uml_backend._types import ClassRepresentation
 from typing import List
 from abc import ABC, abstractmethod
+try:
+    from draw_uml_backend._types import ClassRepresentation
+    from draw_uml_backend.file import File
+except ModuleNotFoundError:
+    from src.draw_uml_backend._types import ClassRepresentation
+    from src.draw_uml_backend.file import File
 
 
 class CodeReader(ABC):
@@ -72,7 +76,7 @@ class PythonCodeReader(CodeReader):
         return self
 
     def __get_source_code(self) -> List[str]:
-        return [line.replace("\n","") for line in File(self.source_code_path).readlines()]
+        return [line.replace("\n", "") for line in File(self.source_code_path).readlines()]
 
     def read(self) -> None:
         source_code = self.__get_source_code()
@@ -174,7 +178,7 @@ class PythonCodeReader(CodeReader):
                     # def foo(param1: str, param2: int, optional_param: Optional[int] = None) -> None:
                     signature = line.split("def ")[1].split("(")[0]
                     classes_name_space[class_flag]["methods"].append(
-                        {"signature": signature, "params": [], "decorator": "", "return_type" : "", "description" : ""})
+                        {"signature": signature, "params": [], "decorator": "", "return_type": "", "description": ""})
                     function_flag += 1
 
                     try:
