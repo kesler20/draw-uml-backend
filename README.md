@@ -37,3 +37,4 @@ the only test is the integration test `test_app.py`
       these are where their respective files are stored
       then there is a read_only folder where the files are read from
       and a response folder where the response to the existing code is written too
+- [ ] make tests for the output and the tests file generated
