@@ -1,26 +1,13 @@
 [
   {
-    "class_name": "ManagerCoordinator",
-    "description": "The manager coordinator manages all the object within the programme",
-    "methods": [
-      {
-        "signature": "run",
-        "params": [
-          [
-            "message",
-            "str"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "str",
-        "description": "the run function isused to execute the coordinator commands and distribute the messages effectively"
-      }
-    ],
+    "class_name": "ThisClass",
+    "description": "Object Description",
+    "methods": [],
     "fields": [],
     "properties": [
       [
-        "emit",
-        "Val"
+        "value",
+        "int"
       ]
     ]
   }

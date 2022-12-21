@@ -1,16 +1,16 @@
 
 import unittest
-from completedfile import CompletedFile
+from anotherclass import AnotherClass
 
-print("Testing:" + CompletedFile.__doc__)
+print("Testing:" + AnotherClass.__doc__)
         
 
-class Test_CompletedFile(unittest.TestCase):        
+class Test_AnotherClass(unittest.TestCase):        
     '''Object Description'''
         
     def setUp(self):
-        self.test_client = CompletedFile(
-            coon
+        self.test_client = AnotherClass(
+            testing
         )
         
     def tearDown(self):

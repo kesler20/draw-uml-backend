@@ -39,3 +39,4 @@ the only test is the integration test `test_app.py`
       and a response folder where the response to the existing code is written too
 - [ ] make tests for the output and the tests file generated
 - [ ] make the system type safe and make the tests
+- [ ] when you submit existing code and the fields are already assignerd, the assignment statement is considered as a type

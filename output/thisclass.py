@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from output._types import *
         
 @dataclass
-class Compelted:
-    """Compelted is a class"""
+class ThisClass:
+    """ThisClass is a class"""
     
-    this : int
+    value : int

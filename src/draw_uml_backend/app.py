@@ -61,7 +61,7 @@ async def create_new_diagram(diagram=Body(...)):
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
     os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
     # write the diagram to the new code response  code path
-    File(Path(new_code_response)).write(json.dumps(diagram, indent=2))
+    File(Path(new_code_response)).write_json(diagram)
     # get the number of objects created
     for object_id in range(len(diagram[0])):
         routine(object_id, new=True, diagram=True, types=True, code=True, test=True, dataclass=True)
@@ -74,7 +74,7 @@ async def create_existing_diagram(src=Body(...)):
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
     os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
     # write the diagram to the new code response  code path
-    File(Path(source_code_path)).write(json.dumps(src, indent=2))
+    File(Path(source_code_path)).write(src)
     # get the number of objects created
     routine(0, existing=True, diagram=True, types=True, code=True, test=True, dataclass=True)
     return {"response": "okay"}

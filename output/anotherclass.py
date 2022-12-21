@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from output._types import *
         
 @dataclass
-class CompletedFile:
-    """CompletedFile is a class"""
+class AnotherClass:
+    """AnotherClass is a class"""
     
-    coon : str
+    testing : bool

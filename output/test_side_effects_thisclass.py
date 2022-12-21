@@ -1,15 +1,17 @@
 
 import unittest
-from compelted import Compelted
+from thisclass import ThisClass
 
-print("Testing:" + Compelted.__doc__)
+print("Testing:" + ThisClass.__doc__)
         
 
-class Test_Compelted(unittest.TestCase):        
+class Test_ThisClass(unittest.TestCase):        
     '''Object Description'''
         
     def setUp(self):
-        self.test_client = Compelted(this)
+        self.test_client = ThisClass(
+            value
+        )
         
     def tearDown(self):
         pass

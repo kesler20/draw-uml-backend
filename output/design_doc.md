@@ -2,22 +2,14 @@
 
 ```mermaid
 classDiagram
-   CompletedFile <|-- object
-   CompletedFile : + coon str
+   AnotherClass <|-- object
+   AnotherClass : + testing bool
 ```
         
 
 ```mermaid
 classDiagram
-   Compelted <|-- object
-   Compelted : + this int
-```
-        
-
-```mermaid
-classDiagram
-   ManagerCoordinator <|-- object
-   ManagerCoordinator : + emit Val
-   ManagerCoordinator : + run() str
+   ThisClass <|-- object
+   ThisClass : + value int
 ```
         

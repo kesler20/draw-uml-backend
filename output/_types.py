@@ -2,18 +2,8 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class CompletedFile(TypedDict):
-    coon: str
+class AnotherClass(TypedDict):
+    testing: bool
 
-class Compelted(TypedDict):
-    this: int
-
-class Val(Protocol):
-    ...
-            
-            
-class ManagerCoordinator(Protocol):   
-        
-    def run(self, message : str) -> str:
-        ...
-          
+class ThisClass(TypedDict):
+    value: int

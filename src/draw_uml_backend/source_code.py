@@ -43,12 +43,12 @@ class SourceCode:
         # remove the end of line delimiter from every line of the response_code file (json file)
         try:
             source: ClassRepresentation = File(
-                self.response_code_path).get_json()[-1]
+                self.response_code_path).get_json()[0]
             return source
-        except IndexError:
+        except KeyError:
             File(self.response_code_path).write_json(default_class)
             default_source: ClassRepresentation = File(
-                self.response_code_path).get_json()[-1]
+                self.response_code_path).get_json()
             return default_source
 
     def format_new_code_response(self, new_code_response: str, new_code_converted: str, n):
