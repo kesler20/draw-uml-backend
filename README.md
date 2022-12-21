@@ -41,3 +41,5 @@ the only test is the integration test `test_app.py`
 - [ ] make the system type safe and make the tests
 - [ ] when you submit existing code and the fields are already assignerd, the assignment statement is considered as a type
 - [ ] return the original name of each without the output_ in front of it
+- [ ] add a _base.variable to each test file with the variables passed to initialise the test class within the setup
+for instance import _base.filename if the test class needs to be called with a filename variable, the user will then be able to pass all those variables from the _base file which should also be downloaded
