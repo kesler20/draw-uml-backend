@@ -202,7 +202,7 @@ class {}(object):
                     # build the comment which will change for each params
                     comment = """
         
-        Params
+        Parameters
         ---
                 """
                     # MAJORITY OF THE LOGIC IS CONTAINED IN THIS BLOCK WHERE WE ASSUME THAT THE PARAMETER IS NOT SELF

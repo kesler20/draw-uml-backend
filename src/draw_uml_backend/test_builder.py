@@ -77,7 +77,7 @@ class Test_{}(unittest.TestCase):
         and it will check in each case if the type of the result is as expected
 
         ---
-        Params:
+        Parameters:
         - function_name : the name of the function to be tested
         - function_arguments : the arguments of the function to be tested
         - function_result_type : the type of the result of the function being tested
@@ -98,7 +98,7 @@ class Test_{}(unittest.TestCase):
         test the {function_name} method which accepts the following arguments:
         
         ---
-        Params:
+        Parameters:
         {function_arguments}
 
         ---
@@ -152,7 +152,7 @@ class Test_{}(unittest.TestCase):
         and it returns a function which can be used to test the side effects of the functions
 
         ---
-        Params:
+        Parameters:
         - function_name : the name of the function to be tested
         - function_arguments : the arguments of the function to be tested
 
@@ -166,7 +166,7 @@ class Test_{}(unittest.TestCase):
         test the {function_name} method which accepts the following arguments:
         
         ---
-        Params:
+        Parameters:
         {function_arguments}
 
         ---
