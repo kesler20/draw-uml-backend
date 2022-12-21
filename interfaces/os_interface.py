@@ -117,7 +117,7 @@ class OperatingSystemInterface(object):
         '''
 
         source = os.path.join(
-            r"C:\Users\Uchek\protocol", source_folder, file)
+            r"{}\protocol".format(self.gcu()), source_folder, file)
         destination = os.path.join(self.directory, file)
 
         print(r'''

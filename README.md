@@ -40,3 +40,4 @@ the only test is the integration test `test_app.py`
 - [ ] make tests for the output and the tests file generated
 - [ ] make the system type safe and make the tests
 - [ ] when you submit existing code and the fields are already assignerd, the assignment statement is considered as a type
+- [ ] return the original name of each without the output_ in front of it
