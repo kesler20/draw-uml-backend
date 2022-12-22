@@ -46,3 +46,5 @@ for instance import _base.filename if the test class needs to be called with a f
 - [ ] adjust the types that you include on the tests so that you are not checking the types of the type
 - [ ] only the last variable is saved from methods when you create a class from existing code
 - [ ] please remove the edge cases from the io tests
+- [ ] include guard clauses on public methods ?
+- [ ] don't write tests for internal methods
