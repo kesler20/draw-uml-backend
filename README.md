@@ -48,3 +48,4 @@ for instance import _base.filename if the test class needs to be called with a f
 - [ ] please remove the edge cases from the io tests
 - [ ] include guard clauses on public methods ?
 - [ ] don't write tests for internal methods
+- [ ] a include th manual testing to the files generated, where there are relevant imports and the classes are instantiated, this is ueseful for more complicated functions, where harded debuggining needs to be carried out which will otherwise be two hard to be performed on the automated test. once the manual tests pass you can run the automated test
