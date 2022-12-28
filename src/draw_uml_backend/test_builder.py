@@ -214,10 +214,10 @@ class Test_{}(unittest.TestCase):
 
     def add_functions(self):
         for method in self.source.methods:
+            params = ""
             if method['signature'].startswith('__'):
                 pass
             else:
-                params = ""
                 for param in method['params']:
                     if len(param) > 1:
                         if param == method['params'][-1]:
