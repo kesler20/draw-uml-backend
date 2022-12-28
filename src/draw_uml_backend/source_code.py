@@ -53,19 +53,39 @@ class SourceCode:
 
     def format_new_code_response(self, new_code_response: str, new_code_converted: str, n):
         global default_class
+
+        # get the file content
         content: List[List[CreateClassResponse]] = File(
             Path(new_code_response)).get_json()
+        # initialise the intermediary class representation
         default_classes: List[ClassRepresentation] = []
-
         class_object = content[0][n]['data']
+        
+        # get the class name and description
         default_class['class_name'] = class_object['objectName']
         default_class['description'] = class_object['comment']
-        default_class['methods'] = list(self.__my_filter(
-            lambda item: item['signature'].find("()") != -1, class_object['gridTable']))
+        
+        # get the class methods from the class_object gridTable
+        # class_object is of type CreateClassResponseData
+        public_methods = list(self.__my_filter(
+            lambda item: item['signature'].find("()") != -1 and item['visibility'].find("+") != -1, 
+            class_object['gridTable']))
+        private_methods = list(self.__my_filter(
+            lambda item: item['signature'].find("()") != -1 and item['visibility'].find("-") != -1, 
+            class_object['gridTable']))
+
+        default_class['methods'] = public_methods
+        for method in private_methods:
+            method['signature'] = f"__{method['signature']}"
+            default_class['methods'].append(method)
+        
+        # get the properties and the private fields
         default_class['properties'] = list(self.__my_filter(
-            lambda item: item['visibility'].find("+") != -1 and item['signature'].find("()") == -1, class_object['gridTable']))
+            lambda item: item['visibility'].find("+") != -1 and item['signature'].find("()") == -1, 
+            class_object['gridTable']))
         default_class['fields'] = list(
-            self.__my_filter(lambda item: item['visibility'].find("-") != -1, class_object['gridTable']))
+            self.__my_filter(lambda item: item['visibility'].find("-") != -1 and item['signature'].find("()") == -1, 
+            class_object['gridTable']))
         default_classes.append(default_class)
 
         clean_classes = []
@@ -83,6 +103,7 @@ class SourceCode:
                                               for params in method['params']]
                 signature_object['decorator'] = ""
                 signature_object['return_type'] = method['returnType']
+
                 signature.append(signature_object)
 
             for property in default_class['properties']:

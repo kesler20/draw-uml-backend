@@ -5,13 +5,15 @@ from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
 class type(Protocol):
     ...
             
-
-class list = (Protocol):
-    ...
             
-            
-class CompletelyNew(Protocol):   
+class ComandManager(Protocol):   
         
-    def this_funct(self, name : type) -> str:
+    def execute(self, name : type) -> None:
+        ...
+          
+    def get_data(self, vv : int) -> list:
+        ...
+          
+    def __run(self, name : type) -> None:
         ...
           

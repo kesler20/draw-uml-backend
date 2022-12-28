@@ -1,10 +1,10 @@
 [
   {
-    "class_name": "CompletelyNew",
-    "description": "This is a completely new object by the way",
+    "class_name": "ComandManager",
+    "description": "Object Description",
     "methods": [
       {
-        "signature": "this_funct",
+        "signature": "execute",
         "params": [
           [
             "name",
@@ -12,23 +12,47 @@
           ]
         ],
         "decorator": "",
-        "return_type": "str",
+        "return_type": "None",
+        "description": "signature description"
+      },
+      {
+        "signature": "get_data",
+        "params": [
+          [
+            "p",
+            "str"
+          ],
+          [
+            "vv",
+            "int"
+          ]
+        ],
+        "decorator": "",
+        "return_type": "list",
+        "description": "The new data of the mangeer"
+      },
+      {
+        "signature": "__run",
+        "params": [
+          [
+            "name",
+            "type"
+          ]
+        ],
+        "decorator": "",
+        "return_type": "None",
         "description": "signature description"
       }
     ],
     "fields": [
       [
-        "new_field",
-        "list = [\"Val\"]"
+        "testing_it",
+        "int"
       ]
     ],
     "properties": [
       [
-        "another",
-        "int"
-      ],
-      [
-        "smae_one",
+        "another_property",
         "int"
       ]
     ]

@@ -2,10 +2,11 @@
 
 ```mermaid
 classDiagram
-   CompletelyNew <|-- object
-   CompletelyNew : + another int
-   CompletelyNew : + smae_one int
-   CompletelyNew : - new_field list
-   CompletelyNew : + this_funct() str
+   ComandManager <|-- object
+   ComandManager : + another_property int
+   ComandManager : - testing_it int
+   ComandManager : + execute() None
+   ComandManager : + get_data() list
+   ComandManager : + __run() None
 ```
         

@@ -99,8 +99,8 @@ class {}(object):
         # add the properties as params __init__(self,prop1,prop2...)
         property_as_param = ""
         for property, property_types in self.source.properties:
-            property_as_param += f"{property} : {property_types}" if property == self.source.properties[
-                -1][0] else f"{property} : {property_types}, "
+            property_as_param += f", {property} : {property_types}" if property == self.source.properties[
+                -1][0] else f", {property} : {property_types}"
 
         # pass that to the starting property
         starting_property = '''''' if len(self.source.properties) == 0 else '''
