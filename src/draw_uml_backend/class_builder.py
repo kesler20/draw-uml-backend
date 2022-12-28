@@ -34,7 +34,7 @@ class ClassBuilder(BaseReader):
         return self.__final_class_representation
     
     def __add_default_factory(self, _type):
-        type_checker = TypeChecker()
+        type_checker = TypeChecker("","")
         if "=" in list(_type):
             if _type in type_checker.mutable_types:
                 _type = f'field(default_factory=lambda: {_type.split(" = ")[1]})'
@@ -156,7 +156,7 @@ class {}(object):
         if self.dataclasses:
             for field, field_type in self.source.fields:
                 field_type = self.__add_default_factory(field_type)
-                
+
                 initial_field += """
     __{} : {}""".format(field, field_type)
         else:
