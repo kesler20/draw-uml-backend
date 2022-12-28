@@ -34,6 +34,31 @@ print("Testing:" + {}.__doc__)
 class Test_{}(unittest.TestCase):        
     {}
         '''.format(self.source.class_name, comment)
+        if self.type_of_test == "io":
+            pass
+        else:
+            self.content += '''
+        Example of how those tests are run
+        ---
+        given a method ``append_row`` which takes the following arguments
+        ```txt
+        row: List[List], table_name: str
+        ```
+        you can cause the side effect (call the method being tested) and then check the endpoints
+        ```python
+        # array of arguments which are expected by the method which causes the side effect under test
+        side_effect_input = [[121],base_table_name]
+        # array containing the expected correct result of the side effect
+        side_effect_output = [pd.DataFrame([*base_df_values, 121],columns=base_df_cols)]
+
+        # cause a side effect to test
+        test_result = self.test_client.append_row(*side_effect_input)
+
+        # test that the side effect is expected
+        test_result = self.test_client.get_table(base_table_name)
+        self.assertTrue(test_result.equals(side_effect_output[0]))    
+        ```
+        '''
         return self
 
     def construct_set_up(self):
@@ -86,12 +111,6 @@ class Test_{}(unittest.TestCase):
         Returns:
         - function_test : a doc string which can be used to test the function passed
         '''
-        if function_result_type == "None":
-            asserting_result_type_line = ""
-        else:
-            asserting_result_type_line = f'''
-        # assert that the type returned by the method is correct
-        self.assertEqual(type(test_result),type({function_result_type}))'''
         self.content += f'''
     def test_io_{function_name}(self):
         """
@@ -110,12 +129,6 @@ class Test_{}(unittest.TestCase):
         # array containing the expected correct result of the function call
         correct_output = []
 
-        # array of arguments representing
-        # a potential edge case where the method might be used
-        edge_case_input = []
-        # array containing the expected result of the function call
-        edge_case_output = []
-
         # array of arguments containing an invalid type 
         invalid_types_input = []
         # array containing the result of the function call
@@ -127,20 +140,20 @@ class Test_{}(unittest.TestCase):
         invalid_values_output = []
 
         test_result = self.test_client.{function_name}(*correct_input)
+        # assert that the value of the test is correct
         self.assertEqual(test_result,correct_output[0])
-        {asserting_result_type_line} 
 
         test_result = self.test_client.{function_name}(*edge_case_input)
+        # assert that the value of the test is correct
         self.assertEqual(test_result,edge_case_output[0])
-        {asserting_result_type_line}
 
         test_result = self.test_client.{function_name}(*invalid_types_input)
+        # assert that the value of the test is correct
         self.assertEqual(test_result,invalid_types_output[0]) 
-        {asserting_result_type_line}
 
         test_result = self.test_client.{function_name}(*invalid_values_input)
+        # assert that the value of the test is correct
         self.assertEqual(test_result,invalid_values_output[0]) 
-        {asserting_result_type_line}
     '''
 
         return self
@@ -175,7 +188,7 @@ class Test_{}(unittest.TestCase):
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
-        # array containing the expected correct result of the side effect
+        # array containing the expected correct result of the method after the side effect
         side_effect_output = []
 
         # cause a side effect to test

@@ -47,7 +47,7 @@ async def read_root():
 async def get_file(filename: str):
     print("get design document file called")
     file_path = os.path.join(BASE_OUTPUT_RESPONSE_PATH,filename) 
-    return FileResponse(file_path, media_type="text/x-markdown", filename=file_path)
+    return FileResponse(file_path, media_type="text/x-markdown", filename=filename)
 
 @app.get('/get/files')
 async def get_file_list():
