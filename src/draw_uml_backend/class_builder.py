@@ -38,7 +38,7 @@ class ClassBuilder(BaseReader):
         if "=" in list(_type):
             if _type in type_checker.mutable_types:
                 _type = f'field(default_factory=lambda: {_type.split(" = ")[1]})'
-                self.add_imports("dataclasses", "field")
+                self.add_imports("dataclasses", set("field"))
         return _type 
 
     def add_imports(self, types_path: str, types: Set[str]):
