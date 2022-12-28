@@ -213,47 +213,31 @@ class Test_{}(unittest.TestCase):
         return self
 
     def add_functions(self):
-        if self.type_of_test == "io":
-            # depending on the type_of_test the corresponding internal method will be called
-            for method in self.source.methods:
-                if method['signature'].startswith('__'):
-                    pass
-                else:
-                    params = ""
-                    try:
-                        for param in method['params']:
-                            if param == method['params'][-1]:
-                                params += f"{param[0]} : {param[1]}"
-                            else:
-                                params += f"{param[0]} : {param[1]}, "
-                    except IndexError:
-                        pass
+        for method in self.source.methods:
+            if method['signature'].startswith('__'):
+                pass
+            else:
+                params = ""
+                for param in method['params']:
+                    if len(param) > 1:
+                        if param == method['params'][-1]:
+                            params += f"{param[0]} : {param[1]}"
+                        else:
+                            params += f"{param[0]} : {param[1]}, "
 
-                    self.__construct_function_io(
-                        method['signature'],
-                        params,
-                        method['return_type']
-                    )
-        else:
-            for method in self.source.methods:
-                if method['signature'].startswith('__'):
-                    pass
-                else:
-                    params = ""
-                    try:
-                        for param in method['params']:
-                            if param == method['params'][-1]:
-                                params += f"{param[0]} : {param[1]}"
-                            else:
-                                params += f"{param[0]} : {param[1]}, "
-                    except IndexError:
-                        pass
-
-                    self.__construct_function_side_effects(
-                        method['signature'],
-                        params,
-                        method['return_type']
-                    )
+            if self.type_of_test == "io":
+                # depending on the type_of_test the corresponding internal method will be called
+                self.__construct_function_io(
+                    method['signature'],
+                    params,
+                    method['return_type']
+                )
+            else:
+                self.__construct_function_side_effects(
+                    method['signature'],
+                    params,
+                    method['return_type']
+                )
 
         return self
 
@@ -339,9 +323,11 @@ if __name__ == "__main__":
                 function_call += """
     {}.{}({})
                 """.format(self.source.class_name.lower(), method['signature'], params)
-
+        # remove self params on method calls
+        function_call = function_call.replace("self, ", "")
+        function_call = function_call.replace("self", "")
         self.content += '''
-if __name == "__main__":
+if __name__ == "__main__":
     {} = {}()
     {}
         '''.format(self.source.class_name.lower(),
