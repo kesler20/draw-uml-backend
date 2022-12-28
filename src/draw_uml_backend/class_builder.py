@@ -2,8 +2,10 @@ from dataclasses import dataclass
 import os
 from typing import Set
 try:
+    from draw_uml_backend.types_pre_processing import TypeChecker
     from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
+    from src.draw_uml_backend.types_pre_processing import TypeChecker
     from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 @dataclass
@@ -30,9 +32,18 @@ class ClassBuilder(BaseReader):
         print(self.__final_class_representation)
         self.write(self.output_file, self.final_class_representation)
         return self.__final_class_representation
+    
+    def __add_default_factory(self, _type):
+        type_checker = TypeChecker()
+        if "=" in list(_type):
+            if _type in type_checker.mutable_types:
+                _type = f'field(default_factory=lambda: {_type.split(" = ")[1]})'
+                self.add_imports("dataclasses", "field")
+        return _type 
 
     def add_imports(self, types_path: str, types: Set[str]):
         types = list(types)
+        types = [_type if "=" not in list(_type) else _type.split(" =")[0] for _type in types]
         imports = '''
 from typing import List, Any, Union, Dict, Optional, Tuple'''
         if self.dataclasses:
@@ -115,6 +126,7 @@ class {}(object):
 
         initial_field = """"""
         for field, field_type in self.source.properties:
+            field_type = self.__add_default_factory(field_type)
             initial_field += """
     {} : {}""".format(field, field_type)
 
@@ -143,6 +155,8 @@ class {}(object):
         initial_field = """"""
         if self.dataclasses:
             for field, field_type in self.source.fields:
+                field_type = self.__add_default_factory(field_type)
+                
                 initial_field += """
     __{} : {}""".format(field, field_type)
         else:

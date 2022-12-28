@@ -1,7 +1,7 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
 from dataclasses import dataclass
-from responses._types import DataFrame,  str = "protocol_database.xlsx"
+from output._types import DataFrame
         
 @dataclass
 class ExcelDatabase:
@@ -37,7 +37,7 @@ class ExcelDatabase:
     def _pp(self, message : str) -> None:
         """_pp has the following params
         
-        Params
+        Parameters
         ---
                 
         message str
@@ -53,7 +53,7 @@ class ExcelDatabase:
     def create_table(self, rows : List[List[Any]]) -> None:
         """create_table has the following params
         
-        Params
+        Parameters
         ---
                 
         rows List[List[Any]]
@@ -69,7 +69,7 @@ class ExcelDatabase:
     def get_table(self, table_name : str) -> DataFrame:
         """get_table has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -90,7 +90,7 @@ class ExcelDatabase:
     def get_table_slice(self, index : Optional[Tuple[int,int]]=None) -> Any:
         """get_table_slice has the following params
         
-        Params
+        Parameters
         ---
                 
         index Optional[Tuple[int,int]]=None
@@ -106,7 +106,7 @@ class ExcelDatabase:
     def get_n_rows_from_tables_above(self, table_name : str) -> Any:
         """get_n_rows_from_tables_above has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -122,7 +122,7 @@ class ExcelDatabase:
     def get_n_rows_from_tables_below(self, table_name : str) -> Any:
         """get_n_rows_from_tables_below has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -138,7 +138,7 @@ class ExcelDatabase:
     def table_info(self, table_name : str) -> Any:
         """table_info has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -159,7 +159,7 @@ class ExcelDatabase:
     def get_value_by_column_name(self, table_name : str) -> Any:
         """get_value_by_column_name has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -175,7 +175,7 @@ class ExcelDatabase:
     def get_value_by_column_index(self, table_name : str) -> Any:
         """get_value_by_column_index has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -191,7 +191,7 @@ class ExcelDatabase:
     def delete_table(self, table_name : str) -> Any:
         """delete_table has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -207,7 +207,7 @@ class ExcelDatabase:
     def append_row(self, table_name : str) -> None:
         """append_row has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -228,7 +228,7 @@ class ExcelDatabase:
     def delete_rows(self, table_name : str) -> None:
         """delete_rows has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -244,7 +244,7 @@ class ExcelDatabase:
     def put_column(self, table_name : str) -> None:
         """put_column has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -260,7 +260,7 @@ class ExcelDatabase:
     def insert_column(self, table_name : str) -> None:
         """insert_column has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str
@@ -276,7 +276,7 @@ class ExcelDatabase:
     def delete_columns(self, table_name : str) -> Any:
         """delete_columns has the following params
         
-        Params
+        Parameters
         ---
                 
         table_name str

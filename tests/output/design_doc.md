@@ -1,4 +1,25 @@
-# Design Overview
+
+
+```mermaid
+classDiagram
+   AnotherClass <|-- object
+   AnotherClass : + testing bool
+```
+        
+
+```mermaid
+classDiagram
+   ThisClass <|-- object
+   ThisClass : + value int
+```
+        
+
+```mermaid
+classDiagram
+   AnotherClass <|-- object
+   AnotherClass : + testing bool
+```
+        
 
 ```mermaid
 classDiagram
