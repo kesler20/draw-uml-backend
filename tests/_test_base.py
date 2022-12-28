@@ -15,3 +15,5 @@ types_file = os.path.join("tests", "output", "_types.py")
 
 # diagrams directory
 documentation_path = os.path.join("tests", "output", "design_doc.md")
+
+BASE_OUTPUT_DIRECTORY = os.path.join("tests", "output")
