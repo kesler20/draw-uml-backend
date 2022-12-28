@@ -24,12 +24,13 @@ new_response code path is the json generated from the UI and this should be conv
 response_code_path into the common format  
 
 ## Tests
-the only test is the integration test `test_app.py`
+the only test is the integration test `test_routines.py` however a better way to test the code is to run the gunicorn instance locally, and then either copy and paste the response of the diagram from the frontend
+or copy the code that you want to paste as existing code
 
 ## Improvements
 
-- [ ] add the lambda field default_factory on fields where the types are not builtins
-- [ ] should the tests include an absolute path, or a path generated using the os module
+- [x] add the lambda field default_factory on fields where the types are not builtins
+- [x] should the tests include an absolute path, or a path generated using the os module
 - [x] remove the clean up method from the BaseClass
 - [x] increase the scalability of the app by allow it to analys multiple classes
 - [ ] add an endpoint for dataclas and not dataclass
@@ -49,4 +50,20 @@ for instance import _base.filename if the test class needs to be called with a f
 - [ ] include guard clauses on public methods ?
 - [ ] don't write tests for internal methods
 - [x] a include th manual testing to the files generated, where there are relevant imports and the classes are instantiated, this is ueseful for more complicated functions, where harded debuggining needs to be carried out which will otherwise be two hard to be performed on the automated test. once the manual tests pass you can run the automated test
-
+- [ ] the system cannot convert private methods as they are percived both as fields and methods
+rename the private methods with a __method_name()
+- [ ] this can be futher improved by allowing the user to choose what to create:
+```python
+@app.post('/create/{format}/files/{dataclasses}/{with_types}')
+async def create_new_diagram(dataclasses: bool,format: bool, with_types: bool, diagram=Body(...)):
+    # refresh the output folder
+    shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
+    os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
+    # write the diagram to the new code response  code path
+    File(Path(new_code_response)).write_json(diagram)
+    # get the number of objects created
+    for object_id in range(len(diagram[0])):
+        routine(object_id, new=format, diagram=True, types=with_types, code=True, test=True,dataclass=dataclasses)
+    return {"response": "okay"}
+```
+this would then correlate to radio buttons from the client side which will generate the required request

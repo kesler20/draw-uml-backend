@@ -28,12 +28,14 @@ print("Testing:" + {}.__doc__)
         return self
 
     def add_class_name(self):
-        comment = f"'''{self.source.description}'''"
+        comment = f'''"""{self.source.description}'''
         if self.type_of_test == "io":
-            pass
+            comment += '''"""'''
         else:
-            self.comment += '''
+            comment += '''
+    
     testing the side effects of the {} class
+    
     Example of how those tests are run
     ---
     given a method ``append_row`` which takes the following arguments
@@ -145,10 +147,6 @@ class Test_{}(unittest.TestCase):
         test_result = self.test_client.{function_name}(*correct_input)
         # assert that the value of the test is correct
         self.assertEqual(test_result,correct_output[0])
-
-        test_result = self.test_client.{function_name}(*edge_case_input)
-        # assert that the value of the test is correct
-        self.assertEqual(test_result,edge_case_output[0])
 
         test_result = self.test_client.{function_name}(*invalid_types_input)
         # assert that the value of the test is correct

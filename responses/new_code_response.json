@@ -4,18 +4,58 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 296,
-        "y": 468
+        "x": 8.950216736224434,
+        "y": 198.64642051749786
       },
       "data": {
-        "objectName": "AnotherClass",
-        "color": "rgb(163, 58, 72)",
-        "comment": "Object Description",
+        "objectName": "CompletelyNew",
+        "color": "rgb(180, 5, 186)",
+        "comment": "This is a completely new object by the way",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "testing",
-            "returnType": "bool",
+            "signature": "another",
+            "returnType": "int",
+            "comment": "This is the description of a new object",
+            "params": [
+              {
+                "name": "new_p",
+                "type": "str"
+              },
+              {
+                "name": "pv",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "smae_one",
+            "returnType": "int",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "this_funct()",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "-",
+            "signature": "new_field",
+            "returnType": "list = [\"Val\"]",
             "comment": "signature description",
             "params": [
               {
@@ -28,57 +68,14 @@
         "connection": false
       },
       "width": 500,
-      "height": 119,
+      "height": 272,
       "selected": true,
       "positionAbsolute": {
-        "x": 296,
-        "y": 468
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-2",
-      "type": "umlDiagram",
-      "position": {
-        "x": 26,
-        "y": 98
-      },
-      "data": {
-        "objectName": "ThisClass",
-        "comment": "Object Description",
-        "color": "rgb(129, 197, 115)",
-        "gridTable": [
-          {
-            "visibility": "+",
-            "signature": "value",
-            "returnType": "int",
-            "comment": "signature description",
-            "params": [
-              {
-                "name": "name",
-                "type": "type"
-              }
-            ]
-          }
-        ]
-      },
-      "width": 500,
-      "height": 119,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 26,
-        "y": 98
+        "x": 8.950216736224434,
+        "y": 198.64642051749786
       },
       "dragging": false
     }
   ],
-  [
-    {
-      "source": "node-1",
-      "sourceHandle": "100aAnotherClasstesting",
-      "target": "node-2",
-      "targetHandle": "100bThisClassvalue",
-      "id": "reactflow__edge-node-1100aAnotherClasstesting-node-2100bThisClassvalue"
-    }
-  ]
+  []
 ]
