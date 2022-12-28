@@ -2,21 +2,26 @@ from dataclasses import dataclass
 import os
 from typing import Set
 try:
-    from draw_uml_backend.types_pre_processing import TypeChecker
-    from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    from types_pre_processing import TypeChecker
+    from _base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
-    from src.draw_uml_backend.types_pre_processing import TypeChecker
-    from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    try:
+        from draw_uml_backend.types_pre_processing import TypeChecker
+        from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    except ModuleNotFoundError:
+        from src.draw_uml_backend.types_pre_processing import TypeChecker
+        from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+
 
 @dataclass
 class ClassBuilder(BaseReader):
 
     dataclasses: bool
     __final_class_representation: str = ""
-    
+
     @property
     def output_file(self):
-        return os.path.join(BASE_OUTPUT_RESPONSE_PATH,self.source.class_name.lower() + ".py")
+        return os.path.join(BASE_OUTPUT_RESPONSE_PATH, self.source.class_name.lower() + ".py")
 
     @property
     def final_class_representation(self):
@@ -32,14 +37,14 @@ class ClassBuilder(BaseReader):
         print(self.__final_class_representation)
         self.write(self.output_file, self.final_class_representation)
         return self.__final_class_representation
-    
+
     def __add_default_factory(self, _type):
-        type_checker = TypeChecker("","")
+        type_checker = TypeChecker("", "")
         if "=" in list(_type):
             if _type in type_checker.mutable_types:
                 _type = f'field(default_factory=lambda: {_type.split(" = ")[1]})'
                 self.add_imports("dataclasses", set("field"))
-        return _type 
+        return _type
 
     def add_imports(self, types_path: str, types: Set[str]):
         types = list(types)
@@ -180,7 +185,13 @@ class {}(object):
     def set_{}(self,{} : {}):
         """{} property setter"""
         self.__{} = {}
-            '''.format(field, field, field_type.split("=")[0].replace(" ", ""), field, field, field)
+            '''.format(field,
+                       field,
+                       field_type.split("=")[0].replace(" ", ""),
+                       field,
+                       field,
+                       field
+                       )
 
         self.__final_class_representation += initial_field
         return self
@@ -193,61 +204,76 @@ class {}(object):
         #   "signature": "filename",
         #   "params": [["self"]],
         #   "decorator": "property",
-        #   "return type": "str"
+        #   "return_type": "str"
         # },
 
         # build the method using the params
         initial_method = ""
         for method in self.source.methods:
             # build initial params
+            params_to_pass = ""
             params = method['params']
             decorators = method['decorator']
+
+            # build the comment which will change for each params
+            # if the params looks like the following [['self']]
+            if params[0][0] == "self" and len(params) == 1:
+                comment = '''
+        """
+        ...        
+                '''
+            else:
+                comment = """
+        
+        Parameters
+        ---
+            """
 
             # for each param construct the comment and the params_to_pass (self,param_1:str,...)
             # then add to initial_method
             for index, param in enumerate(params):
-                params_to_pass = ""
                 # do not consider the self param
-                if param[0] == "self":
-                    comment = '''"""
-        ...
-                    '''
-                else:
-                    # build the comment which will change for each params
-                    comment = """
-        
-        Parameters
-        ---
-                """
+                if param[0] != "self":
                     # MAJORITY OF THE LOGIC IS CONTAINED IN THIS BLOCK WHERE WE ASSUME THAT THE PARAMETER IS NOT SELF
                     # THE PARAM ARRAY SHOULD BE OF THE FOLLOWING FORM ['param_name','param_type']
                     if len(param) > 1:
-                        params_to_pass += f", {param[0]} : {param[1]}" if param == params[-1] else f", {param[0]} : {param[1]},"
+                        params_to_pass += f", {param[0]} : {param[1]}" if param == params[-1] else f", {param[0]} : {param[1]}"
 
                     else:
                         # if there is more than one item in the parameter array use the second item as a type
-                        params_to_pass += f", {param[0]} : {None}" if param == params[-1] else f", {param[0]} : {None},"
+                        params_to_pass += f", {param[0]} : {None}" if param == params[-1] else f", {param[0]} : {None}"
 
                     comment += """
         {} {}
-            to be passed as parameter {}
-                    """.format(param[0], None if len(param) == 1 else param[1], index + 1)
-                    comment += '''
+            to be passed as parameter {}""".format(
+                        param[0],
+                        None if len(param) == 1 else param[1],
+                        index + 1
+                    )
+
+                    if param == params[-1]:
+                        comment += '''
+        
         Returns
         ---
         result: {}
         """
         ...
-                    '''.format(method['return_type'])
+                        '''.format(method['return_type'])
+
 
             # build initial method
             initial_method += '''
     {}
     def {}(self{}) -> {}:
-        """{} {}{}  '''.format(f"@{decorators}" if decorators != "" else "", method['signature'].replace("()", ""),
-                               params_to_pass, method['return_type'], method['signature'].replace(
-                                   "()", ""),
-                               "has the following params" if method["description"] == "" else method['description'], comment)
+        """{} {}{}  '''.format(
+                f"@{decorators}" if decorators != "" else "",
+                method['signature'].replace("()", ""),
+                params_to_pass,
+                method['return_type'],
+                method['signature'].replace("()", ""),
+                "has the following params" if method["description"] == "" else method['description'], comment
+            )
 
         self.__final_class_representation += initial_method
         return self

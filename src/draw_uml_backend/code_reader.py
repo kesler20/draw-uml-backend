@@ -2,11 +2,15 @@ from pathlib import Path
 from typing import List
 from abc import ABC, abstractmethod
 try:
-    from draw_uml_backend._types import ClassRepresentation
-    from draw_uml_backend.file import File
+    from _types import ClassRepresentation
+    from file import File
 except ModuleNotFoundError:
-    from src.draw_uml_backend._types import ClassRepresentation
-    from src.draw_uml_backend.file import File
+    try:
+        from draw_uml_backend._types import ClassRepresentation
+        from draw_uml_backend.file import File
+    except ModuleNotFoundError:
+        from src.draw_uml_backend._types import ClassRepresentation
+        from src.draw_uml_backend.file import File
 
 
 class CodeReader(ABC):

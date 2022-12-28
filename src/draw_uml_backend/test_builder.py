@@ -1,9 +1,12 @@
 import os
 from dataclasses import dataclass
 try:
-    from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    from _base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
-    from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    try:
+        from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+    except ModuleNotFoundError:
+        from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 
 @dataclass
@@ -15,6 +18,8 @@ class TestBuilder(BaseReader):
     def test_file(self):
         if self.type_of_test == "io":
             return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_io_" + self.source.class_name.lower() + ".py")
+        elif self.type_of_test == "manual test":
+            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "manual_test_" + self.source.class_name.lower() + ".py")
         else:
             return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_side_effects_" + self.source.class_name.lower() + ".py")
 
@@ -63,7 +68,7 @@ print("Testing:" + {}.__doc__)
 class Test_{}(unittest.TestCase):        
     {}
         '''.format(self.source.class_name, comment)
-        
+
         return self
 
     def construct_set_up(self):
@@ -94,7 +99,10 @@ class Test_{}(unittest.TestCase):
         self.content += setUp
         return self
 
-    def __construct_function_io(self, function_name: str, function_arguments: str, function_result_type: str):
+    def __construct_function_io(self,
+                                function_name: str,
+                                function_arguments: str,
+                                function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -159,7 +167,10 @@ class Test_{}(unittest.TestCase):
 
         return self
 
-    def __construct_function_side_effects(self, function_name: str, function_arguments: str, function_result_type: str):
+    def __construct_function_side_effects(self,
+                                          function_name: str,
+                                          function_arguments: str,
+                                          function_result_type: str):
         '''
         This function takes the function names, 
         arguments and the type of the result of the function
@@ -203,29 +214,47 @@ class Test_{}(unittest.TestCase):
 
     def add_functions(self):
         if self.type_of_test == "io":
+            # depending on the type_of_test the corresponding internal method will be called
             for method in self.source.methods:
-                params = ""
-                try:
-                    for param in method['params']:
-                        if param == method['params'][-1]:
-                            params += f"{param[0]} : {param[1]}"
-                        else:
-                            params += f"{param[0]} : {param[1]}, "
-                except IndexError:
+                if method['signature'].startswith('__'):
                     pass
-                self.__construct_function_io(method['signature'], params, method['return_type'])
+                else:
+                    params = ""
+                    try:
+                        for param in method['params']:
+                            if param == method['params'][-1]:
+                                params += f"{param[0]} : {param[1]}"
+                            else:
+                                params += f"{param[0]} : {param[1]}, "
+                    except IndexError:
+                        pass
+
+                    self.__construct_function_io(
+                        method['signature'],
+                        params,
+                        method['return_type']
+                    )
         else:
             for method in self.source.methods:
-                params = ""
-                try:
-                    for param in method['params']:
-                        if param == method['params'][-1]:
-                            params += f"{param[0]} : {param[1]}"
-                        else:
-                            params += f"{param[0]} : {param[1]}, "
-                except IndexError:
+                if method['signature'].startswith('__'):
                     pass
-                self.__construct_function_side_effects(method['signature'], params, method['return_type'])
+                else:
+                    params = ""
+                    try:
+                        for param in method['params']:
+                            if param == method['params'][-1]:
+                                params += f"{param[0]} : {param[1]}"
+                            else:
+                                params += f"{param[0]} : {param[1]}, "
+                    except IndexError:
+                        pass
+
+                    self.__construct_function_side_effects(
+                        method['signature'],
+                        params,
+                        method['return_type']
+                    )
+
         return self
 
     def construct_js_test_function(self):
@@ -289,6 +318,35 @@ class Test_{}(unittest.TestCase):
 if __name__ == "__main__":
     unittest.main()
         '''
+        return self
+
+    def add_manual_tests(self):
+        # group all the function calls
+        function_call = ""
+        for method in self.source.methods:
+            if method['signature'].startswith('__'):
+                pass
+            else:
+                params = ""
+                try:
+                    for param in method['params']:
+                        if param == method['params'][-1]:
+                            params += f"{param[0]}"
+                        else:
+                            params += f"{param[0]}, "
+                except IndexError:
+                    pass
+                function_call += """
+    {}.{}({})
+                """.format(self.source.class_name.lower(), method['signature'], params)
+
+        self.content += '''
+if __name == "__main__":
+    {} = {}()
+    {}
+        '''.format(self.source.class_name.lower(),
+                   self.source.class_name, function_call)
+
         return self
 
     def build_test_class(self):

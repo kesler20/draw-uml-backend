@@ -2,11 +2,15 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 try:
-    from draw_uml_backend.file import File
-    from draw_uml_backend.source_code import SourceCode
+    from file import File
+    from source_code import SourceCode
 except ModuleNotFoundError:
-    from src.draw_uml_backend.file import File
-    from src.draw_uml_backend.source_code import SourceCode
+    try:
+        from draw_uml_backend.file import File
+        from draw_uml_backend.source_code import SourceCode
+    except ModuleNotFoundError:
+        from src.draw_uml_backend.file import File
+        from src.draw_uml_backend.source_code import SourceCode
 
 BASE_OUTPUT_RESPONSE_PATH = "output"
 
