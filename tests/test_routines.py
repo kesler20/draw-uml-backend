@@ -25,8 +25,8 @@ context = (response_code_path,
 shutil.rmtree(BASE_OUTPUT_DIRECTORY)
 os.mkdir(BASE_OUTPUT_DIRECTORY)
 
-def test_routine1():
-    routine(0, context=context, new=True, diagram=True, types=True, code=True, test=True, dataclass=True)
-
 def test_routine2():
     routine(0, context=context, existing=True, diagram=True, types=True, code=True, test=True, dataclass=True)
+
+def test_routine1():
+    routine(0, context=context, new=True, diagram=True, types=True, code=True, test=True, dataclass=True)

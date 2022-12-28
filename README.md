@@ -27,6 +27,17 @@ response_code_path into the common format
 the only test is the integration test `test_routines.py` however a better way to test the code is to run the gunicorn instance locally, and then either copy and paste the response of the diagram from the frontend
 or copy the code that you want to paste as existing code
 to check the files being downloaded you can do it directly on the browser by opening the file on a seperate window
+to run automatic tests
+
+>to run manual tests
+```bash
+python -m pytest tests
+```
+
+>to run manual tests
+```bash
+python src\draw_uml_backend\manual_test.py
+```
 
 ## Improvements
 

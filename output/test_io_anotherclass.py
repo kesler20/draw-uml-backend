@@ -6,7 +6,7 @@ print("Testing:" + AnotherClass.__doc__)
         
 
 class Test_AnotherClass(unittest.TestCase):        
-    '''Object Description'''
+    """Object Description"""
         
     def setUp(self):
         self.test_client = AnotherClass(

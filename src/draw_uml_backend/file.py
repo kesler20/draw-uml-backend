@@ -1,6 +1,7 @@
 import json
 from typing import Any, Dict, List, Union
 import os
+
 from pathlib import Path
 try:
     from _types import ClassRepresentation

@@ -2,27 +2,6 @@
 
 ```mermaid
 classDiagram
-   AnotherClass <|-- object
-   AnotherClass : + testing bool
-```
-        
-
-```mermaid
-classDiagram
-   ThisClass <|-- object
-   ThisClass : + value int
-```
-        
-
-```mermaid
-classDiagram
-   AnotherClass <|-- object
-   AnotherClass : + testing bool
-```
-        
-
-```mermaid
-classDiagram
    ExcelDatabase <|-- object
    ExcelDatabase : - filename str
    ExcelDatabase : + filename() str
@@ -46,5 +25,12 @@ classDiagram
    ExcelDatabase : + put_column() None
    ExcelDatabase : + insert_column() None
    ExcelDatabase : + delete_columns() Any
+```
+        
+
+```mermaid
+classDiagram
+   AnotherClass <|-- object
+   AnotherClass : + testing bool
 ```
         

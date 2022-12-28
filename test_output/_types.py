@@ -2,20 +2,11 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class AnotherClass(TypedDict):
-    testing: bool
-
-class ThisClass(TypedDict):
-    value: int
-
-class AnotherClass(TypedDict):
-    testing: bool
-
-class DataFrame(Protocol):
+class  str = "protocol_database.xlsx"(Protocol):
     ...
             
 
-class  str = "protocol_database.xlsx"(Protocol):
+class DataFrame(Protocol):
     ...
             
             
@@ -84,3 +75,6 @@ class ExcelDatabase(Protocol):
     def delete_columns(self, table_name : str) -> Any:
         ...
           
+
+class AnotherClass(TypedDict):
+    testing: bool
