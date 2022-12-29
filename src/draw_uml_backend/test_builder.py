@@ -332,7 +332,7 @@ if __name__ == "__main__":
     {}
         '''.format(self.source.class_name.lower(),
                    self.source.class_name, function_call)
-
+        self.content.replace("import unittest","")
         return self
 
     def build_test_class(self):

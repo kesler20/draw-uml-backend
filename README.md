@@ -49,10 +49,8 @@ python src\draw_uml_backend\manual_test.py
 - [ ] make the system type safe and make the tests
 - [ ] when you submit existing code and the fields are already assigned, the assignment statement is considered as a type
 for instance import _base.filename if the test class needs to be called with a filename variable, the user will then be able to pass all those variables from the _base file which should also be downloaded
-- [x] only the last variable is saved from methods when you create a class from existing code
 - [ ] include guard clauses on public methods ?
 - [ ] remove self from the existing file response as it complicates other things down the line
-- [x] don't write tests for internal methods
 - [ ] this can be further improved by allowing the user to choose what to create:
 ```python
 @app.post('/create/{format}/files/{dataclasses}/{with_types}')
