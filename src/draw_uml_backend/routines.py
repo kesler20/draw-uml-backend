@@ -1,21 +1,30 @@
 from typing import Tuple
 import os
 try:
-    from draw_uml_backend.class_builder import ClassBuilder
-    from draw_uml_backend.code_reader import PythonCodeReader
-    from draw_uml_backend.diagram_generator import DiagramGenerator
-    from draw_uml_backend.test_builder import TestBuilder
-    from draw_uml_backend.source_code import SourceCode
-    from draw_uml_backend.types_pre_processing import TypeChecker
-    from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
+    from class_builder import ClassBuilder
+    from code_reader import PythonCodeReader
+    from diagram_generator import DiagramGenerator
+    from test_builder import TestBuilder
+    from source_code import SourceCode
+    from types_pre_processing import TypeChecker
+    from _base import BASE_OUTPUT_RESPONSE_PATH
 except ModuleNotFoundError:
-    from src.draw_uml_backend.class_builder import ClassBuilder
-    from src.draw_uml_backend.code_reader import PythonCodeReader
-    from src.draw_uml_backend.diagram_generator import DiagramGenerator
-    from src.draw_uml_backend.test_builder import TestBuilder
-    from src.draw_uml_backend.source_code import SourceCode
-    from src.draw_uml_backend.types_pre_processing import TypeChecker
-    from src.draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
+    try:
+        from draw_uml_backend.class_builder import ClassBuilder
+        from draw_uml_backend.code_reader import PythonCodeReader
+        from draw_uml_backend.diagram_generator import DiagramGenerator
+        from draw_uml_backend.test_builder import TestBuilder
+        from draw_uml_backend.source_code import SourceCode
+        from draw_uml_backend.types_pre_processing import TypeChecker
+        from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
+    except ModuleNotFoundError:
+        from src.draw_uml_backend.class_builder import ClassBuilder
+        from src.draw_uml_backend.code_reader import PythonCodeReader
+        from src.draw_uml_backend.diagram_generator import DiagramGenerator
+        from src.draw_uml_backend.test_builder import TestBuilder
+        from src.draw_uml_backend.source_code import SourceCode
+        from src.draw_uml_backend.types_pre_processing import TypeChecker
+        from src.draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
 
 # for existing code
 response_code_path = os.path.join("responses", "response.json")
@@ -70,8 +79,10 @@ def routine(object_id, context: Tuple[str] = (response_code_path,
         ).add_properties().add_private_fields().add_methods().build_final_class()
 
     if test:
-        TestBuilder(response_code_path, "io").add_initial_import().add_class_name().construct_set_up(
+        TestBuilder(response_code_path,"io").add_initial_import().add_class_name().construct_set_up(
         ).add_functions().add_tearDown().add_main_function_call().build_test_class()
 
-        TestBuilder(response_code_path, "side effects").add_initial_import().add_class_name().construct_set_up(
+        TestBuilder(response_code_path,"side effects").add_initial_import().add_class_name().construct_set_up(
         ).add_functions().add_tearDown().add_main_function_call().build_test_class()
+
+        TestBuilder(response_code_path,"manual test").add_initial_import().add_manual_tests().build_test_class()

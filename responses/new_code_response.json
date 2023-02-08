@@ -4,18 +4,70 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 296,
-        "y": 468
+        "x": -316.98371514000837,
+        "y": -6.972339233769048
       },
       "data": {
-        "objectName": "AnotherClass",
-        "color": "rgb(163, 58, 72)",
+        "objectName": "ComandManager",
+        "color": "rgb(82, 197, 146)",
         "comment": "Object Description",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "testing",
-            "returnType": "bool",
+            "signature": "execute()",
+            "returnType": "None",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "get_data()",
+            "returnType": "list",
+            "comment": "The new data of the mangeer",
+            "params": [
+              {
+                "name": "p",
+                "type": "str"
+              },
+              {
+                "name": "vv",
+                "type": "int"
+              }
+            ]
+          },
+          {
+            "visibility": "-",
+            "signature": "run()",
+            "returnType": "None",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "another_property",
+            "returnType": "int",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "-",
+            "signature": "testing_it",
+            "returnType": "int",
             "comment": "signature description",
             "params": [
               {
@@ -28,57 +80,14 @@
         "connection": false
       },
       "width": 500,
-      "height": 119,
+      "height": 323,
       "selected": true,
       "positionAbsolute": {
-        "x": 296,
-        "y": 468
-      },
-      "dragging": false
-    },
-    {
-      "id": "node-2",
-      "type": "umlDiagram",
-      "position": {
-        "x": 26,
-        "y": 98
-      },
-      "data": {
-        "objectName": "ThisClass",
-        "comment": "Object Description",
-        "color": "rgb(129, 197, 115)",
-        "gridTable": [
-          {
-            "visibility": "+",
-            "signature": "value",
-            "returnType": "int",
-            "comment": "signature description",
-            "params": [
-              {
-                "name": "name",
-                "type": "type"
-              }
-            ]
-          }
-        ]
-      },
-      "width": 500,
-      "height": 119,
-      "selected": false,
-      "positionAbsolute": {
-        "x": 26,
-        "y": 98
+        "x": -316.98371514000837,
+        "y": -6.972339233769048
       },
       "dragging": false
     }
   ],
-  [
-    {
-      "source": "node-1",
-      "sourceHandle": "100aAnotherClasstesting",
-      "target": "node-2",
-      "targetHandle": "100bThisClassvalue",
-      "id": "reactflow__edge-node-1100aAnotherClasstesting-node-2100bThisClassvalue"
-    }
-  ]
+  []
 ]

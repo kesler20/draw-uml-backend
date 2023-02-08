@@ -2,9 +2,12 @@ from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Set
 try:
-    from draw_uml_backend._base import BaseReader
+    from _base import BaseReader
 except ModuleNotFoundError:
-    from src.draw_uml_backend._base import BaseReader
+    try:
+        from draw_uml_backend._base import BaseReader
+    except ModuleNotFoundError:
+        from src.draw_uml_backend._base import BaseReader
 
 
 @dataclass
@@ -15,6 +18,8 @@ class TypeChecker(BaseReader):
                                                                  "int", "complex", "list", "tuple", "bool"])
     __typing_types: List[str] = field(
         default_factory=lambda: ["Dict", "List", "Tuple", "Optional", "Any", "Union", "Set"])
+    
+    __mutable_types: List[str] = field(default_factory=lambda: ["List","list"]) 
 
     @property
     def built_in_types(self) -> List[str]:
@@ -23,6 +28,10 @@ class TypeChecker(BaseReader):
     @property
     def typing_types(self) -> List[str]:
         return self.__typing_types
+
+    @property
+    def mutable_types(self) -> List[str]:
+        return self.__mutable_types
 
     @property
     def novel_types(self) -> Set[str]:

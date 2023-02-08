@@ -1,11 +1,14 @@
 
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
-        
+            
+
+class  str = "protocol_database.xlsx"(Protocol):
+    ...
+            
+
 class DataFrame(Protocol):
     ...
             
-class  str = "protocol_database.xlsx"(Protocol):
-    ...
             
 class ExcelDatabase(Protocol):   
         
@@ -72,3 +75,6 @@ class ExcelDatabase(Protocol):
     def delete_columns(self, table_name : str) -> Any:
         ...
           
+
+class AnotherClass(TypedDict):
+    testing: bool

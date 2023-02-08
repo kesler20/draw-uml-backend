@@ -3,53 +3,82 @@
     {
       "id": "node-1",
       "type": "umlDiagram",
-      "position": { "x": 237, "y": 285 },
+      "position": {
+        "x": 296,
+        "y": 468
+      },
       "data": {
-        "objectName": "eqfeqf",
-        "color": "rgb(94, 194, 135)",
-        "comment": "Objectfeqeqffeqefqeqfefqqef Description",
+        "objectName": "AnotherClass",
+        "color": "rgb(163, 58, 72)",
+        "comment": "Object Description",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "gefqwregqw()",
-            "returnType": "efgrqqe",
-            "comment": "signature descriptionqeffqefeqfqefeqqefeq",
-            "params": [{ "name": "namefeqqef", "type": "efqfeqtype" }]
-          },
-          {
-            "visibility": "+",
-            "signature": "gqefrqerqe",
-            "returnType": "efqfeq",
-            "comment": "signature desefqfeqqefqefcription",
-            "params": [{ "name": "namefqfeqe", "type": "tyefqfeqefqfeqpe" }]
-          },
-          {
-            "visibility": "-",
-            "signature": "eqrwqrweggqrw",
-            "returnType": "efqqef",
-            "comment": "signatefqeqfefqeqfefqure description",
-            "params": [
-              { "name": "nameefqefqefq", "type": "tefqfeqefqype" },
-              { "name": "namefffqefeqe", "type": "efqefqeqfefqfeqtype" }
-            ]
-          },
-          {
-            "visibility": "+",
-            "signature": "wrgwrwqerw",
-            "returnType": "eqfefq",
+            "signature": "testing",
+            "returnType": "bool",
             "comment": "signature description",
-            "params": [{ "name": "name", "type": "type" }]
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
           }
         ],
         "connection": false
       },
       "width": 500,
-      "height": 273,
+      "height": 119,
       "selected": true,
-      "positionAbsolute": { "x": 237, "y": 285 },
+      "positionAbsolute": {
+        "x": 296,
+        "y": 468
+      },
+      "dragging": false
+    },
+    {
+      "id": "node-2",
+      "type": "umlDiagram",
+      "position": {
+        "x": 26,
+        "y": 98
+      },
+      "data": {
+        "objectName": "ThisClass",
+        "comment": "Object Description",
+        "color": "rgb(129, 197, 115)",
+        "gridTable": [
+          {
+            "visibility": "+",
+            "signature": "value",
+            "returnType": "int",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          }
+        ]
+      },
+      "width": 500,
+      "height": 119,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 26,
+        "y": 98
+      },
       "dragging": false
     }
   ],
-  []
+  [
+    {
+      "source": "node-1",
+      "sourceHandle": "100aAnotherClasstesting",
+      "target": "node-2",
+      "targetHandle": "100bThisClassvalue",
+      "id": "reactflow__edge-node-1100aAnotherClasstesting-node-2100bThisClassvalue"
+    }
+  ]
 ]
-
