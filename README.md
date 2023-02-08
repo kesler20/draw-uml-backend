@@ -40,3 +40,12 @@ the only test is the integration test `test_app.py`
 - [ ] make tests for the output and the tests file generated
 - [ ] make the system type safe and make the tests
 - [ ] when you submit existing code and the fields are already assignerd, the assignment statement is considered as a type
+
+
+Improve the drawUML:
+- [ ]	making simpler tests using pytest (the goal is to test IO using pytest to test for types and states of the functions, test side effects (the contracts of the class), test edge cases)
+- [ ]	making less dependencies
+- [ ]	add a Flask server to try to return a folder
+- [ ]	add the toggle on and off for the code with data classes
+- [ ]	add typescript React code
+- [ ]	add Sqlalchemy data-type converter

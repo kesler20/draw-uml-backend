@@ -42,7 +42,6 @@ from dataclasses import dataclass'''
         for type in types:
             if type == types[-1]:
                 types_import += f"{type}"
-            else:
                 types_import += f"{type}, "
 
         imports += '''
@@ -71,7 +70,6 @@ from {} import {}
 class {}:
     """{} is a class"""
     '''.format(self.source.class_name, self.source.class_name)
-        else:
             self.__final_class_representation += '''
 class {}(object):
     """{} is a class"""
