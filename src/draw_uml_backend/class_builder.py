@@ -224,7 +224,7 @@ class {}(object):
                 comment = """
         
         Parameters
-        ---
+        ----------
             """
 
             # for each param construct the comment and the params_to_pass (self,param_1:str,...)
@@ -253,8 +253,8 @@ class {}(object):
                         comment += '''
         
         Returns
-        ---
-        result: {}
+        -------
+        {}
         """
         ...
                         '''.format(method['return_type'])

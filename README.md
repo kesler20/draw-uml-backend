@@ -7,7 +7,6 @@ The dataprocessing layer processes the classes which arrive from the front end o
 the file generation layer generates the files such as the diagram file and the _types file
 this cna be organised by routines such that makes the design more modular and easily testable
 
-
 <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
   <img src="/software_architecture.jpg" alt="draw uml schema" srcset="" style="width: 50%;">
 </div>
@@ -24,6 +23,7 @@ new_response code path is the json generated from the UI and this should be conv
 response_code_path into the common format  
 
 ## Tests
+
 the only test is the integration test `test_routines.py` however a better way to test the code is to run the gunicorn instance locally, and then either copy and paste the response of the diagram from the frontend
 or copy the code that you want to paste as existing code
 to check the files being downloaded you can do it directly on the browser by opening the file on a seperate window
@@ -66,6 +66,7 @@ async def create_new_diagram(dataclasses: bool,format: bool, with_types: bool, d
         routine(object_id, new=format, diagram=True, types=with_types, code=True, test=True,dataclass=dataclasses)
     return {"response": "okay"}
 ```
+
 this would then correlate to radio buttons from the client side which will generate the required request
 Improve the drawUML:
 - [ ]	making simpler tests using pytest (the goal is to test IO using pytest to test for types and states of the functions, test side effects (the contracts of the class), test edge cases)
