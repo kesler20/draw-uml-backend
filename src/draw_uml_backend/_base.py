@@ -1,16 +1,7 @@
-import os 
 from dataclasses import dataclass
 from pathlib import Path
-try:
-    from file import File
-    from source_code import SourceCode
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend.file import File
-        from draw_uml_backend.source_code import SourceCode
-    except ModuleNotFoundError:
-        from src.draw_uml_backend.file import File
-        from src.draw_uml_backend.source_code import SourceCode
+from draw_uml_backend.file import File
+from draw_uml_backend.source_code import SourceCode
 
 BASE_OUTPUT_RESPONSE_PATH = "output"
 
@@ -23,8 +14,6 @@ class BaseReader:
         return SourceCode(self.response_code_path)
 
     def clean_up(sef, file_to_remove: str):
-        # if Path(file_to_remove).exists():
-        #     os.remove(file_to_remove)
         print("================== next =")
         print(file_to_remove)
 

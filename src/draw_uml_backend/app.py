@@ -5,12 +5,8 @@ from fastapi import FastAPI, Body
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
-try:
-    from draw_uml_backend.file import File
-    from draw_uml_backend.routines import *
-except ModuleNotFoundError:
-    from src.draw_uml_backend.file import File
-    from src.draw_uml_backend.routines import *
+from draw_uml_backend.file import File
+from draw_uml_backend.routines import *
 
 # ---------------------------------------------------#
 #                                                    #

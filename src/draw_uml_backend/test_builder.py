@@ -1,12 +1,6 @@
 import os
 from dataclasses import dataclass
-try:
-    from _base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
-    except ModuleNotFoundError:
-        from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
+from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 
 @dataclass
@@ -125,43 +119,26 @@ class Test_{}(unittest.TestCase):
         - function_test : a doc string which can be used to test the function passed
         '''
         self.content += f'''
-    def test_io_{function_name}(self):
+    @staticmethod
+    @pytest.mark.parametrize("param1,param2, expected",[
+        ("input1","input2","expected_value1"),
+        ("input1a","input2a","expected_value2"),
+        ("input1c","input2b","expected_value3"),
+    ])
+    @pytest.mark.skip(reason="feature not implemented yet")
+    def test_io_{function_name}(self,*args):
         """
         test the {function_name} method which accepts the following arguments:
         
-        ---
-        Parameters:
+        Parameters
+        ----------
         {function_arguments}
 
-        ---
-        Returns:
-        - {function_result_type}
+        Returns
+        -------
+          {function_result_type}
         """
-        # array of arguments which are expected by the method being tested
-        correct_input = []
-        # array containing the expected correct result of the function call
-        correct_output = []
-
-        # array of arguments containing an invalid type 
-        invalid_types_input = []
-        # array containing the result of the function call
-        invalid_types_output = []
-
-        # array of arguments containing an invalid value 
-        invalid_values_input = []
-        # array containing the result of the function call
-        invalid_values_output = []
-
-        test_result = self.test_client.{function_name}(*correct_input)
-        # assert that the value of the test is correct
-        self.assertEqual(test_result,correct_output[0])
-
-        test_result = self.test_client.{function_name}(*invalid_types_input)
-        # assert that the value of the test is correct
-        self.assertEqual(test_result,invalid_types_output[0]) 
-
-        test_result = self.test_client.{function_name}(*invalid_values_input)
-        # assert that the value of the test is correct
+        test_result = self.test_client.{function_name}(*args)
         self.assertEqual(test_result,invalid_values_output[0]) 
     '''
 
@@ -186,17 +163,18 @@ class Test_{}(unittest.TestCase):
         - function_test : a doc string which can be used to test the function passed
         '''
         self.content += f'''
+    @pytest.mark.skip(reason="feature not implemented yet")
     def test_side_effects_{function_name}(self):
         """
         test the {function_name} method which accepts the following arguments:
         
-        ---
-        Parameters:
+        Parameters
+        ----------
         {function_arguments}
 
-        ---
-        Returns:
-        - {function_result_type}
+        Returns
+        -------
+         {function_result_type}
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []

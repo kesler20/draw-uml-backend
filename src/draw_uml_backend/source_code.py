@@ -1,15 +1,7 @@
 from pathlib import Path
 from typing import List, Callable, Collection, Any, Dict
-try:
-    from file import File
-    from _types import ClassRepresentation, CreateClassResponse, MethodRepresentation
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend.file import File
-        from draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
-    except ModuleNotFoundError:
-        from src.draw_uml_backend.file import File
-        from src.draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
+from draw_uml_backend.file import File
+from draw_uml_backend._types import ClassRepresentation, CreateClassResponse, MethodRepresentation
 
 
 default_class = {

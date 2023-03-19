@@ -1,6 +1,5 @@
 README.md
 pyproject.toml
-setup.cfg
 setup.py
 src/draw_uml_backend/__init__.py
 src/draw_uml_backend/_base.py
@@ -17,6 +16,6 @@ src/draw_uml_backend/types_pre_processing.py
 src/draw_uml_backend.egg-info/PKG-INFO
 src/draw_uml_backend.egg-info/SOURCES.txt
 src/draw_uml_backend.egg-info/dependency_links.txt
-src/draw_uml_backend.egg-info/not-zip-safe
 src/draw_uml_backend.egg-info/requires.txt
 src/draw_uml_backend.egg-info/top_level.txt
+tests/test_routines.py

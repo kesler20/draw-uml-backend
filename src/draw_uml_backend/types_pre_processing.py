@@ -1,25 +1,18 @@
 from pathlib import Path
 from dataclasses import dataclass, field
 from typing import List, Set
-try:
-    from _base import BaseReader
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend._base import BaseReader
-    except ModuleNotFoundError:
-        from src.draw_uml_backend._base import BaseReader
-
+from draw_uml_backend._base import BaseReader
 
 @dataclass
 class TypeChecker(BaseReader):
 
     types_file: str
-    __built_in_types: List[str] = field(default_factory=lambda: ["str", "None", "float", "dict", "set",
+    __built_in_types: List[str] = field(init=False, default_factory=lambda: ["str", "None", "float", "dict", "set",
                                                                  "int", "complex", "list", "tuple", "bool"])
-    __typing_types: List[str] = field(
+    __typing_types: List[str] = field(init=False,
         default_factory=lambda: ["Dict", "List", "Tuple", "Optional", "Any", "Union", "Set"])
     
-    __mutable_types: List[str] = field(default_factory=lambda: ["List","list"]) 
+    __mutable_types: List[str] = field(init=False, default_factory=lambda: ["List","list"]) 
 
     @property
     def built_in_types(self) -> List[str]:

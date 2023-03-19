@@ -2,76 +2,38 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class  str = "protocol_database.xlsx"(Protocol):
+class str="jaguar"(Protocol):
     ...
             
 
-class DataFrame(Protocol):
+class 'list(Protocol):
+    ...
+            
+
+class os(Protocol):
     ...
             
             
-class ExcelDatabase(Protocol):   
+class OperatingSystemInterface(Protocol):   
         
-    def filename(self) -> str:
+    def __init__(self) -> None:
         ...
           
-    def database(self) -> DataFrame:
+    def __enter__(self) -> os:
         ...
           
-    def database_info(self) -> None:
+    def __exit__(self) -> os:
         ...
           
-    def _pp(self, message : str) -> None:
+    def gcu(self) -> str:
         ...
           
-    def create_table(self, rows : List[List[Any]]) -> None:
+    def copy_file_from_folder(self, source_folder : str="jaguar") -> None:
         ...
           
-    def get_table(self, table_name : str) -> DataFrame:
+    def move_folder_resources(self, destination_path : str) -> None:
         ...
           
-    def query_table(self) -> DataFrame:
-        ...
-          
-    def get_table_slice(self, index : Optional[Tuple[int,int]]=None) -> Any:
-        ...
-          
-    def get_n_rows_from_tables_above(self, table_name : str) -> Any:
-        ...
-          
-    def get_n_rows_from_tables_below(self, table_name : str) -> Any:
-        ...
-          
-    def table_info(self, table_name : str) -> Any:
-        ...
-          
-    def get_table_names(self) -> List[str]:
-        ...
-          
-    def get_value_by_column_name(self, table_name : str) -> Any:
-        ...
-          
-    def get_value_by_column_index(self, table_name : str) -> Any:
-        ...
-          
-    def delete_table(self, table_name : str) -> Any:
-        ...
-          
-    def append_row(self, table_name : str) -> None:
-        ...
-          
-    def update_rows(self) -> None:
-        ...
-          
-    def delete_rows(self, table_name : str) -> None:
-        ...
-          
-    def put_column(self, table_name : str) -> None:
-        ...
-          
-    def insert_column(self, table_name : str) -> None:
-        ...
-          
-    def delete_columns(self, table_name : str) -> Any:
+    def read_word_in_directory(self, word : str) -> 'list[str]':
         ...
           

@@ -1,23 +1,14 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import os
 from typing import Set
-try:
-    from types_pre_processing import TypeChecker
-    from _base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend.types_pre_processing import TypeChecker
-        from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
-    except ModuleNotFoundError:
-        from src.draw_uml_backend.types_pre_processing import TypeChecker
-        from src.draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
-
+from draw_uml_backend.types_pre_processing import TypeChecker
+from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 @dataclass
 class ClassBuilder(BaseReader):
 
     dataclasses: bool
-    __final_class_representation: str = ""
+    __final_class_representation: str = field(init=False, default="")
 
     @property
     def output_file(self):

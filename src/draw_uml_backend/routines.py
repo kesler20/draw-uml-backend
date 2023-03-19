@@ -1,30 +1,12 @@
 from typing import Tuple
 import os
-try:
-    from class_builder import ClassBuilder
-    from code_reader import PythonCodeReader
-    from diagram_generator import DiagramGenerator
-    from test_builder import TestBuilder
-    from source_code import SourceCode
-    from types_pre_processing import TypeChecker
-    from _base import BASE_OUTPUT_RESPONSE_PATH
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend.class_builder import ClassBuilder
-        from draw_uml_backend.code_reader import PythonCodeReader
-        from draw_uml_backend.diagram_generator import DiagramGenerator
-        from draw_uml_backend.test_builder import TestBuilder
-        from draw_uml_backend.source_code import SourceCode
-        from draw_uml_backend.types_pre_processing import TypeChecker
-        from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
-    except ModuleNotFoundError:
-        from src.draw_uml_backend.class_builder import ClassBuilder
-        from src.draw_uml_backend.code_reader import PythonCodeReader
-        from src.draw_uml_backend.diagram_generator import DiagramGenerator
-        from src.draw_uml_backend.test_builder import TestBuilder
-        from src.draw_uml_backend.source_code import SourceCode
-        from src.draw_uml_backend.types_pre_processing import TypeChecker
-        from src.draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
+from draw_uml_backend.class_builder import ClassBuilder
+from draw_uml_backend.code_reader import PythonCodeReader
+from draw_uml_backend.diagram_generator import DiagramGenerator
+from draw_uml_backend.test_builder import TestBuilder
+from draw_uml_backend.source_code import SourceCode
+from draw_uml_backend.types_pre_processing import TypeChecker
+from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
 
 # for existing code
 response_code_path = os.path.join("responses", "response.json")
@@ -39,7 +21,7 @@ types_file = os.path.join(BASE_OUTPUT_RESPONSE_PATH, "_types.py")
 documentation_path = os.path.join(BASE_OUTPUT_RESPONSE_PATH, "design_doc.md")
 
 
-def routine(object_id, context: Tuple[str] = (response_code_path,
+def routine(object_id: int, context: Tuple[str] = (response_code_path,
                                               source_code_path,
                                               new_code_response,
                                               types_file, documentation_path,
