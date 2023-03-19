@@ -212,7 +212,7 @@ class {}(object):
             return f"{_type}[{inner_type}] = field(init=False, default_factory=lambda : {default_value})"
         else:
             if private:
-                return f"{_type}[{inner_type}] = field(init=False, default={default_value})"
+                return f"{_type} = field(init=False, default={default_value})"
 
         return field_type
 
@@ -362,7 +362,7 @@ class {}(object):
 
                     # for the last param to comment
                     if param == params[-1]:
-                        comment += '''
+                        comment += f'''
         
         Returns
         -------

@@ -27,7 +27,7 @@ class File(object):
         with open(self.filename, "w") as file:
             file.write(content)
 
-    def readlines(self) -> "list[str]":
+    def readlines(self) -> List[str]:
         """signature description"""
         with open(self.filename, "r") as file:
             content = file.readlines()
@@ -63,7 +63,7 @@ class File(object):
         with open(self.filename, "w") as file:
             file.write(f"{content}\n")
 
-    def read_line_by_condition(self, condition) -> "list[str]":
+    def read_line_by_condition(self, condition) -> List[str]:
         """
         condition should be a function which is applied
         to filter through the list of the lines of the file   

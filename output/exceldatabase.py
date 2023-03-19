@@ -1,13 +1,13 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
 from dataclasses import dataclass, field
-from output._types import str, DataFrame
+from output._types import DataFrame, str
         
 @dataclass
 class ExcelDatabase:
     """ExcelDatabase is a class"""
     
-    __filename : str[] = field(init=False, default="protocol_database.xlsx")
+    __filename : str = field(init=False, default="protocol_database.xlsx")
     
     @property
     def filename(self):
@@ -52,7 +52,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -72,7 +72,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -88,7 +88,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        DataFrame
         """
         ...
                           
@@ -114,7 +114,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -132,7 +132,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -150,7 +150,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -166,7 +166,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -192,7 +192,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -212,7 +212,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -228,7 +228,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           
@@ -246,7 +246,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -270,7 +270,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -290,7 +290,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -312,7 +312,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        None
         """
         ...
                           
@@ -330,7 +330,7 @@ class ExcelDatabase:
         
         Returns
         -------
-        {method['return_type']}
+        Any
         """
         ...
                           

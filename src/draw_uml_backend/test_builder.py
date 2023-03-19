@@ -305,21 +305,17 @@ if __name__ == "__main__":
                             params += f"{param[0]}, "
                 except IndexError:
                     pass
-                function_call += """
-    {}.{}({})
-                """.format(
-                    self.source.class_name.lower(), method["signature"], params
-                )
+                function_call += f"""
+    {self.source.class_name.lower()}.{method["signature"]}({params})
+                """
         # remove self params on method calls
         function_call = function_call.replace("self, ", "")
         function_call = function_call.replace("self", "")
-        self.content += """
+        self.content += f"""
 if __name__ == "__main__":
-    {} = {}()
-    {}
-        """.format(
-            self.source.class_name.lower(), self.source.class_name, function_call
-        )
+    {self.source.class_name.lower()} = {self.source.class_name}()
+    {function_call}
+        """
         self.content.replace("import unittest", "")
         return self
 

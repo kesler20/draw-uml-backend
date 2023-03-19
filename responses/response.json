@@ -1,103 +1,48 @@
 [
   {
-    "class_name": "OperatingSystemInterface",
-    "description": "",
+    "class_name": "Computer",
+    "description": "Object Description",
     "methods": [
       {
-        "signature": "__init__",
+        "signature": "execute",
         "params": [
           [
-            "self"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "None",
-        "description": ""
-      },
-      {
-        "signature": "__enter__",
-        "params": [
-          [
-            "self"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "os",
-        "description": ""
-      },
-      {
-        "signature": "__exit__",
-        "params": [
-          [
-            "self"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "os",
-        "description": ""
-      },
-      {
-        "signature": "gcu",
-        "params": [
-          [
-            "self"
+            "name",
+            "type"
           ]
         ],
         "decorator": "",
         "return_type": "str",
-        "description": ""
-      }, 
-      {
-        "signature": "copy_file_from_folder",
-        "params": [
-          [
-            "self"
-          ],
-          [
-            "file",
-            "str"
-          ],
-          [
-            "source_folder",
-            "str=\"jaguar\""
-          ]
-        ],
-        "decorator": "",
-        "return_type": "None",
-        "description": ""
+        "description": "signature description"
       },
       {
-        "signature": "move_folder_resources",
+        "signature": "foo",
         "params": [
           [
-            "self"
-          ],
-          [
-            "destination_path",
-            "str"
+            "name",
+            "type"
           ]
         ],
         "decorator": "",
-        "return_type": "None",
-        "description": ""
-      },
-      {
-        "signature": "read_word_in_directory",
-        "params": [
-          [
-            "self"
-          ],
-          [
-            "word",
-            "str"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "'list[str]'",
-        "description": ""
+        "return_type": "list",
+        "description": "signature description"
       }
     ],
-    "fields": [],
-    "properties": []
+    "fields": [
+      [
+        "foll",
+        "int = 99"
+      ]
+    ],
+    "properties": [
+      [
+        "memory",
+        "int"
+      ],
+      [
+        "run",
+        "list[str] = [\"Hello world\"]"
+      ]
+    ]
   }
 ]

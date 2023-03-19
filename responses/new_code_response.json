@@ -4,19 +4,19 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 34.213707497168286,
-        "y": 96.23057930349444
+        "x": 108.54017426562723,
+        "y": 203.41456007734985
       },
       "data": {
-        "objectName": "CompletedMark",
-        "color": "rgb(191, 25, 35)",
+        "objectName": "Computer",
+        "color": "rgb(51, 159, 28)",
         "comment": "Object Description",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "score",
+            "signature": "memory",
             "returnType": "int",
-            "comment": "the score of each student",
+            "comment": "signature description",
             "params": [
               {
                 "name": "name",
@@ -26,7 +26,7 @@
           },
           {
             "visibility": "+",
-            "signature": "cohort_average",
+            "signature": "execute()",
             "returnType": "str",
             "comment": "signature description",
             "params": [
@@ -38,13 +38,37 @@
           },
           {
             "visibility": "+",
-            "signature": "get_max_score()",
-            "returnType": "int",
-            "comment": "get the maximum score within the cohort",
+            "signature": "foo()",
+            "returnType": "list",
+            "comment": "signature description",
             "params": [
               {
-                "name": "cohort_id",
-                "type": "int"
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "-",
+            "signature": "foll",
+            "returnType": "int = 99",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "run",
+            "returnType": "list[str] = [\"Hello world\"]",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "type"
               }
             ]
           }
@@ -52,11 +76,11 @@
         "connection": false
       },
       "width": 500,
-      "height": 222,
+      "height": 324,
       "selected": true,
       "positionAbsolute": {
-        "x": 34.213707497168286,
-        "y": 96.23057930349444
+        "x": 108.54017426562723,
+        "y": 203.41456007734985
       },
       "dragging": false
     }
