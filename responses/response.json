@@ -46,7 +46,7 @@
         "decorator": "",
         "return_type": "str",
         "description": ""
-      },
+      }, 
       {
         "signature": "copy_file_from_folder",
         "params": [

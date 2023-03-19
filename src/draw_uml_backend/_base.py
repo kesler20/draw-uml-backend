@@ -5,6 +5,7 @@ from draw_uml_backend.source_code import SourceCode
 
 BASE_OUTPUT_RESPONSE_PATH = "output"
 
+
 @dataclass
 class BaseReader:
     response_code_path: str

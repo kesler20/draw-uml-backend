@@ -1,6 +1,8 @@
 from _test_base import *
 import os
 import shutil
+from draw_uml_backend.file import File
+from pathlib import Path
 
 msg = '''
 Routine 1 includes creating all the files from a new drawUml diagram
@@ -22,11 +24,14 @@ context = (response_code_path,
            )
 
 # refresh output folder
-shutil.rmtree(BASE_OUTPUT_DIRECTORY)
-os.mkdir(BASE_OUTPUT_DIRECTORY)
+shutil.rmtree(OUTPUT_RESPONSE)
+os.mkdir(OUTPUT_RESPONSE)
+
 
 def test_routine2():
     routine(0, context=context, existing=True, diagram=True, types=True, code=True, test=True, dataclass=True)
+    # assert File(Path(expected_result_routine2)).readlines() == File(Path(types_file)).readlines()
 
 def test_routine1():
     routine(0, context=context, new=True, diagram=True, types=True, code=True, test=True, dataclass=True)
+    assert File(Path(expected_result_routine1)).readlines() == File(Path(documentation_path)).readlines()

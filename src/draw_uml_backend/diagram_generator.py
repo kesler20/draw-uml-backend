@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 try:
     from _base import BaseReader
 except ModuleNotFoundError:
@@ -18,15 +19,16 @@ class DiagramGenerator(BaseReader):
     cls.generate_classes()
     ```
     """
+
     output_file: str
 
     def init(self):
         self.clean_up(self.output_file)
         """This method should be called first"""
-        initial_layout = '''
+        initial_layout = """
 
 ```mermaid
-classDiagram'''
+classDiagram"""
         with open(self.output_file, "a") as out:
             out.write(initial_layout)
 
@@ -35,36 +37,46 @@ classDiagram'''
         dependent_class = "object"
         # check if the name has a class Name(DependantClass)
         if self.source.class_name.find("(") != -1:
-            dependent_class = self.source.class_name.split("(")[1].split(")")[
-                0]
+            dependent_class = self.source.class_name.split("(")[1].split(")")[0]
 
-        connections = '''
-   {} <|-- {}'''.format(self.source.class_name, dependent_class)
+        connections = """
+   {} <|-- {}""".format(
+            self.source.class_name, dependent_class
+        )
         with open(self.output_file, "a") as out:
             out.write(connections)
 
     def generate_classes(self):
         """this method should be called last"""
         name = self.source.class_name
-        methods = [(method['signature'], method['return_type'])
-                   for method in self.source.methods]
-        properties = [(props, props_type.split("=")[0].replace(" ", ""))
-                      for props, props_type in self.source.properties]
-        fields = [(field, field_type.split("=")[0].replace(" ", ""))
-                  for field, field_type in self.source.fields]
+        methods = [(method["signature"], method["return_type"]) for method in self.source.methods]
+        properties = [
+            (props, props_type.split("=")[0].replace(" ", ""))
+            for props, props_type in self.source.properties
+        ]
+        fields = [
+            (field, field_type.split("=")[0].replace(" ", ""))
+            for field, field_type in self.source.fields
+        ]
 
         final_class = ""
         for prop, prop_type in properties:
             final_class += """
-   {} : + {} {}""".format(name, prop, prop_type)
+   {} : + {} {}""".format(
+                name, prop, prop_type
+            )
 
         for field, field_type in fields:
             final_class += """
-   {} : - {} {}""".format(name, field, field_type)
+   {} : - {} {}""".format(
+                name, field, field_type
+            )
 
         for method, return_type in methods:
             final_class += """
-   {} : + {}() {}""".format(name, method, return_type)
+   {} : + {}() {}""".format(
+                name, method, return_type
+            )
 
         final_class += """
 ```

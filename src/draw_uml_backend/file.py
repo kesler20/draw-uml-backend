@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Union
 import os
 
 from pathlib import Path
+
 try:
     from _types import ClassRepresentation
 except ModuleNotFoundError:
@@ -13,13 +14,13 @@ except ModuleNotFoundError:
 
 
 class File(object):
-    '''Object Description'''
+    """Object Description"""
 
     def __init__(self, filename: Path) -> None:
         self.filename = filename.as_posix()
 
     def read(self) -> str:
-        '''signature description'''
+        """signature description"""
         with open(self.filename, "r") as file:
             content = file.read()
         return content
@@ -30,12 +31,12 @@ class File(object):
             file.write(content)
 
     def write(self, content: str) -> None:
-        '''signature description'''
+        """signature description"""
         with open(self.filename, "w") as file:
             file.write(content)
 
-    def readlines(self) -> 'list[str]':
-        '''signature description'''
+    def readlines(self) -> "list[str]":
+        """signature description"""
         with open(self.filename, "r") as file:
             content = file.readlines()
         return content
@@ -46,7 +47,9 @@ class File(object):
             content = json.loads(json_file.read())
         return content
 
-    def write_json(self, content: Union[Dict[str, Any], List[ClassRepresentation]]) -> None:
+    def write_json(
+        self, content: Union[Dict[str, Any], List[ClassRepresentation], ClassRepresentation]
+    ) -> None:
         """get a json file as a dictionary
 
         Param
@@ -58,20 +61,20 @@ class File(object):
             json_file.write(json.dumps(content, indent=2))
 
     def writeline(self, content: str) -> None:
-        '''signature description'''
+        """signature description"""
         with open(self.filename, "w") as file:
             file.write(f"{content}\n")
 
-    def read_line_by_condition(self, condition) -> 'list[str]':
-        '''
+    def read_line_by_condition(self, condition) -> "list[str]":
+        """
         condition should be a function which is applied
         to filter through the list of the lines of the file   
-        '''
+        """
         with open(self.filename, "w") as file:
             content = file.readlines()
 
         return list(filter(condition, content))
 
     def delete(self) -> None:
-        '''signature description'''
+        """signature description"""
         os.remove(self.filename)

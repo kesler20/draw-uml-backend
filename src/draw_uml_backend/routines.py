@@ -21,13 +21,31 @@ types_file = os.path.join(BASE_OUTPUT_RESPONSE_PATH, "_types.py")
 documentation_path = os.path.join(BASE_OUTPUT_RESPONSE_PATH, "design_doc.md")
 
 
-def routine(object_id: int, context: Tuple[str] = (response_code_path,
-                                              source_code_path,
-                                              new_code_response,
-                                              types_file, documentation_path,
-                                              ), new=False, existing=False, diagram=False, types=False, code=False, test=False, dataclass=False):
+def routine(
+    object_id: int,
+    context: Tuple[str, ...] = (
+        response_code_path,
+        source_code_path,
+        new_code_response,
+        types_file,
+        documentation_path,
+    ),
+    new=False,
+    existing=False,
+    diagram=False,
+    types=False,
+    code=False,
+    test=False,
+    dataclass=False,
+):
     # parse context into namespace
-    response_code_path, source_code_path, new_code_response, types_file, documentation_path = context
+    (
+        response_code_path,
+        source_code_path,
+        new_code_response,
+        types_file,
+        documentation_path,
+    ) = context
     # format the new_code coming from the API
     src = SourceCode(response_code_path)
     if new:
@@ -47,24 +65,27 @@ def routine(object_id: int, context: Tuple[str] = (response_code_path,
 
     # generate diagram
     if diagram:
-        diagram_generator = DiagramGenerator(
-            response_code_path, documentation_path)
+        diagram_generator = DiagramGenerator(response_code_path, documentation_path)
         diagram_generator.init()
         diagram_generator.generate_connections()
         diagram_generator.generate_classes()
 
     # generate code from the new code path
     if code:
-        class_builder = ClassBuilder(
-            response_code_path, dataclass)
-        class_builder.add_imports(f"{BASE_OUTPUT_RESPONSE_PATH}._types", type_checker.novel_types).add_class_definition(
-        ).add_properties().add_private_fields().add_methods().build_final_class()
+        class_builder = ClassBuilder(response_code_path, dataclass)
+        class_builder.add_imports(
+            f"{BASE_OUTPUT_RESPONSE_PATH}._types", type_checker.novel_types
+        ).add_class_definition().add_properties().add_private_fields().add_methods().build_final_class()
 
     if test:
-        TestBuilder(response_code_path,"io").add_initial_import().add_class_name().construct_set_up(
-        ).add_functions().add_tearDown().add_main_function_call().build_test_class()
+        TestBuilder(
+            response_code_path, "io"
+        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown().add_main_function_call().build_test_class()
 
-        TestBuilder(response_code_path,"side effects").add_initial_import().add_class_name().construct_set_up(
-        ).add_functions().add_tearDown().add_main_function_call().build_test_class()
+        TestBuilder(
+            response_code_path, "side effects"
+        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown().add_main_function_call().build_test_class()
 
-        TestBuilder(response_code_path,"manual test").add_initial_import().add_manual_tests().build_test_class()
+        TestBuilder(
+            response_code_path, "manual test"
+        ).add_initial_import().add_manual_tests().build_test_class()

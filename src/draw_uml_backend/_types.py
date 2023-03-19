@@ -1,4 +1,4 @@
-from typing import Protocol, List, Iterable, Tuple, Any, Optional, Union, TypedDict, Dict
+from typing import Protocol, List, Iterable, Tuple, Any, Optional, Union, TypedDict, Dict, Sequence
 
 
 class ResponseDataParams(TypedDict):
@@ -25,9 +25,9 @@ class MethodRepresentation(TypedDict):
 class ClassRepresentation(TypedDict):
     class_name: str
     description: str
-    methods: List[Union[MethodRepresentation, ResponseMethodRepresentation]]
-    fields: List[List[str]]
-    properties: List[List[str]]
+    methods: Union[List[MethodRepresentation], List[ResponseMethodRepresentation]]
+    fields: List[Dict[Any, Any]]
+    properties: List[Dict[Any, Any]]
 
 
 class DataFrameLocator(Protocol):

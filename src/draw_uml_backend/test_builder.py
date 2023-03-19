@@ -11,19 +11,28 @@ class TestBuilder(BaseReader):
     @property
     def test_file(self):
         if self.type_of_test == "io":
-            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_io_" + self.source.class_name.lower() + ".py")
+            return os.path.join(
+                BASE_OUTPUT_RESPONSE_PATH, "test_io_" + self.source.class_name.lower() + ".py"
+            )
         elif self.type_of_test == "manual test":
-            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "manual_test_" + self.source.class_name.lower() + ".py")
+            return os.path.join(
+                BASE_OUTPUT_RESPONSE_PATH, "manual_test_" + self.source.class_name.lower() + ".py"
+            )
         else:
-            return os.path.join(BASE_OUTPUT_RESPONSE_PATH, "test_side_effects_" + self.source.class_name.lower() + ".py")
+            return os.path.join(
+                BASE_OUTPUT_RESPONSE_PATH,
+                "test_side_effects_" + self.source.class_name.lower() + ".py",
+            )
 
     def add_initial_import(self):
-        self.content += '''
+        self.content += """
 import unittest
 from {} import {}
 
 print("Testing:" + {}.__doc__)
-        '''.format(self.source.class_name.lower(), self.source.class_name, self.source.class_name)
+        """.format(
+            self.source.class_name.lower(), self.source.class_name, self.source.class_name
+        )
         return self
 
     def add_class_name(self):
@@ -56,48 +65,53 @@ print("Testing:" + {}.__doc__)
     self.assertTrue(test_result.equals(side_effect_output[0]))    
     ```
     """
-    '''.format(self.source.class_name)
-        self.content += '''
+    '''.format(
+                self.source.class_name
+            )
+        self.content += """
 
 class Test_{}(unittest.TestCase):        
     {}
-        '''.format(self.source.class_name, comment)
+        """.format(
+            self.source.class_name, comment
+        )
 
         return self
 
     def construct_set_up(self):
         class_name = self.source.class_name
-        props = [field[0] for field in self.source.fields] + [prop[0] for prop in self.source.properties]
+        props = [field[0] for field in self.source.fields] + [
+            prop[0] for prop in self.source.properties
+        ]
 
         if len(props) == 0:
-            setUp = f'''
+            setUp = f"""
     def setUp(self):
-        self.test_client = {class_name}()'''
+        self.test_client = {class_name}()"""
 
         else:
 
-            setUp = f'''
+            setUp = f"""
     def setUp(self):
         self.test_client = {class_name}(
-            {props[0]}'''
+            {props[0]}"""
 
         if len(props) >= 1:
             for property in props[1:]:
-                property_line = f'''
-            ,{property}'''
+                property_line = f"""
+            ,{property}"""
                 setUp += property_line
 
-            setUp += '''
+            setUp += """
         )
-        '''
+        """
         self.content += setUp
         return self
 
-    def __construct_function_io(self,
-                                function_name: str,
-                                function_arguments: str,
-                                function_result_type: str):
-        '''
+    def __construct_function_io(
+        self, function_name: str, function_arguments: str, function_result_type: str
+    ):
+        """
         This function takes the function names, 
         arguments and the type of the result of the function
         and it returns a function which can be used to test the function
@@ -117,7 +131,7 @@ class Test_{}(unittest.TestCase):
         ---
         Returns:
         - function_test : a doc string which can be used to test the function passed
-        '''
+        """
         self.content += f'''
     @staticmethod
     @pytest.mark.parametrize("param1,param2, expected",[
@@ -144,11 +158,10 @@ class Test_{}(unittest.TestCase):
 
         return self
 
-    def __construct_function_side_effects(self,
-                                          function_name: str,
-                                          function_arguments: str,
-                                          function_result_type: str):
-        '''
+    def __construct_function_side_effects(
+        self, function_name: str, function_arguments: str, function_result_type: str
+    ):
+        """
         This function takes the function names, 
         arguments and the type of the result of the function
         and it returns a function which can be used to test the side effects of the functions
@@ -161,7 +174,7 @@ class Test_{}(unittest.TestCase):
         ---
         Returns:
         - function_test : a doc string which can be used to test the function passed
-        '''
+        """
         self.content += f'''
     @pytest.mark.skip(reason="feature not implemented yet")
     def test_side_effects_{function_name}(self):
@@ -193,34 +206,28 @@ class Test_{}(unittest.TestCase):
     def add_functions(self):
         for method in self.source.methods:
             params = ""
-            if method['signature'].startswith('__'):
+            if method["signature"].startswith("__"):
                 pass
             else:
-                for param in method['params']:
+                for param in method["params"]:
                     if len(param) > 1:
-                        if param == method['params'][-1]:
+                        if param == method["params"][-1]:
                             params += f"{param[0]} : {param[1]}"
                         else:
                             params += f"{param[0]} : {param[1]}, "
 
             if self.type_of_test == "io":
                 # depending on the type_of_test the corresponding internal method will be called
-                self.__construct_function_io(
-                    method['signature'],
-                    params,
-                    method['return_type']
-                )
+                self.__construct_function_io(method["signature"], params, method["return_type"])
             else:
                 self.__construct_function_side_effects(
-                    method['signature'],
-                    params,
-                    method['return_type']
+                    method["signature"], params, method["return_type"]
                 )
 
         return self
 
     def construct_js_test_function(self):
-        self.content += r'''
+        self.content += r"""
     // testing with correct input
     test('method_description, testing with correct input', () => {
         // array of arguments which are expected by the method being tested
@@ -265,34 +272,34 @@ class Test_{}(unittest.TestCase):
         expect(method_signature(...invalid_values_input)).toBe(invalid_values_output[0]);
         expect(typeof method_signature(...invalid_values_input)).toBe(method_result_type)
     });
-    '''
+    """
         return self
 
     def add_tearDown(self):
-        self.content += '''
+        self.content += """
     def tearDown(self):
         pass
-        '''
+        """
         return self
 
     def add_main_function_call(self):
-        self.content += '''
+        self.content += """
 if __name__ == "__main__":
     unittest.main()
-        '''
+        """
         return self
 
     def add_manual_tests(self):
         # group all the function calls
         function_call = ""
         for method in self.source.methods:
-            if method['signature'].startswith('__'):
+            if method["signature"].startswith("__"):
                 pass
             else:
                 params = ""
                 try:
-                    for param in method['params']:
-                        if param == method['params'][-1]:
+                    for param in method["params"]:
+                        if param == method["params"][-1]:
                             params += f"{param[0]}"
                         else:
                             params += f"{param[0]}, "
@@ -300,17 +307,20 @@ if __name__ == "__main__":
                     pass
                 function_call += """
     {}.{}({})
-                """.format(self.source.class_name.lower(), method['signature'], params)
+                """.format(
+                    self.source.class_name.lower(), method["signature"], params
+                )
         # remove self params on method calls
         function_call = function_call.replace("self, ", "")
         function_call = function_call.replace("self", "")
-        self.content += '''
+        self.content += """
 if __name__ == "__main__":
     {} = {}()
     {}
-        '''.format(self.source.class_name.lower(),
-                   self.source.class_name, function_call)
-        self.content.replace("import unittest","")
+        """.format(
+            self.source.class_name.lower(), self.source.class_name, function_call
+        )
+        self.content.replace("import unittest", "")
         return self
 
     def build_test_class(self):
