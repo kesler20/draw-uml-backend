@@ -8,7 +8,7 @@ the file generation layer generates the files such as the diagram file and the _
 this cna be organised by routines such that makes the design more modular and easily testable
 
 <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
-  <img src="/software_architecture.jpg" alt="draw uml schema" srcset="" style="width: 50%;">
+  <img src="/img/software_architecture.jpg" alt="draw uml schema" srcset="" style="width: 50%;">
 </div>
 
 The api endpoints can foolow the following convention
