@@ -1,6 +1,6 @@
 # New Features
 
 # Bug Fixes
-- chore(README): updated the todos 🪴 [kesler20] (ea6addb530578740bad49f33d1d40f2c5bb71b00) (Sun Mar 19 11:32:53 2023 +0000)
-- fix: improved the code formatting ⚙️ [kesler20] (ce04884cfb2f7b55caf0f6e0776545352e8c6d8a) (Sun Mar 19 11:17:25 2023 +0000)
+- fix: fixed the development pipeline ⚙️ [kesler20] (d03b0e6c3a1621d57acf1f361cafa96716e6a96c) (Sun Mar 19 18:55:50 2023 +0000)
+- feat: added better type safety 😕 [kesler20] (8faad3fb4b6e596488fa59f67620e04dc03da159) (Sun Mar 19 11:47:27 2023 +0000)
 
