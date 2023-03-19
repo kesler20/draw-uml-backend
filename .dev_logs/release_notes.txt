@@ -1,6 +1,6 @@
 # New Features
 
 # Bug Fixes
-- refactor: improved the code readability 🐍 💫 [kesler20] (148679767613842b9025ac2afefe4d6b9174ef06) (Sun Mar 19 11:16:27 2023 +0000)
-- chore(README): changed the location of the image thus updated the readme 🪴 [kesler20] (6408760e618f5564f8d1861cb45af95e2c3a2fef) (Sun Mar 19 00:27:58 2023 +0000)
+- chore(README): updated the todos 🪴 [kesler20] (ea6addb530578740bad49f33d1d40f2c5bb71b00) (Sun Mar 19 11:32:53 2023 +0000)
+- fix: improved the code formatting ⚙️ [kesler20] (ce04884cfb2f7b55caf0f6e0776545352e8c6d8a) (Sun Mar 19 11:17:25 2023 +0000)
 
