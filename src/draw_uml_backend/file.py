@@ -1,17 +1,8 @@
 import json
 from typing import Any, Dict, List, Union
 import os
-
 from pathlib import Path
-
-try:
-    from _types import ClassRepresentation
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend._types import ClassRepresentation
-    except ModuleNotFoundError:
-        from src.draw_uml_backend._types import ClassRepresentation
-
+from draw_uml_backend._types import ClassRepresentation
 
 class File(object):
     """Object Description"""
