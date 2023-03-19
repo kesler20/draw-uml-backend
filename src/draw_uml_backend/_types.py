@@ -10,8 +10,11 @@ class ResponseMethodRepresentation(TypedDict):
     visibility: str
     signature: str
     returnType: str
+    return_type: str
     comment: str
-    params: List[ResponseDataParams]
+    decorator: str
+    description: str
+    params: List[Union[List[str], ResponseDataParams]]
 
 
 class MethodRepresentation(TypedDict):
@@ -28,6 +31,14 @@ class ClassRepresentation(TypedDict):
     methods: Union[List[MethodRepresentation], List[ResponseMethodRepresentation]]
     fields: List[Dict[Any, Any]]
     properties: List[Dict[Any, Any]]
+
+
+class ClassRepresentationIntermediate(TypedDict):
+    class_name: str
+    description: str
+    methods: Union[List[MethodRepresentation], List[ResponseMethodRepresentation]]
+    fields: List[List[str]]
+    properties: List[List[str]]
 
 
 class DataFrameLocator(Protocol):

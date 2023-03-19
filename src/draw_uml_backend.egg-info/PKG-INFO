@@ -80,7 +80,6 @@ async def create_new_diagram(dataclasses: bool,format: bool, with_types: bool, d
 this would then correlate to radio buttons from the client side which will generate the required request
 Improve the drawUML:
 - [ ]	making simpler tests using pytest (the goal is to test IO using pytest to test for types and states of the functions, test side effects (the contracts of the class), test edge cases)
-- [ ]	making less dependencies
 - [ ]	add the toggle on and off for the code with data classes
 - [ ]	add typescript React code
 - [ ]	add Sqlalchemy data-type converter

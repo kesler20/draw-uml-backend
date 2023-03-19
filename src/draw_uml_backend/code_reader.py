@@ -1,17 +1,12 @@
 from pathlib import Path
 from typing import List
 from abc import ABC, abstractmethod
-
-try:
-    from _types import ClassRepresentation
-    from file import File
-except ModuleNotFoundError:
-    try:
-        from draw_uml_backend._types import ClassRepresentation
-        from draw_uml_backend.file import File
-    except ModuleNotFoundError:
-        from src.draw_uml_backend._types import ClassRepresentation
-        from src.draw_uml_backend.file import File
+from draw_uml_backend.file import File
+from draw_uml_backend._types import (
+    ClassRepresentationIntermediate,
+    MethodRepresentation,
+    ResponseMethodRepresentation,
+)
 
 
 class CodeReader(ABC):
@@ -89,7 +84,7 @@ class PythonCodeReader(CodeReader):
         source_code = self.__get_source_code()
 
         # this is a list of lists containing all the information of each class in a programme
-        classes_name_space: List[ClassRepresentation] = []
+        classes_name_space: List[ClassRepresentationIntermediate] = []
 
         # this flag will allow us to understand whether ywe are in the first, second etc.. class
         class_flag = -1
@@ -109,11 +104,13 @@ class PythonCodeReader(CodeReader):
                 # assuming that we want to keep the inheritance
                 if line.find(":") != -1:
                     class_name = line.split("class ")[1].split(":")[0]
+
+                default_methods: List[MethodRepresentation] = []
                 classes_name_space.append(
                     {
                         "class_name": class_name,
                         "description": "",
-                        "methods": [],
+                        "methods": default_methods,
                         "fields": [],
                         "properties": [],
                     }
@@ -198,7 +195,7 @@ class PythonCodeReader(CodeReader):
                     # def foo(param1: str, param2: int, optional_param: Optional[int] = None) -> None:
                     signature = line.split("def ")[1].split("(")[0]
                     classes_name_space[class_flag]["methods"].append(
-                        {
+                        {  # type: ignore [typeddict-item]
                             "signature": signature,
                             "params": [],
                             "decorator": "",

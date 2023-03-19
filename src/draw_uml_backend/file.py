@@ -2,7 +2,8 @@ import json
 from typing import Any, Dict, List, Union
 import os
 from pathlib import Path
-from draw_uml_backend._types import ClassRepresentation
+from draw_uml_backend._types import ClassRepresentation, ClassRepresentationIntermediate
+
 
 class File(object):
     """Object Description"""
@@ -39,7 +40,13 @@ class File(object):
         return content
 
     def write_json(
-        self, content: Union[Dict[str, Any], List[ClassRepresentation], ClassRepresentation]
+        self,
+        content: Union[
+            Dict[str, Any],
+            List[ClassRepresentation],
+            List[ClassRepresentationIntermediate],
+            ClassRepresentation,
+        ],
     ) -> None:
         """get a json file as a dictionary
 
