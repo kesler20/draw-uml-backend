@@ -192,8 +192,11 @@ class {self.source.class_name}(object):
         content += f"""
     Example
     -------
+    
+    ```python
     {self.source.class_name.lower()} = {self.source.class_name}()
     {function_call}
+    ```        
         """
 
         return content

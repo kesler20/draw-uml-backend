@@ -2,19 +2,15 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class int = 99(Protocol):
-    ...
-            
-
 class type(Protocol):
     ...
             
             
-class Computer(Protocol):   
+class Commander(Protocol):   
         
-    def execute(self, name : type) -> str:
+    def run(self, name : type) -> int:
         ...
           
-    def foo(self, name : type) -> list:
+    def execute(self, n : int) -> list:
         ...
           

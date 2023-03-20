@@ -4,17 +4,17 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 108.54017426562723,
-        "y": 203.41456007734985
+        "x": 713.8715939547899,
+        "y": 146.67798701083728
       },
       "data": {
-        "objectName": "Computer",
-        "color": "rgb(51, 159, 28)",
+        "objectName": "Commander",
+        "color": "rgb(118, 134, 144)",
         "comment": "Object Description",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "memory",
+            "signature": "run()",
             "returnType": "int",
             "comment": "signature description",
             "params": [
@@ -27,31 +27,19 @@
           {
             "visibility": "+",
             "signature": "execute()",
-            "returnType": "str",
-            "comment": "signature description",
-            "params": [
-              {
-                "name": "name",
-                "type": "type"
-              }
-            ]
-          },
-          {
-            "visibility": "+",
-            "signature": "foo()",
             "returnType": "list",
-            "comment": "signature description",
+            "comment": "this will execute the algoritghm",
             "params": [
               {
-                "name": "name",
-                "type": "type"
+                "name": "n",
+                "type": "int"
               }
             ]
           },
           {
-            "visibility": "-",
-            "signature": "foll",
-            "returnType": "int = 99",
+            "visibility": "+",
+            "signature": "command",
+            "returnType": "list[str] = [\"first command\"]",
             "comment": "signature description",
             "params": [
               {
@@ -62,8 +50,8 @@
           },
           {
             "visibility": "+",
-            "signature": "run",
-            "returnType": "list[str] = [\"Hello world\"]",
+            "signature": "void",
+            "returnType": "int",
             "comment": "signature description",
             "params": [
               {
@@ -76,11 +64,11 @@
         "connection": false
       },
       "width": 500,
-      "height": 324,
-      "selected": true,
+      "height": 273,
+      "selected": false,
       "positionAbsolute": {
-        "x": 108.54017426562723,
-        "y": 203.41456007734985
+        "x": 713.8715939547899,
+        "y": 146.67798701083728
       },
       "dragging": false
     }

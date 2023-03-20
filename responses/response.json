@@ -1,47 +1,42 @@
 [
   {
-    "class_name": "Computer",
+    "class_name": "Commander",
     "description": "Object Description",
     "methods": [
+      {
+        "signature": "run",
+        "params": [
+          [
+            "name",
+            "type"
+          ]
+        ],
+        "decorator": "",
+        "return_type": "int",
+        "description": "signature description"
+      },
       {
         "signature": "execute",
         "params": [
           [
-            "name",
-            "type"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "str",
-        "description": "signature description"
-      },
-      {
-        "signature": "foo",
-        "params": [
-          [
-            "name",
-            "type"
+            "n",
+            "int"
           ]
         ],
         "decorator": "",
         "return_type": "list",
-        "description": "signature description"
+        "description": "this will execute the algoritghm"
       }
     ],
-    "fields": [
-      [
-        "foll",
-        "int = 99"
-      ]
-    ],
+    "fields": [],
     "properties": [
       [
-        "memory",
-        "int"
+        "command",
+        "list[str] = [\"first command\"]"
       ],
       [
-        "run",
-        "list[str] = [\"Hello world\"]"
+        "void",
+        "int"
       ]
     ]
   }

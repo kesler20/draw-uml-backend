@@ -75,15 +75,14 @@ print("Testing:" + {self.source.class_name}.__doc__)
             invalid_param += param + ","
 
         self.content += f'''
-    @staticmethod
     @pytest.mark.parametrize({params},{function_result_type},[
         ({params},{function_result_type}),
-        (None,{invalid_params},"expected_value2"),
+        (None,{invalid_params},{function_result_type}),
         ("","",{function_result_type}),
     ])
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_io_{function_name}(self,*args):
-        """test the {function_name} method which accepts the following arguments:
+    def test_io_{function_name}({params}):
+        """test the `{function_name}` method which accepts the following arguments:
         
         Parameters
         ----------
@@ -93,8 +92,8 @@ print("Testing:" + {self.source.class_name}.__doc__)
         -------
         {function_result_type}
         """
-        test_result = self.test_client.{function_name}({params},{function_result_type})
-        self.assertEqual(type(test_result),{function_result_type}) 
+        test_result = self.test_client.{function_name}({params})
+        self.assertEqual(type(test_result),type({function_result_type})) 
     '''
 
         return self
@@ -107,21 +106,24 @@ print("Testing:" + {self.source.class_name}.__doc__)
         arguments and the type of the result of the function
         and it returns a function which can be used to test the side effects of the functions
 
-        ---
-        Parameters:
-        - function_name : the name of the function to be tested
-        - function_arguments : the arguments of the function to be tested
+        Parameters
+        ----------
+        
+        function_name : str
+            the name of the function to be tested
+        function_arguments : str
+            the arguments of the function to be tested
 
-        ---
-        Returns:
-        - function_test : a doc string which can be used to test the function passed
+        Returns
+        -------
+        str
         """
 
         self.content += f'''
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_{function_name}(self):
+    def test_side_effects_{function_name}():
         """
-        test the {function_name} method which accepts the following arguments:
+        test the `{function_name}` method which accepts the following arguments:
         
         Parameters
         ----------
