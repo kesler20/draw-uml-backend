@@ -23,4 +23,4 @@ RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requi
 
 RUN pip install gunicorn uvicorn
 
-CMD ["python", "-m", "gunicorn" "--workers" "3" "-k" "uvicorn.workers.UvicornWorker" "--threads" "2" "draw_uml_backend.app:app"]
+CMD ["python3", "-m", "gunicorn", "--workers", "3", "-k" ,"uvicorn.workers.UvicornWorker" ,"--threads","2" ,"draw_uml_backend.app:app"]
