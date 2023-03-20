@@ -12,11 +12,11 @@ RUN rm -rf /var/lib/apt/lists/*
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Copy your application code into the container
-COPY . /app
+# Set the working directory
+WORKDIR /app
 
-# Install your Python dependencies
-RUN pip install -r requirements.txt
+# Copy the application files
+COPY . .
 
-# Install your package in editable mode
-RUN pip install -e .
+# Install Dependencies and your package in editable mode
+RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt && pip install -e .
