@@ -19,8 +19,8 @@ WORKDIR /app
 COPY . .
 
 # Install Dependencies and your package in editable mode
-RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt && pip install -e .
+RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt
 
-RUN pip install gunicorn uvicorn
+RUN pip install -e .
 
 CMD ["python3", "-m", "gunicorn", "--workers", "3", "-k" ,"uvicorn.workers.UvicornWorker" ,"--threads","2" ,"draw_uml_backend.app:app"]
