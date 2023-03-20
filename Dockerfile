@@ -21,4 +21,4 @@ COPY . .
 # Install Dependencies and your package in editable mode
 RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt && pip install -e .
 
-CMD ["gunicorn", "--chdir", "app", "app:app", "-w", "2", "--threads", "2", "-b", "0.0.0.0:80"]
+CMD ["python", "-m", "gunicorn", "--chdir", "app", "app:app", "-w", "2", "--threads", "2", "-b", "0.0.0.0:80"]
