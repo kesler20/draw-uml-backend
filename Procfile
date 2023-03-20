@@ -1,1 +1,1 @@
-web: pip install -e . && gunicorn --workers 3 -k uvicorn.workers.UvicornWorker --threads 2 draw_uml_backend.app:app
+web: gunicorn --workers 3 -k uvicorn.workers.UvicornWorker --threads 2 draw_uml_backend.app:app
