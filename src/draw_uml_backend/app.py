@@ -1,5 +1,6 @@
 import shutil
 import os
+from typing import Union
 from pathlib import Path
 from fastapi import FastAPI, Body
 from fastapi.responses import FileResponse
@@ -40,29 +41,55 @@ async def read_root():
 # ------------------------------------#
 
 
-@app.get("/get/existing/{filename}")
+@app.get("/v1/files/{filename}")
 async def get_file(filename: str):
     print("get design document file called")
     file_path = os.path.join(BASE_OUTPUT_RESPONSE_PATH, filename)
     return FileResponse(file_path, media_type="text/x-markdown", filename=filename)
 
 
-@app.get("/get/files")
+@app.get("/v1/files")
 async def get_file_list():
     output_file = os.listdir(BASE_OUTPUT_RESPONSE_PATH)
     print("these are the following files", output_file)
     return {"response": output_file}
 
 
-@app.post("/create/new/files/{dataclasses}")
-async def create_new_diagram(dataclasses: bool, diagram=Body(...)):
+@app.post("/v1/files/existing")
+async def create_existing_diagram(dataclasses: bool, src=Body(...)):
+    
     # refresh the output folder
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
     os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
+    
+    # write the diagram to the new code response  code path
+    File(Path(source_code_path)).write(src)
+    
+    # get the number of objects created
+    routine(0, existing=True, diagram=True, types=True, code=True, test=True, dataclass=dataclasses)
+    
+    return {"response": "okay"}
+
+
+@app.post("/v1/files/new")
+async def create_new_diagram(dataclasses: str, diagram=Body(...)):
+    
+    # refresh the output folder
+    shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
+    os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
+    
     # write the diagram to the new code response  code path
     File(Path(new_code_response)).write_json(diagram)
+
+    # `dataclasses` variable is in the following form "01234" 
+    # where each integer correspond to the id of an integer that is a dataclass
+    dataclasses = [int(dataclass_id) for dataclass_id in list(dataclasses)]
+
     # get the number of objects created
     for object_id in range(len(diagram[0])):
+
+        # if the error was caught earlier then the `class_id` variable is still a string
+        # and it will never be == an int          
         routine(
             object_id,
             new=True,
@@ -70,18 +97,7 @@ async def create_new_diagram(dataclasses: bool, diagram=Body(...)):
             types=True,
             code=True,
             test=True,
-            dataclass=dataclasses,
+            dataclass=True if object_id in dataclasses else False
         )
-    return {"response": "okay"}
 
-
-@app.post("/create/existing/files/{dataclasses}")
-async def create_existing_diagram(dataclasses: bool, src=Body(...)):
-    # refresh the output folder
-    shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
-    os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
-    # write the diagram to the new code response  code path
-    File(Path(source_code_path)).write(src)
-    # get the number of objects created
-    routine(0, existing=True, diagram=True, types=True, code=True, test=True, dataclass=dataclasses)
     return {"response": "okay"}

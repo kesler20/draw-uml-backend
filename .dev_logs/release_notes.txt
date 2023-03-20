@@ -1,9 +1,5 @@
 # New Features
 
 # Bug Fixes
-- feat: improved documentation and tests 😕 [kesler20] (87469b771032a62a6a35b7085abb5d873e1ca80c) (Mon Mar 20 11:05:13 2023 +0000)
-- feat: changed the tests 🤝 [kesler20] (b299483285fc2bc11e3ef20cd9246c1fe78f1c5c) (Mon Mar 20 00:28:14 2023 +0000)
-- fix: fixed the types bug ⚙️ [kesler20] (85ef8967cd43883b469a28fc18b1f25d17386cc5) (Sun Mar 19 22:25:43 2023 +0000)
-- chore(DEPENDENCIES): change dependencies 🪴 [kesler20] (4306ae0841d89b0f10b25509c87bac91a9bdb302) (Sun Mar 19 20:24:14 2023 +0000)
-- fix(DEPENDENCIES): updated dependencies ⚙️ [kesler20] (422767f9993e9778b8d0f3ae7731dba99efea298) (Sun Mar 19 20:00:47 2023 +0000)
+- fix: fixed the ci pipeline ⚙️ [kesler20] (2c344f605e0502284652379e25758e1e6821410c) (Mon Mar 20 12:42:57 2023 +0000)
 

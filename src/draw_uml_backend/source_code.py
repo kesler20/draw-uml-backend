@@ -43,7 +43,7 @@ class SourceCode:
             default_source: ClassRepresentation = File(self.response_code_path).get_json()
             return default_source
 
-    def format_new_code_response(self, new_code_response: str, new_code_converted: str, n):
+    def format_new_code_response(self, new_code_response: str, new_code_converted: str, n: int):
         global default_class
 
         # get the file content

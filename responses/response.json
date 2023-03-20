@@ -1,7 +1,7 @@
 [
   {
     "class_name": "ClassRoom",
-    "description": "Object Description",
+    "description": "This refers to the class room with all the students",
     "methods": [],
     "fields": [],
     "properties": [

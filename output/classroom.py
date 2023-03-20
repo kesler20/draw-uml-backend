@@ -5,7 +5,8 @@ from output._types import *
         
 @dataclass
 class ClassRoom:
-    """ClassRoom is a class
+    """ClassRoom is
+    This refers to the class room with all the students
     
     
     Example

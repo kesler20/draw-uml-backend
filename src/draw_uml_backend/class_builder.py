@@ -104,7 +104,8 @@ from {types_path} import {types_import if types_import != "" else "*"}
             self.__final_class_representation += f'''
 @dataclass
 class {self.source.class_name}:
-    """{self.source.class_name} is a class
+    """{self.source.class_name} is
+    {self.source.description}
     
     {self.add_class_description_example()}
     """
@@ -112,7 +113,8 @@ class {self.source.class_name}:
         else:
             self.__final_class_representation += f'''
 class {self.source.class_name}(object):
-    """{self.source.class_name} is a class
+    """{self.source.class_name} is 
+    {self.source.description}
     
     {self.add_class_description_example()}
     """

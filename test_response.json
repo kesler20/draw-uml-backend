@@ -45,7 +45,7 @@
       "position": { "x": 891.4312843962937, "y": 132.71423570187926 },
       "data": {
         "objectName": "ClassRoom",
-        "comment": "Object Description",
+        "comment": "This refers to the class room with all the students",
         "color": "rgb(11, 13, 137)",
         "gridTable": [
           {

@@ -5,7 +5,8 @@ from output._types import ClassRoom
         
 @dataclass
 class Student:
-    """Student is a class
+    """Student is
+    Object Description
     
     
     Example
