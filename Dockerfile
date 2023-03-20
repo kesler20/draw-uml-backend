@@ -1,5 +1,5 @@
 # Use the Python 3.9 runtime as a base image
-FROM railwayapp/python:3.9
+FROM python:3.9-slim-buster
 
 # Install Graphviz using apt-get
 RUN sudo apt-get update && sudo apt-get install -y graphviz
