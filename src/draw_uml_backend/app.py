@@ -1,6 +1,6 @@
 import shutil
 import os
-from typing import Union
+from typing import Any
 from pathlib import Path
 from fastapi import FastAPI, Body
 from fastapi.responses import FileResponse
@@ -57,31 +57,31 @@ async def get_file_list():
 
 @app.post("/v1/files/existing")
 async def create_existing_diagram(dataclasses: bool, src=Body(...)):
-    
+
     # refresh the output folder
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
     os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
-    
+
     # write the diagram to the new code response  code path
     File(Path(source_code_path)).write(src)
-    
+
     # get the number of objects created
     routine(0, existing=True, diagram=True, types=True, code=True, test=True, dataclass=dataclasses)
-    
+
     return {"response": "okay"}
 
 
 @app.post("/v1/files/new")
-async def create_new_diagram(dataclasses: str, diagram=Body(...)):
-    
+async def create_new_diagram(dataclasses: Any, diagram=Body(...)):
+
     # refresh the output folder
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
     os.mkdir(BASE_OUTPUT_RESPONSE_PATH)
-    
+
     # write the diagram to the new code response  code path
     File(Path(new_code_response)).write_json(diagram)
 
-    # `dataclasses` variable is in the following form "01234" 
+    # `dataclasses` variable is in the following form "01234"
     # where each integer correspond to the id of an integer that is a dataclass
     dataclasses = [int(dataclass_id) for dataclass_id in list(dataclasses)]
 
@@ -89,7 +89,7 @@ async def create_new_diagram(dataclasses: str, diagram=Body(...)):
     for object_id in range(len(diagram[0])):
 
         # if the error was caught earlier then the `class_id` variable is still a string
-        # and it will never be == an int          
+        # and it will never be == an int
         routine(
             object_id,
             new=True,
@@ -97,7 +97,7 @@ async def create_new_diagram(dataclasses: str, diagram=Body(...)):
             types=True,
             code=True,
             test=True,
-            dataclass=True if object_id in dataclasses else False
+            dataclass=True if object_id in dataclasses else False,
         )
 
     return {"response": "okay"}
