@@ -21,6 +21,6 @@ COPY . .
 # Install Dependencies and your package in editable mode
 RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt && pip install -e .
 
-RUN pip install gunicorn
+RUN pip install gunicorn uvicorn
 
-CMD ["python", "-m", "gunicorn", "--chdir", "app", "app:app", "-w", "2", "--threads", "2", "-b", "0.0.0.0:80"]
+CMD ["python", "-m", "gunicorn" "--workers" "3" "-k" "uvicorn.workers.UvicornWorker" "--threads" "2" "draw_uml_backend.app:app"]
