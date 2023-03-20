@@ -9,9 +9,6 @@ RUN apt-get update && \
 # Clean up the package list to reduce the image size
 RUN rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip
-RUN pip install --upgrade pip
-
 # Set the working directory
 WORKDIR /app
 
@@ -19,8 +16,12 @@ WORKDIR /app
 COPY . .
 
 # Install Dependencies and your package in editable mode
-RUN python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements.txt
+RUN python -m venv /opt/venv && . /opt/venv/bin/activate  
 
-RUN pip install -e .
+RUN /opt/venv/bin/python -m pip install --upgrade pip
 
-CMD ["python3", "-m", "gunicorn", "--workers", "3", "-k" ,"uvicorn.workers.UvicornWorker" ,"--threads","2" ,"draw_uml_backend.app:app"]
+RUN /opt/venv/bin/python -m pip install -r requirements.txt
+
+RUN /opt/venv/bin/python -m pip install -e .
+
+CMD ["/opt/venv/bin/python3", "-m", "gunicorn", "--workers", "3", "-k" ,"uvicorn.workers.UvicornWorker" ,"--threads","2" ,"draw_uml_backend.app:app"]
