@@ -1,7 +1,7 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
 from dataclasses import dataclass, field
-from output._types import DataFrame, str
+from output._types import str, DataFrame
         
 @dataclass
 class ExcelDatabase:
