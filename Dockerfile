@@ -1,8 +1,13 @@
 # Use the Python 3.9 runtime as a base image
 FROM python:3.9-slim-buster
 
-# Install Graphviz using apt-get
-RUN sudo apt-get update && sudo apt-get install -y graphviz
+# Update the package list and install graphviz
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    graphviz
+
+# Clean up the package list to reduce the image size
+RUN rm -rf /var/lib/apt/lists/*
 
 # Upgrade pip
 RUN pip install --upgrade pip
