@@ -90,4 +90,7 @@ ENV/
 .ropeproject
 
 
+.vscode
+
 draw-uml-env
+

@@ -2,15 +2,14 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class type(Protocol):
+class ClassRoom(Protocol):
     ...
             
-            
-class Commander(Protocol):   
-        
-    def run(self, name : type) -> int:
-        ...
-          
-    def execute(self, n : int) -> list:
-        ...
-          
+
+class Student(TypedDict):
+    name: str
+    age: int
+    class_room: ClassRoom
+
+class ClassRoom(TypedDict):
+    subect: str

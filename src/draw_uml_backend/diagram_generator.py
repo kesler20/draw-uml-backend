@@ -1,5 +1,6 @@
+import os
 from dataclasses import dataclass
-from draw_uml_backend._base import BaseReader
+from draw_uml_backend._base import BaseReader, BASE_OUTPUT_RESPONSE_PATH
 
 
 @dataclass
@@ -76,3 +77,12 @@ classDiagram"""
         """
         with open(self.output_file, "a") as out:
             out.write(final_class)
+
+        with open(os.path.join(BASE_OUTPUT_RESPONSE_PATH, "__init__.py"), "w") as out:
+            out.write("# base")
+            os.system(
+                f"pyreverse -o svg -p {BASE_OUTPUT_RESPONSE_PATH} {BASE_OUTPUT_RESPONSE_PATH}"
+            )
+
+        os.system(f"mv classes_output.svg {BASE_OUTPUT_RESPONSE_PATH}")
+        os.system(f"mv packages_output.svg {BASE_OUTPUT_RESPONSE_PATH}")

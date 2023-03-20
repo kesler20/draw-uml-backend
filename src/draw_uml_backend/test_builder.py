@@ -175,6 +175,19 @@ print("Testing:" + {self.source.class_name}.__doc__)
 
         return self
 
+    def __get_base_test_file_content(self) -> str:
+        """This internal method is used to generate the test base file"""
+        return """
+import pytest
+
+@pytest.fixture(scope="session")
+def db_conn():
+    db = ...
+    url = ...
+    with db.connect(url) as conn:
+        yield conn
+        """
+
     def construct_js_test_function(self):
         self.content += r"""
     // testing with correct input
@@ -226,4 +239,8 @@ print("Testing:" + {self.source.class_name}.__doc__)
 
     def build_test_class(self):
         self.write(self.test_file, self.content)
+        self.write(
+            os.path.join(BASE_OUTPUT_RESPONSE_PATH, "conftest.py"),
+            self.__get_base_test_file_content(),
+        )
         return self

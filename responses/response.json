@@ -1,42 +1,13 @@
 [
   {
-    "class_name": "Commander",
+    "class_name": "ClassRoom",
     "description": "Object Description",
-    "methods": [
-      {
-        "signature": "run",
-        "params": [
-          [
-            "name",
-            "type"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "int",
-        "description": "signature description"
-      },
-      {
-        "signature": "execute",
-        "params": [
-          [
-            "n",
-            "int"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "list",
-        "description": "this will execute the algoritghm"
-      }
-    ],
+    "methods": [],
     "fields": [],
     "properties": [
       [
-        "command",
-        "list[str] = [\"first command\"]"
-      ],
-      [
-        "void",
-        "int"
+        "subect",
+        "str"
       ]
     ]
   }

@@ -22,6 +22,18 @@ in the source code the response_code_path refers to the json generated from the 
 new_response code path is the json generated from the UI and this should be converted into the
 response_code_path into the common format  
 
+## Note
+
+for generating class diagrams you can also run 
+```python
+pyreverse -o png -p draw_uml_backend src/draw_uml_backend
+```
+
+make sure that you have Graphviz installed if you don't run
+```linux
+sudo apt-get install graphviz
+```
+
 ## Tests
 
 the only test is the integration test `test_routines.py` however a better way to test the code is to run the gunicorn instance locally, and then either copy and paste the response of the diagram from the frontend

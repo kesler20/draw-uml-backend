@@ -2,10 +2,16 @@
 
 ```mermaid
 classDiagram
-   Commander <|-- object
-   Commander : + command list[str]
-   Commander : + void int
-   Commander : + run() int
-   Commander : + execute() list
+   Student <|-- object
+   Student : + name str
+   Student : + age int
+   Student : + class_room ClassRoom
+```
+        
+
+```mermaid
+classDiagram
+   ClassRoom <|-- object
+   ClassRoom : + subect str
 ```
         
