@@ -101,21 +101,22 @@ from {types_path} import {types_import if types_import != "" else "*"}
         """
 
         if self.dataclasses:
-            self.__final_class_representation += '''
+            self.__final_class_representation += f'''
 @dataclass
-class {}:
-    """{} is a class"""
-    '''.format(
-                self.source.class_name, self.source.class_name
-            )
+class {self.source.class_name}:
+    """{self.source.class_name} is a class
+    
+    {self.add_class_description_example()}
+    """
+    '''
         else:
-            self.__final_class_representation += '''
-class {}(object):
-    """{} is a class"""
-    '''.format(
-                self.source.class_name, self.source.class_name
-            )
-
+            self.__final_class_representation += f'''
+class {self.source.class_name}(object):
+    """{self.source.class_name} is a class
+    
+    {self.add_class_description_example()}
+    """
+    '''
         return self
 
     def add_properties(self):
@@ -162,6 +163,40 @@ class {}(object):
 
         self.__final_class_representation += starting_property
         return self
+
+    def add_class_description_example(self) -> str:
+        # group all the function calls
+        content = ""
+        function_call = ""
+        for method in self.source.methods:
+            # only show public methods on your example
+            if method["signature"].startswith("__"):
+                pass
+            else:
+                params = ""
+                try:
+                    for param in method["params"]:
+                        if param == method["params"][-1]:
+                            params += f"{param[0]}"
+                        else:
+                            params += f"{param[0]}, "
+                except IndexError:
+                    pass
+
+                function_call += f"""
+    {self.source.class_name.lower()}.{method["signature"]}({params})
+                """
+        # remove self params on method calls
+        function_call = function_call.replace("self, ", "")
+        function_call = function_call.replace("self", "")
+        content += f"""
+    Example
+    -------
+    {self.source.class_name.lower()} = {self.source.class_name}()
+    {function_call}
+        """
+
+        return content
 
     def __add_field_method(self, field_type: str, private: bool):
         """This method takes the field in the following format

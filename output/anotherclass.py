@@ -5,6 +5,14 @@ from output._types import *
         
 @dataclass
 class AnotherClass:
-    """AnotherClass is a class"""
+    """AnotherClass is a class
+    
+    
+    Example
+    -------
+    anotherclass = AnotherClass()
+    
+        
+    """
     
     testing : bool

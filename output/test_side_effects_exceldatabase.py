@@ -1,42 +1,8 @@
 
-import unittest
+import pytest
 from exceldatabase import ExcelDatabase
 
 print("Testing:" + ExcelDatabase.__doc__)
-        
-
-class Test_ExcelDatabase(unittest.TestCase):        
-    """
-    
-    testing the side effects of the ExcelDatabase class
-    
-    Example of how those tests are run
-    ---
-    given a method ``append_row`` which takes the following arguments
-    ```txt
-    row: List[List], table_name: str
-    ```
-    you can cause the side effect (call the method being tested) and then check the endpoints
-    ```python
-    # array of arguments which are expected by the method which causes the side effect under test
-    side_effect_input = [[121],base_table_name]
-    # array containing the expected correct result of the side effect
-    side_effect_output = [pd.DataFrame([*base_df_values, 121],columns=base_df_cols)]
-
-    # cause a side effect to test
-    test_result = self.test_client.append_row(*side_effect_input)
-
-    # test that the side effect is expected
-    test_result = self.test_client.get_table(base_table_name)
-    self.assertTrue(test_result.equals(side_effect_output[0]))    
-    ```
-    """
-    
-        
-    def setUp(self):
-        self.test_client = ExcelDatabase(
-            filename
-        )
         
     @pytest.mark.skip(reason="feature not implemented yet")
     def test_side_effects_filename(self):
@@ -49,7 +15,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         str
+        str
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -74,7 +40,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         DataFrame
+        DataFrame
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -99,7 +65,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -120,11 +86,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        table : DataFrame, table_name : str, message : str
+        table,table_name,message
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -145,11 +111,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        table_name : str, columns : List[str], rows : List[List[Any]]
+        table_name,columns,rows
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -170,11 +136,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        table_name : str
+        table_name
 
         Returns
         -------
-         DataFrame
+        DataFrame
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -199,7 +165,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         DataFrame
+        DataFrame
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -220,11 +186,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        columns : Union[str,List[str]], table_name : str, index : Optional[Tuple[int,int]]=None
+        columns,table_name,index
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -245,11 +211,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        n : int, table_name : str
+        n,table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -270,11 +236,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        n : int, table_name : str
+        n,table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -295,11 +261,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        table_name : str
+        table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -324,7 +290,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         List[str]
+        List[str]
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -345,11 +311,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        row_index : int, column_name : str, table_name : str
+        row_index,column_name,table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -370,11 +336,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        row_index : int, column_index : int, table_name : str
+        row_index,column_index,table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -395,11 +361,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        table_name : str
+        table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -420,11 +386,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        row : List[List[Any]], table_name : str
+        row,table_name
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -449,7 +415,7 @@ class Test_ExcelDatabase(unittest.TestCase):
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -470,11 +436,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        rows : List[int], table_name : str
+        rows,table_name
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -495,11 +461,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        column_name : str, column_values : List[Any], table_name : str
+        column_name,column_values,table_name
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -520,11 +486,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        column_index : int, column_name : str, column_values : List[Any], table_name : str
+        column_index,column_name,column_values,table_name
 
         Returns
         -------
-         None
+        None
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -545,11 +511,11 @@ class Test_ExcelDatabase(unittest.TestCase):
         
         Parameters
         ----------
-        columns : List[str], table_name : str
+        columns,table_name
 
         Returns
         -------
-         Any
+        Any
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -563,9 +529,3 @@ class Test_ExcelDatabase(unittest.TestCase):
         test_result = self.test_client.delete_columns()
         self.assertEqual(test_result,side_effect_output[0])
     
-    def tearDown(self):
-        pass
-        
-if __name__ == "__main__":
-    unittest.main()
-        

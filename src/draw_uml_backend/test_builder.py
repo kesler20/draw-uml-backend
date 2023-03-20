@@ -25,124 +25,65 @@ class TestBuilder(BaseReader):
             )
 
     def add_initial_import(self):
-        self.content += """
-import unittest
-from {} import {}
+        self.content += f"""
+import pytest
+from {self.source.class_name.lower()} import {self.source.class_name}
 
-print("Testing:" + {}.__doc__)
-        """.format(
-            self.source.class_name.lower(), self.source.class_name, self.source.class_name
-        )
-        return self
-
-    def add_class_name(self):
-        comment = f'''"""{self.source.description}'''
-        if self.type_of_test == "io":
-            comment += '''"""'''
-        else:
-            comment += '''
-    
-    testing the side effects of the {} class
-    
-    Example of how those tests are run
-    ---
-    given a method ``append_row`` which takes the following arguments
-    ```txt
-    row: List[List], table_name: str
-    ```
-    you can cause the side effect (call the method being tested) and then check the endpoints
-    ```python
-    # array of arguments which are expected by the method which causes the side effect under test
-    side_effect_input = [[121],base_table_name]
-    # array containing the expected correct result of the side effect
-    side_effect_output = [pd.DataFrame([*base_df_values, 121],columns=base_df_cols)]
-
-    # cause a side effect to test
-    test_result = self.test_client.append_row(*side_effect_input)
-
-    # test that the side effect is expected
-    test_result = self.test_client.get_table(base_table_name)
-    self.assertTrue(test_result.equals(side_effect_output[0]))    
-    ```
-    """
-    '''.format(
-                self.source.class_name
-            )
-        self.content += """
-
-class Test_{}(unittest.TestCase):        
-    {}
-        """.format(
-            self.source.class_name, comment
-        )
-
-        return self
-
-    def construct_set_up(self):
-        class_name = self.source.class_name
-        props = [field[0] for field in self.source.fields] + [
-            prop[0] for prop in self.source.properties
-        ]
-
-        if len(props) == 0:
-            setUp = f"""
-    def setUp(self):
-        self.test_client = {class_name}()"""
-
-        else:
-
-            setUp = f"""
-    def setUp(self):
-        self.test_client = {class_name}(
-            {props[0]}"""
-
-        if len(props) >= 1:
-            for property in props[1:]:
-                property_line = f"""
-            ,{property}"""
-                setUp += property_line
-
-            setUp += """
-        )
+print("Testing:" + {self.source.class_name}.__doc__)
         """
-        self.content += setUp
         return self
 
     def __construct_function_io(
-        self, function_name: str, function_arguments: str, function_result_type: str
+        self, function_name: str, function_arguments: str, function_result_type: str, params: str
     ):
         """
         This function takes the function names, 
         arguments and the type of the result of the function
+        as well as the function params such as
+        ```txt
+        param1, param2, paramN
+        param1, param2, paramN
+        ```
         and it returns a function which can be used to test the function
         with the following inputs: 
             - correct values
             - invalid values
-            - edge cases
             - invalid types
         and it will check in each case if the type of the result is as expected
 
-        ---
-        Parameters:
-        - function_name : the name of the function to be tested
-        - function_arguments : the arguments of the function to be tested
-        - function_result_type : the type of the result of the function being tested
+        Parameters
+        ----------
+        
+        function_name : str
+            the name of the function to be tested
+        function_arguments : str
+            the arguments of the function to be tested
+        function_result_type : str
+            the type of the result of the function being tested
+        params : str
+            the arguments of the function we are testing without
+            its types such as 
+            `param1, param2, paramN`
 
-        ---
-        Returns:
-        - function_test : a doc string which can be used to test the function passed
+        Returns
+        -------
+        str
         """
+        invalid_params = params.split(",")[:-2]
+        invalid_param = ""
+        for param in invalid_params:
+            invalid_param += param + ","
+
         self.content += f'''
     @staticmethod
-    @pytest.mark.parametrize("param1,param2, expected",[
-        ("input1","input2","expected_value1"),
-        ("input1a","input2a","expected_value2"),
-        ("input1c","input2b","expected_value3"),
+    @pytest.mark.parametrize({params},{function_result_type},[
+        ({params},{function_result_type}),
+        (None,{invalid_params},"expected_value2"),
+        ("","",{function_result_type}),
     ])
     @pytest.mark.skip(reason="feature not implemented yet")
     def test_io_{function_name}(self,*args):
-        """
-        test the {function_name} method which accepts the following arguments:
+        """test the {function_name} method which accepts the following arguments:
         
         Parameters
         ----------
@@ -150,10 +91,10 @@ class Test_{}(unittest.TestCase):
 
         Returns
         -------
-          {function_result_type}
+        {function_result_type}
         """
-        test_result = self.test_client.{function_name}(*args)
-        self.assertEqual(test_result,invalid_values_output[0]) 
+        test_result = self.test_client.{function_name}({params},{function_result_type})
+        self.assertEqual(type(test_result),{function_result_type}) 
     '''
 
         return self
@@ -175,6 +116,7 @@ class Test_{}(unittest.TestCase):
         Returns:
         - function_test : a doc string which can be used to test the function passed
         """
+
         self.content += f'''
     @pytest.mark.skip(reason="feature not implemented yet")
     def test_side_effects_{function_name}(self):
@@ -187,7 +129,7 @@ class Test_{}(unittest.TestCase):
 
         Returns
         -------
-         {function_result_type}
+        {function_result_type}
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -205,6 +147,7 @@ class Test_{}(unittest.TestCase):
 
     def add_functions(self):
         for method in self.source.methods:
+            function_arguments = ""
             params = ""
             if method["signature"].startswith("__"):
                 pass
@@ -212,13 +155,17 @@ class Test_{}(unittest.TestCase):
                 for param in method["params"]:
                     if len(param) > 1:
                         if param == method["params"][-1]:
-                            params += f"{param[0]} : {param[1]}"
+                            function_arguments += f"{param[0]} : {param[1]}"
+                            params += f"{param[0]}"
                         else:
-                            params += f"{param[0]} : {param[1]}, "
+                            function_arguments += f"{param[0]} : {param[1]}, "
+                            params += f"{param[0]},"
 
             if self.type_of_test == "io":
                 # depending on the type_of_test the corresponding internal method will be called
-                self.__construct_function_io(method["signature"], params, method["return_type"])
+                self.__construct_function_io(
+                    method["signature"], function_arguments, method["return_type"], params
+                )
             else:
                 self.__construct_function_side_effects(
                     method["signature"], params, method["return_type"]
@@ -273,50 +220,6 @@ class Test_{}(unittest.TestCase):
         expect(typeof method_signature(...invalid_values_input)).toBe(method_result_type)
     });
     """
-        return self
-
-    def add_tearDown(self):
-        self.content += """
-    def tearDown(self):
-        pass
-        """
-        return self
-
-    def add_main_function_call(self):
-        self.content += """
-if __name__ == "__main__":
-    unittest.main()
-        """
-        return self
-
-    def add_manual_tests(self):
-        # group all the function calls
-        function_call = ""
-        for method in self.source.methods:
-            if method["signature"].startswith("__"):
-                pass
-            else:
-                params = ""
-                try:
-                    for param in method["params"]:
-                        if param == method["params"][-1]:
-                            params += f"{param[0]}"
-                        else:
-                            params += f"{param[0]}, "
-                except IndexError:
-                    pass
-                function_call += f"""
-    {self.source.class_name.lower()}.{method["signature"]}({params})
-                """
-        # remove self params on method calls
-        function_call = function_call.replace("self, ", "")
-        function_call = function_call.replace("self", "")
-        self.content += f"""
-if __name__ == "__main__":
-    {self.source.class_name.lower()} = {self.source.class_name}()
-    {function_call}
-        """
-        self.content.replace("import unittest", "")
         return self
 
     def build_test_class(self):
