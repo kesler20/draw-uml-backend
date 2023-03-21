@@ -7,6 +7,7 @@
         "x": 177.6759225135787,
         "y": 152.34411237212817
       },
+      "dataclass": true,
       "data": {
         "objectName": "Student",
         "color": "rgb(175, 189, 196)",
@@ -63,6 +64,7 @@
     {
       "id": "node-2",
       "type": "umlDiagram",
+      "dataclass": false,
       "position": {
         "x": 891.4312843962937,
         "y": 132.71423570187926

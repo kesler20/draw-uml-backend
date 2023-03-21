@@ -53,11 +53,11 @@ class OperatingSystemInterface:
             r"\jaguar")[0], source_folder, file)
         destination = os.path.join(self.directory, file)
 
-        print(r'''
-        copying {} 
+        print(f'''
+        copying {source} 
         ---> into 
-        {}
-        '''.format(source, destination))
+        {destination}
+        ''')
         print(os.getcwd())
         shutil.copy(source, destination)
                           

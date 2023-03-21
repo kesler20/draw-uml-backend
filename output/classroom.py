@@ -1,11 +1,9 @@
 
 from typing import List, Any, Union, Dict, Optional, Tuple
-from dataclasses import dataclass, field
 from output._types import *
         
-@dataclass
-class ClassRoom:
-    """ClassRoom is
+class ClassRoom(object):
+    """ClassRoom is 
     This refers to the class room with all the students
     
     
@@ -19,4 +17,5 @@ class ClassRoom:
         
     """
     
-    subect : str
+    def __init__(self, subect : str) -> None:
+        self.subect = subect

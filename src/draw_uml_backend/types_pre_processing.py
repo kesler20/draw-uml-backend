@@ -122,13 +122,11 @@ from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
     def append_novel_types_to_types_path(self) -> None:
         classes_to_append_to_types_file = ""
         for type in self.novel_types:
-            classes_to_append_to_types_file += """
+            classes_to_append_to_types_file += f"""
 
-class {}(Protocol):
+class {type.replace("()", "")}(Protocol):
     ...
-            """.format(
-                type.replace("()", "")
-            )
+            """
         self.append(self.types_file, classes_to_append_to_types_file)
 
     def convert_typing_to_builtin(self, type: str) -> str:
@@ -145,25 +143,20 @@ class {}(Protocol):
         if len(self.source.methods) == 0:
             # if the class does not have methods,
             # make a typed dict
-            init_type = """
+            init_type = f"""
 
-class {}(TypedDict):""".format(
-                self.source.class_name
-            )
+class {self.source.class_name}(TypedDict):"""
 
             for name, name_type in self.source.properties:
-                init_type += """
-    {}: {}""".format(
-                    name, name_type
-                )
+                init_type += f"""
+    {name}: {name_type}"""
+
         else:
             # if the class has methods, make a protocol
-            init_type = """
+            init_type = f"""
             
-class {}(Protocol):   
-        """.format(
-                self.source.class_name
-            )
+class {self.source.class_name}(Protocol):   
+        """
 
             for method in self.source.methods:
                 for param in method["params"]:
@@ -175,10 +168,8 @@ class {}(Protocol):
                             else f", {param[0]} : {param[1]},"
                         )
 
-                init_type += """
-    def {}(self{}) -> {}:
+                init_type += f"""
+    def {method["signature"]}(self{params_to_pass}) -> {method["return_type"]}:
         ...
-          """.format(
-                    method["signature"], params_to_pass, method["return_type"]
-                )
+          """
         self.append(self.types_file, init_type)

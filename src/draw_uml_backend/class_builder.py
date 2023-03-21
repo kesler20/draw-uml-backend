@@ -149,18 +149,15 @@ class {self.source.class_name}(object):
         starting_property = (
             """"""
             if len(self.source.properties) == 0
-            else """
-    def __init__(self{}) -> None:""".format(
-                property_as_param
-            )
+            else f"""
+    def __init__(self{property_as_param}) -> None:"""
         )
 
         property_to_add = ""
         for property in self.source.properties:
-            property_to_add += """
-        self.{} = {}""".format(
-                property[0], property[0]
-            )
+            property_to_add += f"""
+        self.{property[0]} = {property[0]}"""
+
         starting_property += property_to_add
 
         self.__final_class_representation += starting_property

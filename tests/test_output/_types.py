@@ -2,11 +2,11 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
 
-class DataFrame(Protocol):
+class  str = "protocol_database.xlsx"(Protocol):
     ...
             
 
-class  str = "protocol_database.xlsx"(Protocol):
+class DataFrame(Protocol):
     ...
             
             

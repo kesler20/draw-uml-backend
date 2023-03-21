@@ -56,7 +56,7 @@ async def get_file_list():
 
 
 @app.post("/v1/files/existing")
-async def create_existing_diagram(dataclasses: bool, src=Body(...)):
+async def create_existing_diagram(dataclasses: bool = False, src=Body(...)):
 
     # refresh the output folder
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
@@ -72,7 +72,7 @@ async def create_existing_diagram(dataclasses: bool, src=Body(...)):
 
 
 @app.post("/v1/files/new")
-async def create_new_diagram(dataclasses: Any, diagram=Body(...)):
+async def create_new_diagram(diagram=Body(...)):
 
     # refresh the output folder
     shutil.rmtree(BASE_OUTPUT_RESPONSE_PATH)
@@ -81,9 +81,17 @@ async def create_new_diagram(dataclasses: Any, diagram=Body(...)):
     # write the diagram to the new code response  code path
     File(Path(new_code_response)).write_json(diagram)
 
-    # `dataclasses` variable is in the following form "01234"
-    # where each integer correspond to the id of an integer that is a dataclass
-    dataclasses = [int(dataclass_id) for dataclass_id in list(dataclasses)]
+    # get all the dataclasses : true within the response body
+    print(diagram[0][0]["dataclass"])
+    dataclasses = list(
+        filter(
+            lambda index: index is not None,
+            [
+                index if object["dataclass"] == True else None
+                for index, object in enumerate(diagram[0])
+            ],
+        )
+    )
 
     # get the number of objects created
     for object_id in range(len(diagram[0])):
