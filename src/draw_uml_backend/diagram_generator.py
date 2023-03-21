@@ -81,7 +81,7 @@ classDiagram"""
         with open(os.path.join(BASE_OUTPUT_RESPONSE_PATH, "__init__.py"), "w") as out:
             out.write("# base")
             os.system(
-                f"python -m pyreverse -o svg -p {BASE_OUTPUT_RESPONSE_PATH} {BASE_OUTPUT_RESPONSE_PATH}"
+                f"pyreverse -o svg -p {BASE_OUTPUT_RESPONSE_PATH} {BASE_OUTPUT_RESPONSE_PATH}"
             )
 
         os.system(f"mv classes_output.svg {BASE_OUTPUT_RESPONSE_PATH}")
