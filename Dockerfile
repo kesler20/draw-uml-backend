@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     graphviz
 
+RUN apt install -y git
+
 # Clean up the package list to reduce the image size
 RUN rm -rf /var/lib/apt/lists/*
 
