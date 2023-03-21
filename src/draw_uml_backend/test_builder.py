@@ -26,11 +26,76 @@ class TestBuilder(BaseReader):
 
     def add_initial_import(self):
         self.content += f"""
-import pytest
+import unittest
 from {self.source.class_name.lower()} import {self.source.class_name}
-
 print("Testing:" + {self.source.class_name}.__doc__)
         """
+        return self
+
+    def add_class_name(self):
+        comment = f'''"""{self.source.description}'''
+        if self.type_of_test == "io":
+            comment += '''"""'''
+        else:
+            comment += '''
+    
+    testing the side effects of the {self.source.class_name} class
+    
+    Example 
+    -------
+    How those tests are run
+    given a method ``append_row`` which takes the following arguments
+    ```txt
+    row: List[List], table_name: str
+    ```
+    you can cause the side effect (call the method being tested) and then check the endpoints
+    ```python
+    # array of arguments which are expected by the method which causes the side effect under test
+    side_effect_input = [[121],base_table_name]
+    # array containing the expected correct result of the side effect
+    side_effect_output = [pd.DataFrame([*base_df_values, 121],columns=base_df_cols)]
+    # cause a side effect to test
+    test_result = self.test_client.append_row(*side_effect_input)
+    # test that the side effect is expected
+    test_result = self.test_client.get_table(base_table_name)
+    self.assertTrue(test_result.equals(side_effect_output[0]))    
+    ```
+    """
+    '''
+        self.content += f"""
+class Test_{self.source.class_name}(unittest.TestCase):        
+    {comment}
+        """
+
+        return self
+
+    def construct_set_up(self):
+        class_name = self.source.class_name
+        props = [field[0] for field in self.source.fields] + [
+            prop[0] for prop in self.source.properties
+        ]
+
+        if len(props) == 0:
+            setUp = f"""
+    def setUp(self):
+        self.test_client = {class_name}()"""
+
+        else:
+
+            setUp = f"""
+    def setUp(self):
+        self.test_client = {class_name}(
+            {props[0]}"""
+
+        if len(props) >= 1:
+            for property in props[1:]:
+                property_line = f"""
+            ,{property}"""
+                setUp += property_line
+            setUp += """
+        )
+        """
+        self.content += setUp
         return self
 
     def __construct_function_io(
@@ -75,13 +140,14 @@ print("Testing:" + {self.source.class_name}.__doc__)
             invalid_param += param + ","
 
         self.content += f'''
-    @pytest.mark.parametrize({params},{function_result_type},[
+    @staticmethod
+    @pytest.mark.parametrize("{params},{function_result_type}",[
         ({params},{function_result_type}),
         (None,{invalid_params},{function_result_type}),
         ("","",{function_result_type}),
     ])
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_io_{function_name}({params}):
+    def test_io_{function_name}({params},{function_result_type}):
         """test the `{function_name}` method which accepts the following arguments:
         
         Parameters
@@ -121,7 +187,7 @@ print("Testing:" + {self.source.class_name}.__doc__)
 
         self.content += f'''
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_{function_name}():
+    def test_side_effects_{function_name}(self):
         """
         test the `{function_name}` method which accepts the following arguments:
         
@@ -175,19 +241,6 @@ print("Testing:" + {self.source.class_name}.__doc__)
 
         return self
 
-    def __get_base_test_file_content(self) -> str:
-        """This internal method is used to generate the test base file"""
-        return """
-import pytest
-
-@pytest.fixture(scope="session")
-def db_conn():
-    db = ...
-    url = ...
-    with db.connect(url) as conn:
-        yield conn
-        """
-
     def construct_js_test_function(self):
         self.content += r"""
     // testing with correct input
@@ -237,10 +290,20 @@ def db_conn():
     """
         return self
 
+    def add_tearDown(self):
+        self.content += """
+    def tearDown(self):
+        pass
+        """
+        return self
+
+    def add_main_function_call(self):
+        self.content += """
+if __name__ == "__main__":
+    unittest.main()
+        """
+        return self
+
     def build_test_class(self):
         self.write(self.test_file, self.content)
-        self.write(
-            os.path.join(BASE_OUTPUT_RESPONSE_PATH, "conftest.py"),
-            self.__get_base_test_file_content(),
-        )
         return self
