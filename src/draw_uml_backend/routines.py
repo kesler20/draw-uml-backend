@@ -80,8 +80,12 @@ def routine(
     if test:
         TestBuilder(
             response_code_path, "io"
-        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown().add_main_function_call().build_test_class()
+        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown(
+
+        ).add_main_function_call().build_test_class()
 
         TestBuilder(
             response_code_path, "side effects"
-        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown().add_main_function_call().build_test_class()
+        ).add_initial_import().add_class_name().construct_set_up().add_functions().add_tearDown(
+            
+        ).add_main_function_call().build_test_class()
