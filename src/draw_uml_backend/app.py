@@ -82,7 +82,6 @@ async def create_new_diagram(diagram=Body(...)):
     File(Path(new_code_response)).write_json(diagram)
 
     # get all the dataclasses : true within the response body
-    print(diagram[0][0]["dataclass"])
     dataclasses = list(
         filter(
             lambda index: index is not None,

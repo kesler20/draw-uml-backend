@@ -1,5 +1,7 @@
 # New Features
 
 # Bug Fixes
-- fix: fixed the ci pipeline ⚙️ [kesler20] (2c344f605e0502284652379e25758e1e6821410c) (Mon Mar 20 12:42:57 2023 +0000)
+- feat: finalised the addition of dataclasses 🤝 [kesler20] (3640e8097dfd4cc6b3eebdcac0c93bce42b7a9bd) (Tue Mar 21 18:15:39 2023 +0000)
+- fix: fix the typing system ⚙️ [kesler20] (018c93b8e6f4bc36d7b2eb4bdcc91fdf77558f24) (Mon Mar 20 17:44:19 2023 +0000)
+- feat: added a better management of dataclasses ✊ [kesler20] (2e8f0c6c3e3456065d3e8aa01db7b67012bddd8e) (Mon Mar 20 17:30:16 2023 +0000)
 
