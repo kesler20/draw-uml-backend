@@ -37,7 +37,7 @@ print("Testing:" + {self.source.class_name}.__doc__)
         if self.type_of_test == "io":
             comment += '''"""'''
         else:
-            comment += '''
+            comment += f'''
     
     testing the side effects of the {self.source.class_name} class
     

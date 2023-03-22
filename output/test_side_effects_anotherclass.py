@@ -6,7 +6,7 @@ print("Testing:" + AnotherClass.__doc__)
 class Test_AnotherClass(unittest.TestCase):        
     """Object Description
     
-    testing the side effects of the {self.source.class_name} class
+    testing the side effects of the AnotherClass class
     
     Example 
     -------

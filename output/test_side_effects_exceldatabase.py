@@ -6,7 +6,7 @@ print("Testing:" + ExcelDatabase.__doc__)
 class Test_ExcelDatabase(unittest.TestCase):        
     """
     
-    testing the side effects of the {self.source.class_name} class
+    testing the side effects of the ExcelDatabase class
     
     Example 
     -------
