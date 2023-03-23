@@ -81,6 +81,8 @@ def create_server_methods(method: str, resource: str):
     for char in resource[1:]:
         resource_name_with_capital += char
 
+    res = "{"
+    source = "}"
     if method == "create":
         write_to_output1(f"""
 
@@ -95,7 +97,7 @@ async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
         write_to_output1(f"""
         
 # {method} a {resource}
-@app.{convert_to_http_method(method)}("/v1/{resource}s/{resource}_id", response_model=schema.{resource_name_with_capital})
+@app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=schema.{resource_name_with_capital})
 async def {method}_{resource}({resource}_id : int):
   {resource} = []
   # do something
@@ -105,7 +107,7 @@ async def {method}_{resource}({resource}_id : int):
         write_to_output1(f"""
         
 # {method} a {resource}
-@app.{convert_to_http_method(method)}("/v1/{resource}s/{resource}_id", response_model=List[schema.{resource_name_with_capital}])
+@app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
   {resource}s = []
   # do something
@@ -115,7 +117,7 @@ async def {method}_{resource}({resource}_id : int):
         write_to_output1(f"""
         
 # {method} a {resource}
-@app.{convert_to_http_method(method)}("/v1/{resource}s/{resource}_id", response_model=List[schema.{resource_name_with_capital}])
+@app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
   {resource}s = []
   # do something
@@ -166,16 +168,30 @@ class {model_with_capital_letter}({model_with_capital_letter}Base):
 
 """)
 
+resources = []
+methods = ["create", "read", "update", "delete"]
+with open("models.py") as models:
+    content  = models.readlines()
 
-database_schema = ["user", "items", "profile"]
-server_methods = [("create", "user"), ("create", "items"),
-                  ("create", "profile")]
+for line in content:
+    if line.find("class ") != -1:
+        resources.append(line.split("class ")[1].split("(Base)")[0].replace(" ","").lower())
+
+database_schema = resources
+server_methods = []
+for method in methods:
+    for resource in resources:
+        server_methods.append((method, resource))
+
 os.remove("app.py")
 os.remove("schema.py")
 
 create_server_setup()
+resource_flag = ""
 for method, resource in server_methods:
-    context_delimeter(resource)
+    if resource != resource_flag:
+        context_delimeter(resource)
+        resource_flag = resource
     create_server_methods(method, resource)
 
 create_db_schema_setup()
