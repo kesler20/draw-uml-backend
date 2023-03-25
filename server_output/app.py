@@ -26,6 +26,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+sql_database_interface = SQLDatabaseInterface()
 
 # ============ DEFINE SWAGGER ENDPOINT ==============
 @app.get("/", tags=["root"])
@@ -41,33 +42,37 @@ async def read_root():
 # create a item
 @app.post("/v1/items/", response_model=List[schema.Item])
 async def create_item(item: schema.Item):
-  items = []
-  # do something
-  return items
+    item = sql_db_interface.add_value(
+        database.Item()
+    )
+    return item
 
         
 # read a item
 @app.get("/v1/items/{item_id}", response_model=schema.Item)
 async def read_item(item_id : int):
-  item = []
-  # do something
-  return item
+    return sql_db_interface.read_value(database.Item, id=item_id)
+
+        
+# read a item
+@app.get("/v1/items/", response_model=List[schema.Item])
+async def read_items(current_page_number: int = 1):
+    return sql_db_interface.read_all_values_with_pagination(
+        database.Item, number_of_objects_per_page=5, current_page_number=current_page_number
+    )
 
         
 # update a item
 @app.put("/v1/items/{item_id}", response_model=List[schema.Item])
 async def update_item(item_id : int):
-  items = []
-  # do something
-  return items
+    return sql_db_interface.update_value(database.Item, id=item_id)
 
         
 # delete a item
 @app.delete("/v1/items/{item_id}", response_model=List[schema.Item])
 async def delete_item(item_id : int):
-  items = []
-  # do something
-  return items
+    sql_db_interface.delete_value(database.Item, id=item_id)
+    return sql_db_interface.read_all_values(database.Item)
 
 # =======================================#
 #      USER      #
@@ -77,30 +82,34 @@ async def delete_item(item_id : int):
 # create a user
 @app.post("/v1/users/", response_model=List[schema.User])
 async def create_user(user: schema.User):
-  users = []
-  # do something
-  return users
+    user = sql_db_interface.add_value(
+        database.User()
+    )
+    return user
 
         
 # read a user
 @app.get("/v1/users/{user_id}", response_model=schema.User)
 async def read_user(user_id : int):
-  user = []
-  # do something
-  return user
+    return sql_db_interface.read_value(database.User, id=user_id)
+
+        
+# read a user
+@app.get("/v1/users/", response_model=List[schema.User])
+async def read_users(current_page_number: int = 1):
+    return sql_db_interface.read_all_values_with_pagination(
+        database.User, number_of_objects_per_page=5, current_page_number=current_page_number
+    )
 
         
 # update a user
 @app.put("/v1/users/{user_id}", response_model=List[schema.User])
 async def update_user(user_id : int):
-  users = []
-  # do something
-  return users
+    return sql_db_interface.update_value(database.User, id=user_id)
 
         
 # delete a user
 @app.delete("/v1/users/{user_id}", response_model=List[schema.User])
 async def delete_user(user_id : int):
-  users = []
-  # do something
-  return users
+    sql_db_interface.delete_value(database.User, id=user_id)
+    return sql_db_interface.read_all_values(database.User)

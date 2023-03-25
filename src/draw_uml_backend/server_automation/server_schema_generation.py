@@ -42,6 +42,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+sql_database_interface = SQLDatabaseInterface()
 
 # ============ DEFINE SWAGGER ENDPOINT ==============
 @app.get("/", tags=["root"])
@@ -95,9 +96,10 @@ def create_server_methods(method: str, resource: str):
 # {method} a {resource}
 @app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
-  {resource}s = []
-  # do something
-  return {resource}s
+    {resource} = sql_db_interface.add_value(
+        database.{resource_name_with_capital}()
+    )
+    return {resource}
 """
         )
     elif method == "read":
@@ -107,11 +109,21 @@ async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
 # {method} a {resource}
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=schema.{resource_name_with_capital})
 async def {method}_{resource}({resource}_id : int):
-  {resource} = []
-  # do something
-  return {resource}
+    return sql_db_interface.read_value(database.{resource_name_with_capital}, id={resource}_id)
 """
         )
+        write_to_output1(
+            f"""
+        
+# {method} a {resource}
+@app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
+async def {method}_{resource}s(current_page_number: int = 1):
+    return sql_db_interface.read_all_values_with_pagination(
+        database.{resource_name_with_capital}, number_of_objects_per_page=5, current_page_number=current_page_number
+    )
+"""
+        )
+
     elif method == "update":
         write_to_output1(
             f"""
@@ -119,9 +131,7 @@ async def {method}_{resource}({resource}_id : int):
 # {method} a {resource}
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
-  {resource}s = []
-  # do something
-  return {resource}s
+    return sql_db_interface.update_value(database.{resource_name_with_capital}, id={resource}_id)
 """
         )
     elif method == "delete":
@@ -131,9 +141,8 @@ async def {method}_{resource}({resource}_id : int):
 # {method} a {resource}
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
-  {resource}s = []
-  # do something
-  return {resource}s
+    sql_db_interface.delete_value(database.{resource_name_with_capital}, id={resource}_id)
+    return sql_db_interface.read_all_values(database.{resource_name_with_capital})
 """
         )
     else:
