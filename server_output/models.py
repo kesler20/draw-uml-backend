@@ -4,10 +4,10 @@ from typing import TypedDict, List, Optional
 
 
 Base = declarative_base()
+    
 
-
-class Items(Base):
-    __tablename__ = "itemss"
+class Item(Base):
+    __tablename__ = "items"
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
     owner = relationship("Owner", back_populates="")
@@ -34,4 +34,5 @@ class User(Base):
 
 
 # BUILD THE TABLES OF THE DATABASE
-Base.metadata.create_all(bind=create_engine(f"sqlite:///__main__.sqlite3", echo=True))
+Base.metadata.create_all(bind=create_engine(f"sqlite:///draw_uml_backend.server_automation.model_generation.sqlite3", echo=True))
+    

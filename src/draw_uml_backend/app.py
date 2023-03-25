@@ -2,13 +2,16 @@ import shutil
 import os
 from typing import Any
 from pathlib import Path
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, UploadFile
+from fastapi import File as FileType
 from fastapi.responses import FileResponse
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from draw_uml_backend.file import File
 from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH
 from draw_uml_backend.routines import *
+from draw_uml_backend.server_automation import model_generation
+from draw_uml_backend.server_automation import server_schema_generation
 
 # ---------------------------------------------------#
 #                                                    #
@@ -53,6 +56,45 @@ async def get_file_list():
     output_file = os.listdir(BASE_OUTPUT_RESPONSE_PATH)
     print("these are the following files", output_file)
     return {"response": output_file}
+
+
+@app.get("/v1/servers")
+async def get_servers():
+    server_files = os.listdir("server_output")
+    print("these are the following files", server_files)
+    return {"response": server_files}
+
+
+@app.get("/v1/servers/{filename}")
+async def get_server_file(filename: str):
+    print("get design document file called")
+    file_path = os.path.join("server_output", filename)
+    return FileResponse(file_path, media_type="text/x-markdown", filename=filename)
+
+
+@app.post("/v1/servers")
+async def create_servers(draw_sql_code: UploadFile = FileType(...)):
+
+    print(draw_sql_code.filename)
+
+    with draw_sql_code.file as f:
+        file_content = f.read()
+
+    with open("drawSQL.sql", "w") as sql_file:
+        sql_file.write(file_content.decode())
+
+    model_generation.main()
+    server_schema_generation.main()
+
+    if Path("server_output").exists():
+        shutil.rmtree("server_output")
+
+    os.mkdir("server_output")
+    os.rename("app.py", os.path.join("server_output", "app.py"))
+    os.rename("models.py", os.path.join("server_output", "models.py"))
+    os.rename("schema.py", os.path.join("server_output", "schema.py"))
+
+    return {"response": "okay"}
 
 
 @app.post("/v1/files/existing")

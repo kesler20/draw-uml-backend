@@ -188,38 +188,40 @@ class {model_with_capital_letter}({model_with_capital_letter}Base):
     )
 
 
-resources = []
-methods = ["create", "read", "update", "delete"]
-with open("models.py") as models:
-    content = models.readlines()
+def main():
 
-for line in content:
-    if line.find("class ") != -1:
-        resources.append(line.split("class ")[1].split("(Base)")[0].replace(" ", "").lower())
+    resources = []
+    methods = ["create", "read", "update", "delete"]
+    with open("models.py") as models:
+        content = models.readlines()
 
-database_schema = resources
-server_methods = []
-for resource in resources:
-    for method in methods:
-        server_methods.append((method, resource))
+    for line in content:
+        if line.find("class ") != -1:
+            resources.append(line.split("class ")[1].split("(Base)")[0].replace(" ", "").lower())
 
-print(server_methods)
+    database_schema = resources
+    server_methods = []
+    for resource in resources:
+        for method in methods:
+            server_methods.append((method, resource))
 
-if Path("app.py").exists():
-    os.remove("app.py")
+    print(server_methods)
 
-if Path("schema.py").exists():
-    os.remove("schema.py")
+    if Path("app.py").exists():
+        os.remove("app.py")
 
-create_server_setup()
-resource_flag = ""
-for method, resource in server_methods:
-    if resource != resource_flag:
-        context_delimeter(resource)
-        resource_flag = resource
-    create_server_methods(method, resource)
+    if Path("schema.py").exists():
+        os.remove("schema.py")
 
-create_db_schema_setup()
-for model in database_schema:
-    context_delimeter2(model)
-    create_db_schema(model)
+    create_server_setup()
+    resource_flag = ""
+    for method, resource in server_methods:
+        if resource != resource_flag:
+            context_delimeter(resource)
+            resource_flag = resource
+        create_server_methods(method, resource)
+
+    create_db_schema_setup()
+    for model in database_schema:
+        context_delimeter2(model)
+        create_db_schema(model)
