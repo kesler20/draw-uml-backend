@@ -138,7 +138,7 @@ async def create_new_diagram(diagram=Body(...)):
         filter(
             lambda index: index is not None,
             [
-                index if object["dataclass"] == True else None
+                index if object["data"]["dataclass"] == True else None
                 for index, object in enumerate(diagram[0])
             ],
         )
