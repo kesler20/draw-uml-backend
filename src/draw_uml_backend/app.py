@@ -60,15 +60,25 @@ async def get_file_list():
 
 @app.get("/v1/servers")
 async def get_servers():
+
     server_files = os.listdir("server_output")
+    for file in os.listdir("tests_for_server_output"):
+        server_files.append(file)
+
     print("these are the following files", server_files)
     return {"response": server_files}
 
 
 @app.get("/v1/servers/{filename}")
 async def get_server_file(filename: str):
+
     print("get design document file called")
-    file_path = os.path.join("server_output", filename)
+
+    if Path(os.path.join("tests_for_server_output", filename)).exists():
+        file_path = os.path.join("tests_for_server_output", filename)
+    else:
+        file_path = os.path.join("server_output", filename)
+
     return FileResponse(file_path, media_type="text/x-markdown", filename=filename)
 
 
