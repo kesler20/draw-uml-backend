@@ -6,11 +6,11 @@ class (Protocol):
     ...
             
 
-class  Path(Protocol):
+class Path(Protocol):
     ...
             
 
-class Path(Protocol):
+class  Path(Protocol):
     ...
             
             

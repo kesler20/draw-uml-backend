@@ -93,7 +93,7 @@ def create_server_methods(method: str, resource: str):
         write_to_output1(
             f"""
 
-# {method} a {resource}
+# {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
     {resource} = sql_db_interface.add_value(
@@ -106,7 +106,7 @@ async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
         write_to_output1(
             f"""
         
-# {method} a {resource}
+# {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=schema.{resource_name_with_capital})
 async def {method}_{resource}({resource}_id : int):
     return sql_db_interface.read_value(database.{resource_name_with_capital}, id={resource}_id)
@@ -115,7 +115,7 @@ async def {method}_{resource}({resource}_id : int):
         write_to_output1(
             f"""
         
-# {method} a {resource}
+# {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}s(current_page_number: int = 1):
     return sql_db_interface.read_all_values_with_pagination(
@@ -128,7 +128,7 @@ async def {method}_{resource}s(current_page_number: int = 1):
         write_to_output1(
             f"""
         
-# {method} a {resource}
+# {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
     return sql_db_interface.update_value(database.{resource_name_with_capital}, id={resource}_id)
@@ -138,7 +138,7 @@ async def {method}_{resource}({resource}_id : int):
         write_to_output1(
             f"""
         
-# {method} a {resource}
+# {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}_id : int):
     sql_db_interface.delete_value(database.{resource_name_with_capital}, id={resource}_id)

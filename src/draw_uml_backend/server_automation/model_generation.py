@@ -83,11 +83,11 @@ class {table_name}(Base):
             class_flag = line.split("class ")[1].split("(Base)")[0]
             class_properties[class_flag] = []
 
-        if line.find("id") == -1:
+        if line.find("id") == -1 and line.find("_id") == -1:
             if line.find("Column(") != -1:
                 property_ = line.split(" = Column(")[0].replace(" ", "")
                 property_type = line.split("Column(")[1].split(",")[0]
-                class_properties[class_flag].append((property_, PYTHON_TYPES[property_type]))
+                class_properties[class_flag].append((property_, property_type))
             else:
                 if line.find("relationship(") != -1:
                     property_ = line.split("= relationship(")[0].replace(" ", "")
