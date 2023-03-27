@@ -78,6 +78,10 @@ for user in users:
     print(user.items)
 ```
 
+For modifying the `schema.py` generated file add a property that is unique within the table on the `TableCreate` object of the schema.
+Add a property on the constructor for all the rows which are `relationships` in tables which have a foreignkey, this will allow to relate
+the table to at least one of its foreign table as the argument will be required tio be passed.
+
 ## Tests
 
 the only test is the integration test `test_routines.py` however a better way to test the code is to run the gunicorn instance locally, and then either copy and paste the response of the diagram from the frontend

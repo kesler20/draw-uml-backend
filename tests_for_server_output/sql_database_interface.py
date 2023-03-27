@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 
 class SQLDatabaseInterface:
@@ -88,20 +88,65 @@ class SQLDatabaseInterface:
         self.session.commit()
         self.session.refresh(new_row)
         return new_row
+    
+    def add_values(self,class_table: Any, new_row: List[Any]) -> List[Any]:
+        """add_values this method will add a row to the given table. i.e.
 
-    def update_value(self, class_table: Any, key: str, value: str, **kwargs: Any) -> Any:
+        ## Example
+        ```python
+        new_row = User(name='Alice', age=30)
+        session = SQLDatabaseInterface()
+        session.add_values(new_row)
+        ```
+
+        Parameters
+        ---
+
+        new_row Any
+            this is the instance of the table class that we want to insert
+            i.e. new_user = User(name='Alice')
+
+        Returns
+        ---
+        result: None
+        """
+        # Insert a new row into the table
+        self.session.add_all(new_row)
+        self.session.commit()
+        return self.read_all_values(class_table)
+    
+    def update_value(self, class_table: Any, key: str, value: Any, **kwargs: Any) -> Any:
+        """update_value will update a record in the table
+
+        ## Example
+        ```python
+        # this line will update the record email from Kesler to0 John
+        session.update_value(database.User, "email", "John", email="Kesler")
+        ```
+        
+        Parameters
+        ----------
+        class_table : Any
+            this is the table of the database that the record we want
+            to update is in
+        
+        key : str
+            the column of the record we want to update
+        value : Any
+            the updated value of the record
+        
+        kwargs : Any
+            key value pairs used to locate the record in the database
+        
+        Returns
+        -------
+        Any
+            return all the new values of the database
+        """
         self.session.query(class_table).filter_by(**kwargs).update({key: value})
         self.session.commit()
         return self.read_all_values(class_table)
 
-    def update_row(self, class_table: Any, class_row: Any, **kwargs: Any) -> Any:
-        for key, value in class_row.__dict__:
-            if not key.startswith("_"):
-                self.session.query(class_table).filter_by(**kwargs).update({key: value})
-        self.session.commit()
-        if class_row is not None:
-            self.session.refresh(class_row)
-        return class_row
 
     def read_value(self, class_table: Any, **kwargs: Any) -> Optional[Any]:
         """read_value this will read a specific value (row) from the given table.
