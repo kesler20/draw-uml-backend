@@ -148,7 +148,7 @@ class Test_{self.source.class_name}(unittest.TestCase):
         ("","",{function_result_type}),
     ])
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_io_{function_name}({params},{function_result_type}):
+    def test_io_{function_name}(self,{params},{function_result_type}):
         """test the `{function_name}` method which accepts the following arguments:
         
         Parameters
