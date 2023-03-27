@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: draw-uml-backend
-Version: 0.4.3
+Version: 0.4.4
 Summary: A python application for generating python applications
 Author: Kesler Isoko
 Author-email: uchekesla@gmail.com
@@ -88,6 +88,10 @@ print([user.name for user in users])
 for user in users:
     print(user.items)
 ```
+
+For modifying the `schema.py` generated file add a property that is unique within the table on the `TableCreate` object of the schema.
+Add a property on the constructor for all the rows which are `relationships` in tables which have a foreignkey, this will allow to relate
+the table to at least one of its foreign table as the argument will be required tio be passed.
 
 ## Tests
 
