@@ -19,4 +19,5 @@ class AnotherClass:
         
     """
     
+    # signature description
     testing : bool

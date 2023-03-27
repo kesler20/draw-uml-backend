@@ -147,7 +147,8 @@ class {type.replace("()", "")}(Protocol):
 
 class {self.source.class_name}(TypedDict):"""
 
-            for name, name_type in self.source.properties:
+            for property in self.source.properties:
+                name, name_type = property[0], property[1]
                 init_type += f"""
     {name}: {name_type}"""
 

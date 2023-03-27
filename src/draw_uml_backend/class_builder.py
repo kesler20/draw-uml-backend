@@ -138,7 +138,8 @@ class {self.source.class_name}(object):
 
         # add the properties as params __init__(self,prop1,prop2...)
         property_as_param = ""
-        for property, property_types in self.source.properties:
+        for val in self.source.properties:
+            property, property_types = val[0], val[1]
             property_as_param += (
                 f", {property} : {property_types}"
                 if property == self.source.properties[-1][0]
@@ -156,6 +157,7 @@ class {self.source.class_name}(object):
         property_to_add = ""
         for property in self.source.properties:
             property_to_add += f"""
+        # {property[-1]}
         self.{property[0]} = {property[0]}"""
 
         starting_property += property_to_add
@@ -263,10 +265,13 @@ class {self.source.class_name}(object):
         # [["filename", " str = \"protocol_database.xlsx\""]]
 
         initial_field = """"""
-        for field, field_type in self.source.properties:
-
+        for val in self.source.properties:
+            if len(val) < 3:
+                val.append("field description")
+            field, field_type, field_comment = val[0], val[1], val[2]
             field_type = self.__add_field_method(field_type, False)
             initial_field += f"""
+    # {field_comment}
     {field} : {field_type}"""
 
         self.__final_class_representation += initial_field
@@ -294,20 +299,29 @@ class {self.source.class_name}(object):
         initial_field = """"""
 
         if self.dataclasses:
-            for field, field_type in self.source.fields:
+            for fields in self.source.fields:
+                if len(fields) < 3:
+                    fields.append("field description")
+                field, field_type, field_comment = fields[0], fields[1], fields[2]
                 field_type = self.__add_field_method(field_type, True)
 
                 initial_field += f"""
+    # {field_comment}
     __{field} : {field_type}"""
 
         else:
-            for field, field_type in self.source.fields:
+            for fields in self.source.fields:
+                if len(fields) < 3:
+                    fields.append("field description")
+                field, field_type, field_comment = fields[0], fields[1], fields[2]
                 initial_field += f"""
-        self.__{field} : {field_type}"""
+    # {field_comment}
+    self.__{field} : {field_type}"""
 
         # create setters and getters, since all private fields require
         # setters and getters
-        for field, field_type in self.source.fields:
+        for fields in self.source.fields:
+            field, field_type = fields[0], fields[1]
             initial_field += f'''
     
     @property
@@ -317,7 +331,8 @@ class {self.source.class_name}(object):
             '''
 
         # create setters
-        for field, field_type in self.source.fields:
+        for fields in self.source.fields:
+            field, field_type = fields[0], fields[1]
             initial_field += f'''    
     def set_{field}(self,{field} : {field_type.split("=")[0].replace(" ", "")}):
         """{field} property setter"""
@@ -385,6 +400,11 @@ class {self.source.class_name}(object):
                             else f", {param[0]} : {param[1]}"
                         )
 
+                        if len(param) < 3:
+                            param.append(
+                                f"{param[0]} is a {param[1]} to be passed as {index + 1} param"
+                            )
+
                     else:
                         # if there is more than one item in the parameter array use the second item as a type
                         params_to_pass += (
@@ -395,7 +415,7 @@ class {self.source.class_name}(object):
 
                     comment += f"""
         {param[0]} : {None if len(param) == 1 else param[1]}
-            to be passed as parameter {index + 1}"""
+            {param[2]}"""
 
                     # for the last param to comment
                     if param == params[-1]:
@@ -404,6 +424,7 @@ class {self.source.class_name}(object):
         Returns
         -------
         {method['return_type']}
+            {param[-1]}
         """
         ...
                         '''

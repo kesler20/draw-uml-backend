@@ -45,12 +45,11 @@ classDiagram"""
         name = self.source.class_name
         methods = [(method["signature"], method["return_type"]) for method in self.source.methods]
         properties = [
-            (props, props_type.split("=")[0].replace(" ", ""))
-            for props, props_type in self.source.properties
+            (property[0], property[1].split("=")[0].replace(" ", ""))
+            for property in self.source.properties
         ]
         fields = [
-            (field, field_type.split("=")[0].replace(" ", ""))
-            for field, field_type in self.source.fields
+            (field[0], field[1].split("=")[0].replace(" ", "")) for field in self.source.fields
         ]
 
         final_class = ""

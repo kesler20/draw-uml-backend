@@ -111,7 +111,8 @@ class SourceCode:
                 signature_object["signature"] = method["signature"].replace("()", "")
                 signature_object["description"] = method["comment"]
                 signature_object["params"] = [
-                    [params["name"], params["type"]] for params in method["params"]
+                    [params["name"], params["type"], params["comment"][0], params["comment"][1]]
+                    for params in method["params"]
                 ]
                 signature_object["decorator"] = ""
                 signature_object["return_type"] = method["returnType"]
@@ -119,10 +120,12 @@ class SourceCode:
                 signature.append(signature_object)
 
             for property in default_class["properties"]:
-                properties.append([property["signature"], property["returnType"]])
+                properties.append(
+                    [property["signature"], property["returnType"], property["comment"]]
+                )
 
             for field in default_class["fields"]:
-                fields.append([field["signature"], field["returnType"]])
+                fields.append([field["signature"], field["returnType"], field["comment"]])
 
             default_class["methods"] = signature
             default_class["properties"] = properties  # type: ignore [typeddict-item]

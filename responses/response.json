@@ -1,13 +1,29 @@
 [
   {
-    "class_name": "ClassRoom",
-    "description": "This refers to the class room with all the students",
-    "methods": [],
+    "class_name": "Controller",
+    "description": "This is an interface with the PID controller hardware",
+    "methods": [
+      {
+        "signature": "activate",
+        "params": [
+          [
+            "control_value",
+            "int",
+            "the set point of the control we want to perform",
+            "boolean representing whether the control was performed successfully"
+          ]
+        ],
+        "decorator": "",
+        "return_type": "bool",
+        "description": "control the process given a target set point"
+      }
+    ],
     "fields": [],
     "properties": [
       [
-        "subect",
-        "str"
+        "status",
+        "int",
+        "the status of the controller"
       ]
     ]
   }

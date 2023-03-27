@@ -1,275 +1,296 @@
-import pandas as pd
-import os
-from dataclasses import dataclass
-from typing import List, Any, Tuple, Union, Optional, Callable
-from _types import DataFrame
-import openpyxl as pxl
-import zipfile
+from pathlib import Path
+from typing import List
+from abc import ABC, abstractmethod
+from draw_uml_backend.file import File
+from draw_uml_backend._types import (
+    ClassRepresentationIntermediate,
+    MethodRepresentation,
+    ResponseMethodRepresentation,
+)
 
 
-@dataclass
-class ExcelDatabase:
-    """Excel database which is index by columns, and sheet_names
-    the columns are the different columns of the table, whilst the sheet_names refer to the
-    different tables in the database.
-    The database is saved in the OneDrive/Documents file called protocol_database.xlsx
+class CodeReader(ABC):
+    """The CodeReader reads code from the ``read_only`` folder and generates the response 
+    to the ``response`` folder
+
+    The Reader uses the ``Path`` object for the ``source_code_path`` ``field``
+    the Path object provides a number of useful methods that make it easier to work with files and directories.
+    For example, you can use the .exists() method to check whether a file or directory exists,
+    the .mkdir() method to create a new directory,
+    and the .glob() method to find all files in a directory that match a specific pattern.
     """
 
-    __filename: str = "protocol_database.xlsx"
+    __source_code_path: Path
+    __response_code_path: Path
 
     @property
-    def filename(self) -> str:
-        return self.__filename
+    @abstractmethod
+    def source_code_path(self) -> Path:
+        ...
 
     @property
-    def database(self) -> DataFrame:
-        dfs = []
-        for sheet in pd.ExcelFile(self.filename).sheet_names:
-            dfs.append(pd.read_excel(self.filename, sheet_name=sheet))
-        df: DataFrame = pd.concat(*dfs)
-        return df
+    @abstractmethod
+    def response_code_path(self) -> Path:
+        ...
+
+    @abstractmethod
+    def set_response_code_path(self, path: str):
+        ...
+
+    @abstractmethod
+    def set_source_code_path(self, path: str):
+        ...
+
+    @abstractmethod
+    def read(self) -> None:
+        ...
+
+
+class PythonCodeReader(CodeReader):
+    """The CodeReader Implementation for reading python code"""
+
+    def __init__(self, source_code_path: str, response_code_path: str) -> None:
+        self.__source_code_path: Path = Path("")
+        self.__response_code_path: Path = Path("")
+        self.set_source_code_path(source_code_path)
+        self.set_response_code_path(response_code_path)
+
+    def __repr__(self) -> str:
+        representation = {
+            k.replace("_PythonCodeReader__", ""): self.__dict__[k] for k in self.__dict__.keys()
+        }
+        return f"""PythonCodeReader({representation})"""
 
     @property
-    def database_info(self) -> None:
-        db = self.database
-        print("General Info on the Database")
-        print(db.info)
-        print("These are the columns")
-        print(db.columns)
-        print("These are the rows")
-        print(db.index)
-        print("This is the count")
-        print(db.count)
-        print("This is the database")
-        print(db)
+    def source_code_path(self) -> Path:
+        return self.__source_code_path
 
-    def _pp(self, table: DataFrame, table_name: str, message: str) -> None:
-        """Pretty print, a convention to display events
-        """
-        print(f"{message}...")
-        print(f"======= {table_name} ==========")
-        print(table)
+    @property
+    def response_code_path(self) -> Path:
+        return self.__response_code_path
 
-    def create_table(self, table_name: str, columns: List[str], rows: List[List[Any]]) -> None:
-        """Create a table from the list of rows and columns passed where the index of the list or rows
-        corresponds to the index of the list of columns
-        """
-        # collect the existing tables
-        old_dfs: List[DataFrame] = []
-        for sheet_name in pd.ExcelWriter(self.filename).sheets:
-            old_dfs.append(pd.read_excel(self.filename, sheet_name=sheet_name))
+    def set_response_code_path(self, path: str):
+        self.__response_code_path = Path(path)
+        return self
 
-        # create new_df
-        new_df = pd.DataFrame(data={col: rows[index]
-                                    for index, col in enumerate(columns)})
-        # append new df to the old df
-        old_dfs.append(new_df)
-        self._pp(new_df, table_name, "Creating table")
+    def set_source_code_path(self, path: str):
+        self.__source_code_path = Path(path)
+        return self
 
-        try:
-            for df in old_dfs:
-                excel_book = pxl.load_workbook(self.filename)
-                with pd.ExcelWriter(self.filename, engine='openpyxl') as writer:
-                    writer.book = excel_book
-                    writer.sheets = {
-                        worksheet.title: worksheet
-                        for worksheet in excel_book.worksheets
+    def __get_source_code(self) -> List[str]:
+        return [line.replace("\n", "") for line in File(self.source_code_path).readlines()]
+
+    def read(self) -> None:
+        source_code = self.__get_source_code()
+
+        # this is a list of lists containing all the information of each class in a programme
+        classes_name_space: List[ClassRepresentationIntermediate] = []
+
+        # this flag will allow us to understand whether ywe are in the first, second etc.. class
+        class_flag = -1
+        function_flag = -1
+        comment_flag = 0
+
+        # use the reserved key words from the programming language to understand the programme
+        for line_number, line in enumerate(source_code):
+            # Find the class names
+            if line.find("class ") != -1:
+                class_flag += 1
+                # reset the function flag as you are inside a new class
+                function_flag = -1
+                # the line might look like the following
+                # class class_name:
+                # class class_name(object):
+                # assuming that we want to keep the inheritance
+                if line.find(":") != -1:
+                    class_name = line.split("class ")[1].split(":")[0]
+
+                default_methods: List[MethodRepresentation] = []
+                classes_name_space.append(
+                    {
+                        "class_name": class_name,
+                        "description": "",
+                        "methods": default_methods,
+                        "fields": [],
+                        "properties": [],
                     }
-                    df.to_excel(writer, table_name, index=False)
-                    writer.save()
-        except zipfile.BadZipFile:
+                )
 
-            pd.DataFrame([0]).to_excel(
-                self.filename, sheet_name="genesis table")
+            # Find the properties
+            if line.find("def __init__") != -1:
+                # find params names and types
+                # params are usually delineated by brackets
+                params = line.split("(")[1].split(")")[0]
 
-            for df in old_dfs:
-                excel_book = pxl.load_workbook(self.filename)
-                with pd.ExcelWriter(self.filename, engine='openpyxl') as writer:
-                    writer.book = excel_book
-                    writer.sheets = {
-                        worksheet.title: worksheet
-                        for worksheet in excel_book.worksheets
-                    }
-                    df.to_excel(writer, table_name, index=False)
-                    writer.save()
+                # remove self
+                params = params.replace("self,", "")
 
-    def get_table(self, table_name: str) -> DataFrame:
-        df: DataFrame = pd.read_excel(self.filename, sheet_name=table_name)
-        return df
+                dirty_param_names_and_types: List[str] = params.split(":")
+                param_names_and_types: List[List[str]] = [
+                    i.split(",") for i in dirty_param_names_and_types
+                ]
 
-    def query_table(self, query: Callable[[DataFrame], Any], table_name) -> DataFrame:
-        """To query the table pass a lambda expression as the query callback which takes the df
-        as an argument
+                # remove nested lists
+                param_names_and_types_list: List[str] = []
+                for param_type in param_names_and_types:
+                    for val in param_type:
+                        param_names_and_types_list.append(val)
 
-        Example
-        ---
-        this is an example of querying values greater than or equal to 2
-        ```python
-        # initialise the database
-        db = ExcelDatabase()
-        # create a random table
-        db.create_table("New Table", ["data", "another data"], [
-                        [1, 2, 4, 6], [2, 10, 5, 7]])
-        # query the values from the data column which are greater than or qual to 2
-        print(db.query_table(lambda table: table["data"] >= 2, "New Table"))
-        ```
+                # the param list should be of the form [param1, type, param2, type, ...]
+                # if the number of params names and types is uneven then there are some types missing
+                if (
+                    len(param_names_and_types_list) % 2 != 0
+                    and param_names_and_types_list[0] != "self"
+                ):
+                    print("\nthe following params might miss some types\n", params)
+                    print("")
+                else:
+                    # avoid methods which only have self
+                    if param_names_and_types_list != ["self"]:
 
-        Output
-        ---
-        ```txt
-        ======= New Table ==========
-            data  another data
-        0     1             2
-        1     2            10
-        2     4             5
-        3     6             7
-            data  another data
-        1     2            10
-        2     4             5
-        3     6             7
-        ```
-        """
-        table = self.get_table(table_name)
-        return table.loc[query(table)]
+                        # merge the collection types which may have been separated when
+                        clean_param_names_and_types = []
+                        for index, param_types in enumerate(param_names_and_types_list):
+                            count = 0
+                            for char in list(param_types):
+                                if char == "[":
+                                    count += 1
+                                elif char == "]":
+                                    count -= 1
+                                else:
+                                    pass
+                            if count > 0:
+                                clean_param_names_and_types.append(
+                                    param_types + "," + param_names_and_types_list[index + 1]
+                                )
+                            elif count < 0:
+                                pass
+                            else:
+                                clean_param_names_and_types.append(param_types)
 
-    def get_table_slice(self, columns: Union[str, List[str]], table_name: str, index: Optional[Tuple[int, int]] = None) -> Any:
-        """Get a specific columns and rows of the table
+                        try:
+                            grouped_names_types = [
+                                [
+                                    clean_param_names_and_types[i].replace(" ", ""),
+                                    clean_param_names_and_types[i + 1].replace(" ", ""),
+                                ]
+                                for i in range(0, len(clean_param_names_and_types), 2)
+                            ]
+                            for grouped_params in grouped_names_types:
+                                classes_name_space[class_flag]["properties"].append(grouped_params)
+                        except IndexError:
+                            print(clean_param_names_and_types)
 
-        Params
-        ---
-        index: Optional[Tuple[int,int]]
-          the index is a tuple of indices representing where you want t get the rows from and to
-          this is of the form (from, to) where from and to are integers
-          if left to None this will return all the rows
+            # Find the fields
+            if line.find("__") != -1 and line.find("__(") == -1 and line.find(":") != -1:
+                field_line = line.split("__")[1]
+                classes_name_space[class_flag]["fields"].append(field_line.split(":"))
 
-        columns: List[str] or str
-          this is an array of strings in the event that we want to select more than one column
-          this is a string if you only want to select one column
-          if the column is set to "*" all columns will be considered
-        """
-        table = self.get_table(table_name)
-        if columns == "*":
-            columns = [str(col) for col in table.columns]
-        if index is None:
-            return table[columns]
-        return table[columns].loc[index[0]:index[1]]
+            # Find the methods
+            if line.find("def ") != -1:
+                # make sure that we are inside a class
+                if class_flag >= 0:
+                    # find the signature
+                    # the line might look like the following assuming that the programme is typed
+                    # def foo(param1: str, param2: int, optional_param: Optional[int] = None) -> None:
+                    signature = line.split("def ")[1].split("(")[0]
+                    classes_name_space[class_flag]["methods"].append(
+                        {  # type: ignore [typeddict-item]
+                            "signature": signature,
+                            "params": [],
+                            "decorator": "",
+                            "return_type": "",
+                            "description": "",
+                        }
+                    )
+                    function_flag += 1
 
-    def get_n_rows_from_tables_above(self, n: int, table_name: str) -> Any:
-        table = self.get_table(table_name)
-        return table.head(n)
+                    try:
+                        if source_code[line_number - 1].find("@"):
+                            property_name = (
+                                source_code[line_number - 1].split("@")[1].replace(" ", "")
+                            )
+                            classes_name_space[class_flag]["methods"][function_flag][
+                                "decorator"
+                            ] = property_name
+                    except IndexError:
+                        pass
 
-    def get_n_rows_from_tables_below(self, n: int, table_name: str) -> Any:
-        table = self.get_table(table_name)
-        return table.tail(n)
+                    # remove self
+                    line = line.replace("self,", "")
+                    classes_name_space[class_flag]["methods"][function_flag]["params"].append(
+                        ["self"]
+                    )
 
-    def table_info(self, table_name: str) -> Any:
-        table = self.get_table(table_name)
-        print("Table info")
-        print(table.info)
-        print("Table Shape")
-        print(table.shape)
-        print("Table axes")
-        print(table.axes)
+                    # get the return type
+                    try:
+                        return_type = line.split(" -> ")[1].replace(":", "")
+                        classes_name_space[class_flag]["methods"][function_flag][
+                            "return_type"
+                        ] = return_type
+                    except IndexError:
+                        print("\nthis line misses a return type\n", line)
+                        print("")
 
-    def get_table_names(self) -> List[str]:
-        return list(pd.ExcelFile(self.filename).sheet_names)
+                    # find params names and types
+                    # params are usually delineated by brackets
+                    params = line.split("(")[1].split(")")[0]
+                    dirty_param_names_and_types = params.split(":")
+                    param_names_and_types = [i.split(",") for i in dirty_param_names_and_types]
 
-    def get_value_by_column_name(self, row_index: int, column_name: str, table_name: str) -> Any:
-        table = self.get_table(table_name)
-        return table.at[row_index, column_name]
+                    # remove nested lists
+                    new_param_names_and_types_list: List[str] = []
+                    for param_type in param_names_and_types:
+                        for val in param_type:
+                            new_param_names_and_types_list.append(val)
 
-    def get_value_by_column_index(self, row_index: int, column_index: int, table_name: str) -> Any:
-        table = self.get_table(table_name)
-        return table.iat[row_index, column_index]
+                    # the param list should be of the form [param1, type, param2, type, ...]
+                    # if the number of params names and types is uneven then there are some types missing
+                    if (
+                        len(new_param_names_and_types_list) % 2 != 0
+                        and new_param_names_and_types_list[0] != "self"
+                    ):
+                        print("\nthe following line might miss some types\n", line)
+                        print("")
+                    else:
+                        # avoid methods which only have self
+                        if new_param_names_and_types_list != ["self"]:
 
-    def delete_table(self, table_name: str) -> Any:
-        # get all the existing data
-        existing_tables: List[Tuple[str, DataFrame]] = []
-        for name in self.get_table_names():
-            existing_tables.append((name, self.get_table(name)))
-        # remove the current database
-        os.remove(self.filename)
+                            # merge the collection types which may have been separated when
+                            new_clean_param_names_and_types: List[str] = []
+                            for index, param_types in enumerate(new_param_names_and_types_list):
+                                count = 0
+                                for char in list(param_types):
+                                    if char == "[":
+                                        count += 1
+                                    elif char == "]":
+                                        count -= 1
+                                    else:
+                                        pass
+                                if count > 0:
+                                    new_clean_param_names_and_types.append(
+                                        param_types
+                                        + ","
+                                        + new_param_names_and_types_list[index + 1]
+                                    )
+                                elif count < 0:
+                                    pass
+                                else:
+                                    new_clean_param_names_and_types.append(param_types)
 
-        # re-create the database without the selected sheet
-        for name, df in existing_tables:
-            if name != table_name:
-                df.to_excel(self.filename, sheet_name=name, index=False)
+                            try:
+                                grouped_names_types = [
+                                    [
+                                        new_clean_param_names_and_types[i].replace(" ", ""),
+                                        new_clean_param_names_and_types[i + 1].replace(" ", ""),
+                                    ]
+                                    for i in range(0, len(new_clean_param_names_and_types), 2)
+                                ]
+                                for grouped_params in grouped_names_types:
+                                    classes_name_space[class_flag]["methods"][function_flag][
+                                        "params"
+                                    ].append(grouped_params)
+                            except IndexError:
+                                print(new_clean_param_names_and_types)
 
-    def append_row(self, row: List[List[Any]], table_name: str) -> None:
-        table = self.get_table(table_name)
-        new_values = []
-        values = [list(table[col]) for col in table.columns]
-        # the table values is a nested list of the form [[row1],[row2],[row3]]
-        # where row1,2,3 are rows of columns 1,2,3 respectively
-        for i in range(len(list(values))):
-            # append the new row to the list of rows
-            list(values)[i].append(row[i])
-            # append the list of rows to the new values
-            new_values.append(values)
-            
-        # create a new data frame with the new values
-        df = pd.DataFrame(new_values, columns=table.columns)
-        self._pp(df, table_name, "Appending a new row")
-        self.create_table(table_name, df.columns, new_values)
-
-    def update_rows(self, row_index: Union[List[int], int], row_values: Union[List[int], List[List[int]]], table_name) -> None:
-        """Updating 1 or more rows within the given table
-
-        Params
-        ---
-
-        row_index: list[int] or int
-          the row index can be passed as a single integer 
-          of a list of integers which will update multiple rows
-          with the same values or different values with the row_values array 
-          is an array of arrays where 
-
-        row_values: list[list[int]] or list[int]
-          array of values or array of arrays of values (if you want to update multiple rows)
-          where the length of the outer array m is equal to the number of rows you want to update
-          and the length of the inner array n is the length of the data frame you want to produce  
-        """
-        table = self.get_table(table_name)
-        if type(row_index) == int:
-            table.loc[row_index] = row_values
-        else:
-            table.loc[[row_index]] = row_values
-
-        self._pp(table, table_name, "Updating  rows")
-        table.to_excel(self.filename,
-                       sheet_name=table_name, index=False)
-
-    def delete_rows(self, rows: List[int], table_name: str) -> None:
-        table = self.get_table(table_name)
-        table.drop([rows], inplace=True)
-        self._pp(table, table_name, "Deleting rows")
-        table.to_excel(self.filename,
-                       sheet_name=table_name, index=False)
-
-    def put_column(self, column_name: str, column_values: List[Any], table_name: str) -> None:
-        table = self.get_table(table_name)
-        table[column_name] = column_values
-        self._pp(table, table_name, "Put a new column")
-        table.to_excel(self.filename,
-                       sheet_name=table_name, index=False)
-
-    def insert_column(self, column_index: int, column_name: str, column_values: List[Any], table_name: str) -> None:
-        table = self.get_table(table_name)
-        table.insert(column_index, column_name, column_values)
-        self._pp(table, table_name, "Appending a new column")
-        table.to_excel(self.filename,
-                       sheet_name=table_name, index=False)
-
-    def delete_columns(self, columns: List[str], table_name: str) -> Any:
-        table = self.get_table(table_name)
-        for column in columns:
-            table.pop(column)
-        self._pp(table, table_name, "Deleting Columns")
-        table.to_excel(self.filename,
-                       sheet_name=table_name, index=False)
-
-
-db = ExcelDatabase()
-
-db.create_table("table", ["col"], [[0]])
-db.append_row([[1]],"table")
+        File(self.response_code_path).write_json(classes_name_space)

@@ -3,76 +3,51 @@
     {
       "id": "node-1",
       "type": "umlDiagram",
-      "position": { "x": 177.6759225135787, "y": 152.34411237212817 },
-      "dataclass" : true,
+      "position": { "x": 169, "y": 297 },
       "data": {
-        "objectName": "Student",
-        "color": "rgb(175, 189, 196)",
-        "comment": "Object Description",
+        "dataclass": true,
+        "objectName": "Controller",
+        "color": "rgb(194, 199, 49)",
+        "comment": "This is an interface with the PID controller hardware",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "name",
-            "returnType": "str",
-            "comment": "signature description",
-            "params": [{ "name": "name", "type": "type" }]
-          },
-          {
-            "visibility": "+",
-            "signature": "age",
+            "signature": "status",
             "returnType": "int",
-            "comment": "signature description",
-            "params": [{ "name": "name", "type": "type" }]
+            "comment": "the status of the controller",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": ["", "return comment"]
+              }
+            ]
           },
           {
             "visibility": "+",
-            "signature": "class_room",
-            "returnType": "ClassRoom",
-            "comment": "signature description",
-            "params": [{ "name": "name", "type": "type" }]
+            "signature": "activate()",
+            "returnType": "bool",
+            "comment": "control the process given a target set point",
+            "params": [
+              {
+                "name": "control_value",
+                "type": "int",
+                "comment": [
+                  "the set point of the control we want to perform",
+                  "boolean representing whether the control was performed successfully"
+                ]
+              }
+            ]
           }
         ],
         "connection": false
       },
       "width": 500,
-      "height": 222,
+      "height": 181,
       "selected": true,
-      "positionAbsolute": { "x": 177.6759225135787, "y": 152.34411237212817 },
-      "dragging": false
-    },
-    {
-      "id": "node-2",
-      "type": "umlDiagram",
-      "dataclass" : false,
-      "position": { "x": 891.4312843962937, "y": 132.71423570187926 },
-      "data": {
-        "objectName": "ClassRoom",
-        "comment": "This refers to the class room with all the students",
-        "color": "rgb(11, 13, 137)",
-        "gridTable": [
-          {
-            "visibility": "+",
-            "signature": "subect",
-            "returnType": "str",
-            "comment": "signature description",
-            "params": [{ "name": "name", "type": "type" }]
-          }
-        ]
-      },
-      "width": 500,
-      "height": 119,
-      "selected": false,
-      "positionAbsolute": { "x": 891.4312843962937, "y": 132.71423570187926 },
+      "positionAbsolute": { "x": 169, "y": 297 },
       "dragging": false
     }
   ],
-  [
-    {
-      "source": "node-2",
-      "sourceHandle": "100aClassRoomsubect",
-      "target": "node-1",
-      "targetHandle": "200bStudentclass_room",
-      "id": "reactflow__edge-node-2100aClassRoomsubect-node-1200bStudentclass_room"
-    }
-  ]
+  []
 ]
