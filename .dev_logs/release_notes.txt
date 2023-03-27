@@ -1,10 +1,10 @@
 # New Features
 
 # Bug Fixes
-- feat: added the comments on properties and methods 🤝 [kesler20] (ecdb58093a00a2c3208e0486689065e1cf6fcee7) (Mon Mar 27 12:39:35 2023 +0100)
-- fix: removed the uncommeted string ⚙️ [kesler20] (6de6a79664ffc255c261d4a813e3d803cda28e30) (Wed Mar 22 08:41:40 2023 +0000)
-- chore: removed Dockerfile as it was annoying 🪴 [kesler20] (f6dccbfeefe3af64360f640047338c674859980a) (Tue Mar 21 20:30:57 2023 +0000)
-- style: changed the style ✨ [kesler20] (6830748007ebb511a703dc7249e3ebe9d51a495f) (Tue Mar 21 20:29:43 2023 +0000)
-- restored more verbose tests [kesler20] (24a7182bfe61d853639cc29be733d5843c2ba7b8) (Tue Mar 21 20:28:44 2023 +0000)
-- feat: added dataclasses 😕 [kesler20] (3692a4ce83bd728983033af82a2d2752d22fcbbb) (Tue Mar 21 18:16:05 2023 +0000)
+- test: improved tests 🧪 [kesler20] (3d21cfda64c5c40b5e40863135e8eba3b5130a1e) (Mon Mar 27 22:59:24 2023 +0100)
+- refactor(TESTS): improved the tests builder class 🐍 💫 [kesler20] (f5d02b90e1dd09fe9b8c334fe20bf75b45e2762c) (Mon Mar 27 22:39:40 2023 +0100)
+- refactor(SERVER_TEMPLATE): improved the server template based on the python_app_tempalte 🐍 💫 [kesler20] (4c342088e550243f5da154e046aecca27a5c051b) (Mon Mar 27 18:50:11 2023 +0100)
+- chore(README): added more instructions on how tio use the tamplates 🪴 [kesler20] (6f87893d5197bbe7112478dbdae44b1ab53bc175) (Mon Mar 27 18:31:45 2023 +0100)
+- refactor: improved the refactoring 🐍 💫 [kesler20] (3d81b7e3d0c33fdc2ef55e8588727909cb9c3c83) (Mon Mar 27 14:38:49 2023 +0100)
+- refactor: improved the server automation service 🐍 💫 [kesler20] (b3d537f823b0028b122f6c968d270bf3d9c449ed) (Mon Mar 27 14:20:17 2023 +0100)
 

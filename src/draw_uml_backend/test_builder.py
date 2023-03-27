@@ -141,7 +141,6 @@ class Test_{self.source.class_name}(unittest.TestCase):
             invalid_param += param + ","
 
         self.content += f'''
-    @staticmethod
     @pytest.mark.parametrize("{params},{function_result_type}",[
         ({params},{function_result_type}),
         (None,{invalid_params},{function_result_type}),
