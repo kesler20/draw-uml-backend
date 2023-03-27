@@ -25,7 +25,8 @@ class TestBuilder(BaseReader):
             )
 
     def add_initial_import(self):
-        self.content += f"""
+        self.content += f"""import pytest
+from _types import *
 import unittest
 from {self.source.class_name.lower()} import {self.source.class_name}
 print("Testing:" + {self.source.class_name}.__doc__)
