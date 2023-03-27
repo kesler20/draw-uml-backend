@@ -97,7 +97,7 @@ def create_server_methods(method: str, resource: str):
 @app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
 async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
     {resource} = sql_db_interface.add_value(
-        database.{resource_name_with_capital}()
+        database.{resource_name_with_capital}(**{resource})
     )
     return {resource}
 """
