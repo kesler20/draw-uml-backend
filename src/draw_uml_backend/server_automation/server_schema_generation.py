@@ -94,12 +94,11 @@ def create_server_methods(method: str, resource: str):
             f"""
 
 # {method} a `{resource}`
-@app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model=List[schema.{resource_name_with_capital}])
-async def {method}_{resource}({resource}: schema.{resource_name_with_capital}):
-    {resource} = sql_db_interface.add_value(
-        database.{resource_name_with_capital}(**{resource})
+@app.{convert_to_http_method(method)}("/v1/{resource}s/", response_model= schema.{resource_name_with_capital}])
+async def {method}_{resource}({resource}: schema.{resource_name_with_capital}, owner: schema.UserFind):
+    return sql_db_interface.add_value(
+        database.{resource_name_with_capital}(**{resource}.__dict__,owner=sql_interface.read_value(database.User, email=owner.email))
     )
-    return {resource}
 """
         )
     elif method == "read":
@@ -130,8 +129,8 @@ async def {method}_{resource}s(current_page_number: int = 1):
         
 # {method} a `{resource}`
 @app.{convert_to_http_method(method)}("/v1/{resource}s/{res}{resource}_id{source}", response_model=List[schema.{resource_name_with_capital}])
-async def {method}_{resource}({resource}_id : int):
-    return sql_db_interface.update_value(database.{resource_name_with_capital}, id={resource}_id)
+async def {method}_{resource}({resource}_id : int, key: str, value : Any):
+    return sql_db_interface.update_value(database.{resource_name_with_capital}, key, value id={resource}_id)
 """
         )
     elif method == "delete":
@@ -179,16 +178,18 @@ def create_db_schema(model: str):
 
 class {model_with_capital_letter}Base(BaseModel):
     title: str
-    description: Optional[str]
-
 
 class {model_with_capital_letter}Create({model_with_capital_letter}Base):
-    pass
+    title: str
+    description: str
 
+class {model_with_capital_letter}Find({model_with_capital_letter}Base):
+    title: str
 
 class {model_with_capital_letter}({model_with_capital_letter}Base):
-    id: int
-    owner_id: int
+    title : str
+    description: str
+    owner : User
 
     class Config:
         orm_mode = True
