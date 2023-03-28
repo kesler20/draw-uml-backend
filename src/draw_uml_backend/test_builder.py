@@ -149,7 +149,7 @@ class Test_{self.source.class_name}(unittest.TestCase):
         ("","",{function_result_type}),
     ])
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_io_{function_name}(self,{params},{function_result_type}):
+    def test_io_{function_name}(self,{params},expected):
         """test the `{function_name}` method which accepts the following arguments:
         
         Parameters
@@ -161,7 +161,7 @@ class Test_{self.source.class_name}(unittest.TestCase):
         {function_result_type}
         """
         test_result = self.test_client.{function_name}({params})
-        self.assertEqual(type(test_result),type({function_result_type})) 
+        self.assertEqual(type(test_result),type(expected)) 
     '''
 
         return self
