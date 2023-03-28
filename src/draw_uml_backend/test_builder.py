@@ -26,6 +26,7 @@ class TestBuilder(BaseReader):
 
     def add_initial_import(self):
         self.content += f"""import pytest
+from parametrize import parametrize
 from _test_base import *
 from _types import *
 import unittest
@@ -142,7 +143,7 @@ class Test_{self.source.class_name}(unittest.TestCase):
             invalid_param += param + ","
 
         self.content += f'''
-    @pytest.mark.parametrize("{params},{function_result_type}",[
+    @parametrize("{params},{function_result_type}",[
         ({params},{function_result_type}),
         (None,{invalid_params},{function_result_type}),
         ("","",{function_result_type}),
