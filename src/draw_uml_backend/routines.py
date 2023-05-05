@@ -1,9 +1,9 @@
 from typing import Tuple
 import os
 from draw_uml_backend.class_builder import ClassBuilder
-from draw_uml_backend.code_reader import PythonCodeReader
-from draw_uml_backend.diagram_generator import DiagramGenerator
-from draw_uml_backend.test_builder import TestBuilder
+from draw_uml_backend.v1.code_reader import PythonCodeReader
+from draw_uml_backend.v1.diagram_generator import DiagramGenerator
+from draw_uml_backend.v1.test_builder import TestBuilder
 from draw_uml_backend.source_code import SourceCode
 from draw_uml_backend.types_pre_processing import TypeChecker
 from draw_uml_backend._base import BASE_OUTPUT_RESPONSE_PATH

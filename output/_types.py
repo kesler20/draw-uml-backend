@@ -2,8 +2,8 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
             
-class Controller(Protocol):   
+class Person(Protocol):   
         
-    def activate(self, control_value : int) -> bool:
+    def get_full_name(self, last_name : str) -> str:
         ...
           

@@ -1,29 +1,34 @@
 [
   {
-    "class_name": "Controller",
-    "description": "This is an interface with the PID controller hardware",
+    "class_name": "Person",
+    "description": "This should represent a person in real life",
     "methods": [
       {
-        "signature": "activate",
+        "signature": "get_full_name",
         "params": [
           [
-            "control_value",
-            "int",
-            "the set point of the control we want to perform",
-            "boolean representing whether the control was performed successfully"
+            "last_name",
+            "str",
+            "the family name of the person",
+            "the full name of the person `<first name> <last name>`"
           ]
         ],
         "decorator": "",
-        "return_type": "bool",
-        "description": "control the process given a target set point"
+        "return_type": "str",
+        "description": "return name and last name"
       }
     ],
     "fields": [],
     "properties": [
       [
-        "status",
+        "name",
+        "str",
+        "signature description"
+      ],
+      [
+        "age",
         "int",
-        "the status of the controller"
+        "signature description"
       ]
     ]
   }

@@ -4,26 +4,26 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 169,
-        "y": 297
+        "x": 425,
+        "y": 265
       },
       "data": {
-        "dataclass": true,
-        "objectName": "Controller",
-        "color": "rgb(194, 199, 49)",
-        "comment": "This is an interface with the PID controller hardware",
+        "dataclass": false,
+        "objectName": "Person",
+        "color": "rgb(60, 165, 79)",
+        "comment": "This should represent a person in real life",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "status",
-            "returnType": "int",
-            "comment": "the status of the controller",
+            "signature": "name",
+            "returnType": "str",
+            "comment": "signature description",
             "params": [
               {
                 "name": "name",
                 "type": "str",
                 "comment": [
-                  "",
+                  "parameter comment",
                   "return comment"
                 ]
               }
@@ -31,16 +31,32 @@
           },
           {
             "visibility": "+",
-            "signature": "activate()",
-            "returnType": "bool",
-            "comment": "control the process given a target set point",
+            "signature": "age",
+            "returnType": "int",
+            "comment": "signature description",
             "params": [
               {
-                "name": "control_value",
-                "type": "int",
+                "name": "name",
+                "type": "str",
                 "comment": [
-                  "the set point of the control we want to perform",
-                  "boolean representing whether the control was performed successfully"
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "get_full_name()",
+            "returnType": "str",
+            "comment": "return name and last name",
+            "params": [
+              {
+                "name": "last_name",
+                "type": "str",
+                "comment": [
+                  "the family name of the person",
+                  "the full name of the person `<first name> <last name>`"
                 ]
               }
             ]
@@ -49,11 +65,11 @@
         "connection": false
       },
       "width": 500,
-      "height": 181,
+      "height": 217,
       "selected": true,
       "positionAbsolute": {
-        "x": 169,
-        "y": 297
+        "x": 425,
+        "y": 265
       },
       "dragging": false
     }

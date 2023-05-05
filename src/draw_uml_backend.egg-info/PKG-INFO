@@ -54,13 +54,13 @@ are built into the tables i.e
   <img style="width: 50%;" src="/img/drawSQL-documentation-export-2023-03-24 (1).png" alt="" srcset="">
 </div>
 
-therefore we want to keep tables starting th a capital letter and in singular i.e. `User`
-have foreign keys map to ids of other tables and to be named `<table_reference>_id` and to set columns 
+therefore we want to keep tables in singular i.e. `User` and in camel notation 
+such as `UnitOperation`, have foreign keys map to ids of other tables and to be named `<table_reference>_id` and to set columns 
 which map to other tables i.e. if I want to pass an `owner` which is a user object to an `Item` class
 ```python
 item = Item(owner=User(name="Paul"))
 ```
-then we can name the column with a leadding slash i.e. `owner_`. This will map to generating a `relationship`
+then we can name the column with a leading slash i.e. `owner_`. This will map to generating a `relationship`
 on the class which are used to pass objects rather than values
 
 Example of using the database models generated through the drawSQL function
