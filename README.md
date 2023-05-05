@@ -1,5 +1,32 @@
 # DrawUML Backend
 
+## Endpoints
+
+### version 1
+
+`GET /v1/files/{filename}` 
+to get a specific filename
+
+`GET /v1/files`
+to get all the filenames in the output folder
+
+`GET /v1/servers`
+to get the list of the server files in the server output
+
+`GET /v1/servers/{filename}`
+to get a specific file in the server output folder
+
+`POST /v1/servers`
+upload an SQL file made from draw SQL to create SQLALchemy classes
+
+`POST /v1/files/existing`
+upload existing code and improve commenting or formatting
+
+`POST /v1/files/new`
+upload a response in the Domain Specific Language of drawUML to create
+test, classes and documentation
+
+
 ## Design Overview
 
 The software can be divided in this 3 main layers
