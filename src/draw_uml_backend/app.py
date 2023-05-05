@@ -12,7 +12,7 @@ from draw_uml_backend import __version__
 app = FastAPI(
     title="draw_uml_backend",
     description="The backend of the draw uml application",
-    version=__version__
+    version=__version__,
 )
 origins = ["*"]
 
@@ -29,4 +29,3 @@ app.add_middleware(
 async def read_root():
     response = RedirectResponse(url="/docs")
     return response
-

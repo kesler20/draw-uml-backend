@@ -1,5 +1,5 @@
 from draw_uml_backend.app import app
-from draw_uml_backend.v1.routes import app
+from draw_uml_backend.v1.routes import *
 import uvicorn
 
 

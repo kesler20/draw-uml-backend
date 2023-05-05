@@ -76,5 +76,3 @@ classDiagram"""
         """
         with open(self.output_file, "a") as out:
             out.write(final_class)
-
-      

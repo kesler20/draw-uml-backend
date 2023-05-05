@@ -1,5 +1,5 @@
-from draw_uml_backend.v1.server_automation import model_generation
-from draw_uml_backend.v1.server_automation import server_schema_generation
+from draw_uml_backend.v1.server_automation import model_generation  # type: ignore
+from draw_uml_backend.v1.server_automation import server_schema_generation  # type: ignore
 import shutil
 import os
 from pathlib import Path
