@@ -1,0 +1,57 @@
+{
+  "files": [
+    ["id", "INT"],
+    ["filename", "VARCHAR(255)"],
+    ["resource_id", "VARCHAR(255)"],
+    ["owner_id", "INT", "users"],
+    ["size", "INT"],
+    ["created_at", "DATETIME"]
+  ],
+  "notifications": [
+    ["id", "INT"],
+    ["description", "VARCHAR(255)"],
+    ["title", "VARCHAR(255)"],
+    ["short_description", "VARCHAR(255)"],
+    ["created_at", "DATETIME"]
+  ],
+  "roles": [
+    ["id", "INT"],
+    ["name", "VARCHAR(255)"]
+  ],
+  "users": [
+    ["id", "INT"],
+    ["username", "VARCHAR(255)"],
+    ["email", "VARCHAR(255)"],
+    ["role_id", "INT", "roles"],
+    ["laboratory_id", "INT", "laboratories"],
+    ["tutorial_completed", "TINYINT(1)"],
+    ["notifications_read", "TINYINT(1)"]
+  ],
+  "lab_equipments": [
+    ["id", "INT"],
+    ["laboratory_id", "INT", "laboratories"],
+    ["user_id", "INT"]
+  ],
+  "sensors": [
+    ["id", "INT"],
+    ["topic", "VARCHAR(255)"],
+    ["lab_equipments_id", "INT", "lab_equipments"]
+  ],
+  "dashboards": [
+    ["id", "INT"],
+    ["resource_id", "VARCHAR(255)"],
+    ["author_id", "INT", "users"],
+    ["created_at", "DATETIME"]
+  ],
+  "laboratories": [
+    ["id", "INT"],
+    ["name", "VARCHAR(255)"],
+    ["location", "VARCHAR(255)"]
+  ],
+  "process_data_records": [
+    ["id", "INT"],
+    ["recording_from", "DATETIME"],
+    ["recording_to", "DATETIME"],
+    ["sensor_id", "INT", "sensors"]
+  ]
+}
