@@ -4,20 +4,20 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 425,
-        "y": 265
+        "x": 358,
+        "y": 205.99999999999994
       },
       "data": {
         "dataclass": false,
-        "objectName": "Person",
-        "color": "rgb(60, 165, 79)",
-        "comment": "This should represent a person in real life",
+        "objectName": "DatabaseInterface",
+        "color": "rgb(69, 190, 183)",
+        "comment": "This is the interface to the database of the wiz_app system (the resourcemanager). \n\nTo get started import the database and the valid modes of the database from the business rules.\n\n```python\nfrom wiz_app_connector.infrastructure.db.wiz_app_db import DatabaseInterface\nfrom wiz_app_connector.domain.business_rules import ValidDatabaseMode\n# setup a database with a development mode\ndb = DatabaseInterface(\"v1\",ValidDatabaseMode.DEV)\n\n# send a post request\ndb.use_url(endpoint=\"sensor\").create(body={})",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "name",
+            "signature": "version",
             "returnType": "str",
-            "comment": "signature description",
+            "comment": "This will set what version of the database routes to send the request to, i.e v1 will set /v1/endpoint ",
             "params": [
               {
                 "name": "name",
@@ -31,9 +31,9 @@
           },
           {
             "visibility": "+",
-            "signature": "age",
+            "signature": "mode",
             "returnType": "int",
-            "comment": "signature description",
+            "comment": "This can be DEV which is for running the database locally (on development mode) this will send the requests to localhost:8000",
             "params": [
               {
                 "name": "name",
@@ -47,16 +47,64 @@
           },
           {
             "visibility": "+",
-            "signature": "get_full_name()",
-            "returnType": "str",
-            "comment": "return name and last name",
+            "signature": "create()",
+            "returnType": "dict",
+            "comment": "sends a post request",
             "params": [
               {
-                "name": "last_name",
+                "name": "body",
+                "type": "dict",
+                "comment": [
+                  "the body of the requests",
+                  "returns a dictionary with the response of the request"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "read()",
+            "returnType": "dict",
+            "comment": "sends a get requests.",
+            "params": [
+              {
+                "name": "name",
                 "type": "str",
                 "comment": [
-                  "the family name of the person",
-                  "the full name of the person `<first name> <last name>`"
+                  "the ",
+                  "a dictionary containing the response of the request"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "update()",
+            "returnType": "dict",
+            "comment": "send a put request.",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "a dictionary containing the response of the request"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "delete()",
+            "returnType": "dict",
+            "comment": "sends a delete request.",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "a dictionary containing the response of the request"
                 ]
               }
             ]
@@ -65,11 +113,11 @@
         "connection": false
       },
       "width": 500,
-      "height": 217,
+      "height": 371,
       "selected": true,
       "positionAbsolute": {
-        "x": 425,
-        "y": 265
+        "x": 358,
+        "y": 205.99999999999994
       },
       "dragging": false
     }

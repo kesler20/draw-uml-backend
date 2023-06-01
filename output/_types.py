@@ -2,8 +2,17 @@
 from typing import TypedDict, List, Any, Union, Dict, Tuple, Optional, Protocol
             
             
-class Person(Protocol):   
+class DatabaseInterface(Protocol):   
         
-    def get_full_name(self, last_name : str) -> str:
+    def create(self, body : dict) -> dict:
+        ...
+          
+    def read(self, name : str) -> dict:
+        ...
+          
+    def update(self, name : str) -> dict:
+        ...
+          
+    def delete(self, name : str) -> dict:
         ...
           

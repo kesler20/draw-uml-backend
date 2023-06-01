@@ -2,9 +2,12 @@
 
 ```mermaid
 classDiagram
-   Person <|-- object
-   Person : + name str
-   Person : + age int
-   Person : + get_full_name() str
+   DatabaseInterface <|-- object
+   DatabaseInterface : + version str
+   DatabaseInterface : + mode int
+   DatabaseInterface : + create() dict
+   DatabaseInterface : + read() dict
+   DatabaseInterface : + update() dict
+   DatabaseInterface : + delete() dict
 ```
         

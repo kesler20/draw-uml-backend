@@ -3,13 +3,24 @@ from parametrize import parametrize
 from _test_base import *
 from _types import *
 import unittest
-from codereader(abc) import CodeReader(ABC)
-print("Testing:" + CodeReader(ABC).__doc__)
+from databaseinterface import DatabaseInterface
+print("Testing:" + DatabaseInterface.__doc__)
         
-class Test_CodeReader(ABC)(unittest.TestCase):        
-    """
+class Test_DatabaseInterface(unittest.TestCase):        
+    """This is the interface to the database of the wiz_app system (the resourcemanager). 
+
+To get started import the database and the valid modes of the database from the business rules.
+
+```python
+from wiz_app_connector.infrastructure.db.wiz_app_db import DatabaseInterface
+from wiz_app_connector.domain.business_rules import ValidDatabaseMode
+# setup a database with a development mode
+db = DatabaseInterface("v1",ValidDatabaseMode.DEV)
+
+# send a post request
+db.use_url(endpoint="sensor").create(body={})
     
-    testing the side effects of the CodeReader(ABC) class
+    testing the side effects of the DatabaseInterface class
     
     Example 
     -------
@@ -34,23 +45,23 @@ class Test_CodeReader(ABC)(unittest.TestCase):
     
         
     def setUp(self):
-        self.test_client = CodeReader(ABC)(
-            source_code_path
-            ,response_code_path
+        self.test_client = DatabaseInterface(
+            version
+            ,mode
         )
         
     @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_source_code_path(self):
+    def test_side_effects_create(self):
         """
-        test the `source_code_path` method which accepts the following arguments:
+        test the `create` method which accepts the following arguments:
         
         Parameters
         ----------
-        
+        body
 
         Returns
         -------
-        Path
+        dict
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -58,85 +69,10 @@ class Test_CodeReader(ABC)(unittest.TestCase):
         side_effect_output = []
 
         # cause a side effect to test
-        test_result = self.test_client.source_code_path(*side_effect_input)
+        test_result = self.test_client.create(*side_effect_input)
 
         # test that the side effect is expected
-        test_result = self.test_client.source_code_path()
-        self.assertEqual(test_result,side_effect_output[0])
-    
-    @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_response_code_path(self):
-        """
-        test the `response_code_path` method which accepts the following arguments:
-        
-        Parameters
-        ----------
-        
-
-        Returns
-        -------
-        Path
-        """
-        # array of arguments which are expected by the method which causes the side effect under test
-        side_effect_input = []
-        # array containing the expected correct result of the method after the side effect
-        side_effect_output = []
-
-        # cause a side effect to test
-        test_result = self.test_client.response_code_path(*side_effect_input)
-
-        # test that the side effect is expected
-        test_result = self.test_client.response_code_path()
-        self.assertEqual(test_result,side_effect_output[0])
-    
-    @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_set_response_code_path(self):
-        """
-        test the `set_response_code_path` method which accepts the following arguments:
-        
-        Parameters
-        ----------
-        path
-
-        Returns
-        -------
-        
-        """
-        # array of arguments which are expected by the method which causes the side effect under test
-        side_effect_input = []
-        # array containing the expected correct result of the method after the side effect
-        side_effect_output = []
-
-        # cause a side effect to test
-        test_result = self.test_client.set_response_code_path(*side_effect_input)
-
-        # test that the side effect is expected
-        test_result = self.test_client.set_response_code_path()
-        self.assertEqual(test_result,side_effect_output[0])
-    
-    @pytest.mark.skip(reason="feature not implemented yet")
-    def test_side_effects_set_source_code_path(self):
-        """
-        test the `set_source_code_path` method which accepts the following arguments:
-        
-        Parameters
-        ----------
-        path
-
-        Returns
-        -------
-        
-        """
-        # array of arguments which are expected by the method which causes the side effect under test
-        side_effect_input = []
-        # array containing the expected correct result of the method after the side effect
-        side_effect_output = []
-
-        # cause a side effect to test
-        test_result = self.test_client.set_source_code_path(*side_effect_input)
-
-        # test that the side effect is expected
-        test_result = self.test_client.set_source_code_path()
+        test_result = self.test_client.create()
         self.assertEqual(test_result,side_effect_output[0])
     
     @pytest.mark.skip(reason="feature not implemented yet")
@@ -146,11 +82,11 @@ class Test_CodeReader(ABC)(unittest.TestCase):
         
         Parameters
         ----------
-        
+        name
 
         Returns
         -------
-        None
+        dict
         """
         # array of arguments which are expected by the method which causes the side effect under test
         side_effect_input = []
@@ -162,6 +98,56 @@ class Test_CodeReader(ABC)(unittest.TestCase):
 
         # test that the side effect is expected
         test_result = self.test_client.read()
+        self.assertEqual(test_result,side_effect_output[0])
+    
+    @pytest.mark.skip(reason="feature not implemented yet")
+    def test_side_effects_update(self):
+        """
+        test the `update` method which accepts the following arguments:
+        
+        Parameters
+        ----------
+        name
+
+        Returns
+        -------
+        dict
+        """
+        # array of arguments which are expected by the method which causes the side effect under test
+        side_effect_input = []
+        # array containing the expected correct result of the method after the side effect
+        side_effect_output = []
+
+        # cause a side effect to test
+        test_result = self.test_client.update(*side_effect_input)
+
+        # test that the side effect is expected
+        test_result = self.test_client.update()
+        self.assertEqual(test_result,side_effect_output[0])
+    
+    @pytest.mark.skip(reason="feature not implemented yet")
+    def test_side_effects_delete(self):
+        """
+        test the `delete` method which accepts the following arguments:
+        
+        Parameters
+        ----------
+        name
+
+        Returns
+        -------
+        dict
+        """
+        # array of arguments which are expected by the method which causes the side effect under test
+        side_effect_input = []
+        # array containing the expected correct result of the method after the side effect
+        side_effect_output = []
+
+        # cause a side effect to test
+        test_result = self.test_client.delete(*side_effect_input)
+
+        # test that the side effect is expected
+        test_result = self.test_client.delete()
         self.assertEqual(test_result,side_effect_output[0])
     
     def tearDown(self):
