@@ -1,33 +1,95 @@
 [
   {
-    "class_name": "Person",
-    "description": "This should represent a person in real life",
+    "class_name": "DataPipeline",
+    "description": "This is the data pipeline for the entire protocol data",
     "methods": [
       {
-        "signature": "get_full_name",
+        "signature": "load_data_source_to_data_lake",
         "params": [
           [
-            "last_name",
+            "data_source_name",
             "str",
-            "the family name of the person",
-            "the full name of the person `<first name> <last name>`"
+            "the name of the data source to load into the datalake",
+            "true if its successful"
+          ],
+          [
+            "limit",
+            "int",
+            "maximum number of items to load into the data lake",
+            "true if the load operation is succesful"
+          ]
+        ],
+        "decorator": "",
+        "return_type": "bool",
+        "description": "This will load data from the source and publish the data to the predefined data lake"
+      },
+      {
+        "signature": "transform_data",
+        "params": [
+          [
+            "schema",
+            "str",
+            "The schema of the data source after the transformation",
+            "return comment"
+          ],
+          [
+            "data_source",
+            "str",
+            "The data source to grab the data from",
+            "return comment"
+          ],
+          [
+            "transformation_function",
+            "str",
+            "The function which will be applied to the data source",
+            "The data after being transformed and validated with the given schema"
           ]
         ],
         "decorator": "",
         "return_type": "str",
-        "description": "return name and last name"
+        "description": "Given a schema, data source and a transformation function this method will apply the transformation to the data from the data source and return the transformed data"
       }
     ],
     "fields": [],
     "properties": [
       [
-        "name",
+        "data_lake",
         "str",
         "signature description"
       ],
       [
-        "age",
-        "int",
+        "data_warehouse",
+        "str",
+        "signature description"
+      ],
+      [
+        "transactions_data_source",
+        "str",
+        "signature description"
+      ],
+      [
+        "food_data_source",
+        "str",
+        "signature description"
+      ],
+      [
+        "receipts_data_source",
+        "str",
+        "signature description"
+      ],
+      [
+        "pomodoros_data_source",
+        "str",
+        "signature description"
+      ],
+      [
+        "gym_data_source",
+        "str",
+        "signature description"
+      ],
+      [
+        "fitness_data_source",
+        "str",
         "signature description"
       ]
     ]

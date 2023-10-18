@@ -4,18 +4,18 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
-        "x": 425,
-        "y": 265
+        "x": 229.26916611732986,
+        "y": -111.54490782048248
       },
       "data": {
         "dataclass": false,
-        "objectName": "Person",
-        "color": "rgb(60, 165, 79)",
-        "comment": "This should represent a person in real life",
+        "objectName": "DataPipeline",
+        "color": "rgb(85, 171, 198)",
+        "comment": "This is the data pipeline for the entire protocol data",
         "gridTable": [
           {
             "visibility": "+",
-            "signature": "name",
+            "signature": "data_lake",
             "returnType": "str",
             "comment": "signature description",
             "params": [
@@ -31,8 +31,8 @@
           },
           {
             "visibility": "+",
-            "signature": "age",
-            "returnType": "int",
+            "signature": "data_warehouse",
+            "returnType": "str",
             "comment": "signature description",
             "params": [
               {
@@ -47,16 +47,152 @@
           },
           {
             "visibility": "+",
-            "signature": "get_full_name()",
+            "signature": "transactions_data_source",
             "returnType": "str",
-            "comment": "return name and last name",
+            "comment": "signature description",
             "params": [
               {
-                "name": "last_name",
+                "name": "name",
                 "type": "str",
                 "comment": [
-                  "the family name of the person",
-                  "the full name of the person `<first name> <last name>`"
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "food_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "receipts_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "pomodoros_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "gym_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "fitness_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "load_data_source_to_data_lake()",
+            "returnType": "bool",
+            "comment": "This will load data from the source and publish the data to the predefined data lake",
+            "params": [
+              {
+                "name": "data_source_name",
+                "type": "str",
+                "comment": [
+                  "the name of the data source to load into the datalake",
+                  "true if its successful"
+                ]
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "comment": [
+                  "maximum number of items to load into the data lake",
+                  "true if the load operation is succesful"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "transform_data()",
+            "returnType": "str",
+            "comment": "Given a schema, data source and a transformation function this method will apply the transformation to the data from the data source and return the transformed data",
+            "params": [
+              {
+                "name": "schema",
+                "type": "str",
+                "comment": [
+                  "The schema of the data source after the transformation",
+                  "return comment"
+                ]
+              },
+              {
+                "name": "data_source",
+                "type": "str",
+                "comment": [
+                  "The data source to grab the data from",
+                  "return comment"
+                ]
+              },
+              {
+                "name": "transformation_function",
+                "type": "str",
+                "comment": [
+                  "The function which will be applied to the data source",
+                  "The data after being transformed and validated with the given schema"
                 ]
               }
             ]
@@ -65,11 +201,11 @@
         "connection": false
       },
       "width": 500,
-      "height": 217,
+      "height": 575,
       "selected": true,
       "positionAbsolute": {
-        "x": 425,
-        "y": 265
+        "x": 229.26916611732986,
+        "y": -111.54490782048248
       },
       "dragging": false
     }
