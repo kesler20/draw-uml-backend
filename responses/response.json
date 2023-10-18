@@ -1,65 +1,5 @@
 [
   {
-<<<<<<< HEAD
-    "class_name": "DatabaseInterface",
-    "description": "This is the interface to the database of the wiz_app system (the resourcemanager). \n\nTo get started import the database and the valid modes of the database from the business rules.\n\n```python\nfrom wiz_app_connector.infrastructure.db.wiz_app_db import DatabaseInterface\nfrom wiz_app_connector.domain.business_rules import ValidDatabaseMode\n# setup a database with a development mode\ndb = DatabaseInterface(\"v1\",ValidDatabaseMode.DEV)\n\n# send a post request\ndb.use_url(endpoint=\"sensor\").create(body={})",
-    "methods": [
-      {
-        "signature": "create",
-        "params": [
-          [
-            "body",
-            "dict",
-            "the body of the requests",
-            "returns a dictionary with the response of the request"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "dict",
-        "description": "sends a post request"
-      },
-      {
-        "signature": "read",
-        "params": [
-          [
-            "name",
-            "str",
-            "the ",
-            "a dictionary containing the response of the request"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "dict",
-        "description": "sends a get requests."
-      },
-      {
-        "signature": "update",
-        "params": [
-          [
-            "name",
-            "str",
-            "parameter comment",
-            "a dictionary containing the response of the request"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "dict",
-        "description": "send a put request."
-      },
-      {
-        "signature": "delete",
-        "params": [
-          [
-            "name",
-            "str",
-            "parameter comment",
-            "a dictionary containing the response of the request"
-          ]
-        ],
-        "decorator": "",
-        "return_type": "dict",
-        "description": "sends a delete request."
-=======
     "class_name": "DataPipeline",
     "description": "This is the data pipeline for the entire protocol data",
     "methods": [
@@ -108,26 +48,16 @@
         "decorator": "",
         "return_type": "str",
         "description": "Given a schema, data source and a transformation function this method will apply the transformation to the data from the data source and return the transformed data"
->>>>>>> new-feature
       }
     ],
     "fields": [],
     "properties": [
       [
-<<<<<<< HEAD
-        "version",
-=======
         "data_lake",
->>>>>>> new-feature
         "str",
         "This will set what version of the database routes to send the request to, i.e v1 will set /v1/endpoint "
       ],
       [
-<<<<<<< HEAD
-        "mode",
-        "int",
-        "This can be DEV which is for running the database locally (on development mode) this will send the requests to localhost:8000"
-=======
         "data_warehouse",
         "str",
         "signature description"
@@ -161,7 +91,6 @@
         "fitness_data_source",
         "str",
         "signature description"
->>>>>>> new-feature
       ]
     ]
   }
