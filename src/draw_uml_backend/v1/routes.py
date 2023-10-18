@@ -20,9 +20,8 @@ from draw_uml_backend.app import app
 
 @app.get("/v1/files/{filename}")
 async def get_file(filename: str):
-    print("get design document file called")
     file_path = os.path.join(BASE_OUTPUT_RESPONSE_PATH, filename)
-    return FileResponse(file_path, media_type="text/x-markdown", filename=filename)
+    return FileResponse(file_path, filename=filename)
 
 
 @app.get("/v1/files")

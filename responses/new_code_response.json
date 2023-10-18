@@ -4,6 +4,7 @@
       "id": "node-1",
       "type": "umlDiagram",
       "position": {
+<<<<<<< HEAD
         "x": 358,
         "y": 205.99999999999994
       },
@@ -16,6 +17,20 @@
           {
             "visibility": "+",
             "signature": "version",
+=======
+        "x": 229.26916611732986,
+        "y": -111.54490782048248
+      },
+      "data": {
+        "dataclass": false,
+        "objectName": "DataPipeline",
+        "color": "rgb(85, 171, 198)",
+        "comment": "This is the data pipeline for the entire protocol data",
+        "gridTable": [
+          {
+            "visibility": "+",
+            "signature": "data_lake",
+>>>>>>> new-feature
             "returnType": "str",
             "comment": "This will set what version of the database routes to send the request to, i.e v1 will set /v1/endpoint ",
             "params": [
@@ -31,9 +46,15 @@
           },
           {
             "visibility": "+",
+<<<<<<< HEAD
             "signature": "mode",
             "returnType": "int",
             "comment": "This can be DEV which is for running the database locally (on development mode) this will send the requests to localhost:8000",
+=======
+            "signature": "data_warehouse",
+            "returnType": "str",
+            "comment": "signature description",
+>>>>>>> new-feature
             "params": [
               {
                 "name": "name",
@@ -47,6 +68,7 @@
           },
           {
             "visibility": "+",
+<<<<<<< HEAD
             "signature": "create()",
             "returnType": "dict",
             "comment": "sends a post request",
@@ -73,38 +95,174 @@
                 "comment": [
                   "the ",
                   "a dictionary containing the response of the request"
+=======
+            "signature": "transactions_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+>>>>>>> new-feature
                 ]
               }
             ]
           },
           {
             "visibility": "+",
+<<<<<<< HEAD
             "signature": "update()",
             "returnType": "dict",
             "comment": "send a put request.",
+=======
+            "signature": "food_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+>>>>>>> new-feature
             "params": [
               {
                 "name": "name",
                 "type": "str",
                 "comment": [
                   "parameter comment",
+<<<<<<< HEAD
                   "a dictionary containing the response of the request"
+=======
+                  "return comment"
+>>>>>>> new-feature
                 ]
               }
             ]
           },
           {
             "visibility": "+",
+<<<<<<< HEAD
             "signature": "delete()",
             "returnType": "dict",
             "comment": "sends a delete request.",
+=======
+            "signature": "receipts_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+>>>>>>> new-feature
             "params": [
               {
                 "name": "name",
                 "type": "str",
                 "comment": [
                   "parameter comment",
+<<<<<<< HEAD
                   "a dictionary containing the response of the request"
+=======
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "pomodoros_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "gym_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "fitness_data_source",
+            "returnType": "str",
+            "comment": "signature description",
+            "params": [
+              {
+                "name": "name",
+                "type": "str",
+                "comment": [
+                  "parameter comment",
+                  "return comment"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "load_data_source_to_data_lake()",
+            "returnType": "bool",
+            "comment": "This will load data from the source and publish the data to the predefined data lake",
+            "params": [
+              {
+                "name": "data_source_name",
+                "type": "str",
+                "comment": [
+                  "the name of the data source to load into the datalake",
+                  "true if its successful"
+                ]
+              },
+              {
+                "name": "limit",
+                "type": "int",
+                "comment": [
+                  "maximum number of items to load into the data lake",
+                  "true if the load operation is succesful"
+                ]
+              }
+            ]
+          },
+          {
+            "visibility": "+",
+            "signature": "transform_data()",
+            "returnType": "str",
+            "comment": "Given a schema, data source and a transformation function this method will apply the transformation to the data from the data source and return the transformed data",
+            "params": [
+              {
+                "name": "schema",
+                "type": "str",
+                "comment": [
+                  "The schema of the data source after the transformation",
+                  "return comment"
+                ]
+              },
+              {
+                "name": "data_source",
+                "type": "str",
+                "comment": [
+                  "The data source to grab the data from",
+                  "return comment"
+                ]
+              },
+              {
+                "name": "transformation_function",
+                "type": "str",
+                "comment": [
+                  "The function which will be applied to the data source",
+                  "The data after being transformed and validated with the given schema"
+>>>>>>> new-feature
                 ]
               }
             ]
@@ -113,11 +271,19 @@
         "connection": false
       },
       "width": 500,
+<<<<<<< HEAD
       "height": 371,
       "selected": true,
       "positionAbsolute": {
         "x": 358,
         "y": 205.99999999999994
+=======
+      "height": 575,
+      "selected": true,
+      "positionAbsolute": {
+        "x": 229.26916611732986,
+        "y": -111.54490782048248
+>>>>>>> new-feature
       },
       "dragging": false
     }

@@ -86,7 +86,11 @@ referenced_tables = {}
 for table_name in diagram_representation.keys():
     for attribute in diagram_representation[table_name]:
         if len(attribute) > 2:
-            referenced_tables[attribute[2]] = table_name
+            if attribute[2] in referenced_tables.keys():
+                referenced_tables[attribute[2]] = [
+                    referenced_tables[attribute[2]], table_name]
+            else:
+                referenced_tables[attribute[2]] = table_name
 
 for table_name in diagram_representation.keys():
     output_class += generate_class_definition(table_name)
@@ -96,8 +100,14 @@ for table_name in diagram_representation.keys():
         else:
             output_class += generate_class_body(attribute[0], attribute[1])
     if table_name in referenced_tables.keys():
-        output_class += generate_backref(table_name,
-                                         referenced_tables[table_name])
+        if type(referenced_tables[table_name]) == list:
+            for i in range(len(referenced_tables[table_name])):
+                output_class += generate_backref(table_name,
+                                                 referenced_tables[table_name][i])
+        else:
+            output_class += generate_backref(table_name,
+                                             referenced_tables[table_name])
+
     properties = [property_[0]
                   for property_ in diagram_representation[table_name]]
     output_class += generate_constructor(properties)
